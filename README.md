@@ -1,0 +1,4 @@
+archetype-paper
+===============
+
+Archetype Paper
