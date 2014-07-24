@@ -1,0 +1,43 @@
+\documentclass{ntmanuscript}
+\usepackage[acronym,toc]{glossaries}
+\include{acros}
+\makeglossaries
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Cyclus Archetypes}
+
+% Authors. Separated by commas
+\input{authors}
+
+% Institutes of the authors
+\input{institutions}
+
+% Information concerning the person submitting the manuscript
+\submitter{Anthony Scopatz}
+\submitteraddress{1500 Engineering Drive, Madison, WI, USA}
+\submitteremail{scopatz@gmail.com}
+
+
+% No more than three keywords, though each can be a phrase
+\keywords{fuel cycle, simulation, software}
+
+\usepackage{graphicx}
+\usepackage{booktabs} % nice rules for tables
+\usepackage{microtype} % if using PDF
+\newcommand{\units}[1] {\:\text{#1}}%
+\newcommand{\SN}{S$_N$}%{S$_\text{N}$}%{$S_N$}%
+
+\date{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\input{intro}
+\input{motivation}
+\input{methods}
+\input{implementation}
+\input{conclusion}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{ans}
+\bibliography{refs}
+\end{document}
+
+
