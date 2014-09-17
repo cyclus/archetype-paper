@@ -34,7 +34,18 @@ extend \cyclus agents, archetypes should be their entry and exit point. Because 
 concept is central to how \cyclus works, such users are known as \emph{archetype
 developers}.
 
-For any simulator to be successful its key abstractions must be easily 
+The archetype abstraction has the added advantage that archetype developers 
+need only be specialists in the field of the archetype that they are developing.
+Someone who knows everything about gaseous centrifuges could design 
+an enrichment facility. Someone who knows all about deep geologic reposiotries
+could model a long-term storage faciity. A reactor physicist could create 
+a suite of archetypes for various reactor technologies. In this way, an ecosystem 
+of archetypes from representative experts can be built up. Since you do not need
+to be an expert to use an archetype, a well developed ecosystem would provide 
+a huge benefit to everyone. The separation of concerns provided by the archetype 
+abstraction maximizes quality over the entire fuel cycle modelling process.
+
+Still, for any simulator to be successful its key abstractions must be easily 
 configured by users and and easily modified by developers.  If these activities are 
 too difficult, the barrier to entry for new users and developers will be 
 insurmountable in a reasonable time frame. Potential new users and developers will 
@@ -59,15 +70,20 @@ paradigm took much longer to fully illustrate. Once the notion was fleshed out,
 \Cyclus should make creation of archetypes as easy as possible. 
 For a long time in the history of this simulator and its predecessors, such as 
 GENIUS \citeme, tools help make archetypes were notable by their abscense. 
-The addition of the correct tools by the \cyclus core developers made  archetype
+The addition of such tools by the \cyclus core developers made archetype
 developers significantly more efficient.
 
+The archetype development tools provided by \cyclus must overcome a vareity of 
+technical hurdles in order to make archetype developmement accessible.  These 
+include but are not limited to the lack of reflection in the C++ programming language, 
+the desire to support multiple database formats, automatic validation of input files,
+special mechanisms for handling resource exchange and inventory persistence, 
+and the somewhat complex interface required to support the snappshotting and 
+restart of simulations. Such concerns are basic to \cyclus operation but 
+ancillary to the physics, chemistry, and economics being modeled by an archetype.
+The minutia should `just work' since it is not a core part of a fuel cycle model.
 
-Creates a framework for usable developers to be experts in specific facility 
-technologies but not the fuel cycle while reaping the benefit of experts in 
-other technologies and the fuel cycle as a whole.
-
-Overcome technical issues such as the last of reflection in C++, multiple 
-database formats, validation, etc.
-
-Complex APIs to support restart
+This paper shows how the \cyclus code base overcame these inherent limitations
+and thereby provides a fertile platform on which to model the nuclear fuel cycle.
+Such strategies apply to any and all agent-based fuel cycle simulators, of which 
+there is currently only \cyclus.
