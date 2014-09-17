@@ -29,17 +29,39 @@ speciation of agents so that each archetype may fill its own fuel cycle niche.
 
 Archetypes are an essential abstraction in addition to the agent abstraction. 
 Fuel cycle facility, region, and institution modelers should directly create
-archetypes rather than raw agents. Thus for people trying to use and extend 
-\cyclus agents, archetypes should be their entry and exit point. Because this 
+archetypes rather than raw agents. Thus for people trying to create, use, and 
+extend \cyclus agents, archetypes should be their entry and exit point. Because this 
 concept is central to how \cyclus works, such users are known as \emph{archetype
 developers}.
 
+For any simulator to be successful its key abstractions must be easily 
+configured by users and and easily modified by developers.  If these activities are 
+too difficult, the barrier to entry for new users and developers will be 
+insurmountable in a reasonable time frame. Potential new users and developers will 
+walk away in confusion and frustration. For \cyclus, archetype development
+needs to have first-class support.
 
-Establishment of Archetype developers as first-class target
+An informal study 
+by the developers at the time showed that a new developer circa \cyclus v0.1
+took 2+ work weeks to get a working `do-nothing' archetype running. This is obviously 
+too long because most researchers do not have two weeks of time `just to try 
+somthing out.' By \cyclus v0.3 the do-nothing developement time had been reduced 
+to approximately one business week. In \cyclus v0.4 this time became about 3 days.
+As of \cyclus v1.0, this finally was reduced down to 1 - 4 hours, which meets
+approriate expectations for someone attempting cyclus out as a first time archetype 
+developer.
 
-Need for usable tools
+These dramatic development time reductions were caused be two forces:
+clarification of the archetype abstraction and explicit tools to help with 
+archetype creation. Initatially the region-institution-facility heirarchy 
+had been firmly established. How this heirarchy fit into an agent-based 
+paradigm took much longer to fully illustrate. Once the notion was fleshed out,
+\Cyclus should make creation of archetypes as easy as possible. 
+For a long time in the history of this simulator and its predecessors, such as 
+GENIUS \citeme, tools help make archetypes were notable by their abscense. 
+The addition of the correct tools by the \cyclus core developers made  archetype
+developers significantly more efficient.
 
-Heuristic of developer time for first archetype
 
 Creates a framework for usable developers to be experts in specific facility 
 technologies but not the fuel cycle while reaping the benefit of experts in 
