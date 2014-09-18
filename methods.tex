@@ -68,12 +68,24 @@ a vareity of strategies that are used by \cyclus ease development. They are,
 
 Though the above are with respect to \cyclus, these mechanisms are 
 transferable to any agent-based modeling framework that needs to have modular agent 
-archetypes.  The following subsections present greater detail about the 
+archetypes. The following subsections present greater detail about the 
 strategies themselves.
 
 \subsection{Preprocessing \& Code Generation}
+Every \cyclus archetype is required to implement the member functions 
+seen in Listing \ref{req-api}.
 
-\textbf{Anthony}
+\begin{lstlisting}[caption=Required Archetype API, label=req-api]
+void InfileToDb(InfileTree* tree, DbInit di);
+void InitFrom(cyclus::QueryableBackend*);
+void InitInv(cyclus::Inventories& invs);
+cyclus::Inventories SnapshotInv();
+void Snapshot(Agent*);
+std::string schema();
+Json::Value annotations();
+cyclus::Agent* Clone();
+void InitFrom(Agent*);
+\end{lstlisting}
 
 \subsection{Type System Abstraction}
 

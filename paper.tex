@@ -25,6 +25,35 @@
 \usepackage{booktabs} % nice rules for tables
 \usepackage{microtype} % if using PDF
 \usepackage{xspace}
+\usepackage{listings}
+\usepackage{textcomp}
+
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstset{
+    %backgroundcolor=\color{lbcolor},
+    language={C++},
+    tabsize=4,
+    rulecolor=\color{black},
+    upquote=true,
+    aboveskip={1.1\baselineskip},
+    columns=fixed,
+    extendedchars=true,
+    breaklines=true,
+    prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+    frame=single,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    basicstyle=\scriptsize\ttfamily\color{green!40!black},
+    keywordstyle=\color[rgb]{0,0,1.0},
+    commentstyle=\color[rgb]{0.133,0.545,0.133},
+    stringstyle=\color[rgb]{0.627,0.126,0.941},
+    numberstyle=\color[rgb]{0,1,0},
+    identifierstyle=\color{black},
+    captionpos=t,
+}
+
 \newcommand{\units}[1] {\:\text{#1}}%
 \newcommand{\SN}{S$_N$}
 \newcommand{\cyclus}{\textsc{Cyclus}\xspace}
@@ -35,6 +64,7 @@
 \date{}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
+
 \input{intro}
 \input{motivation}
 \input{methods}
