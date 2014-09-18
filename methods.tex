@@ -122,7 +122,31 @@ the \code{Reactor} class must explicitly save the \code{burnup} member in the
 Nothing comes along for free and minor typos can cause large breakages. 
 
 Since implementing this part of the archtype API is both highly error-prone and 
-very regular it is ripe for automatic code generation. 
+very regular it is ripe for automatic code generation. This would replace the 
+tedious task of writing the required member functions with software that will 
+insert such member functions into an otherwise fully developed archetype. 
+
+The code generation strategy has some limitations. The first is that it must be 
+performed prior to compiliation and generated valid C++. The second is that the 
+code generator must be provided with enough information about the archetype in 
+order to accurately create the function implmentations. Third and finally, it 
+is highly desirable to keep archetypes in valid C++. Templating languages 
+such as Jinja \citeme or any other variety of custom solutions would allow for 
+expressive code generation. However, such template languges would be yet another 
+tool for the archetype developer to learn, running counter to the goal of 
+simplifying development.
+
+The limitiations above are all elegantly addressed through the use of a 
+\cyclus-aware preprocessor. The first stage of C/C++ compilation is the 
+C Prepocessor or \code{cpp}. This tool is responsible for expanading 
+\code{#include}s and implemented other \code{#} directives. It is executed
+prior to any other stage of compilation (lexxing, parsing, tokenizing, \emph{etc.}).
+Importantly, the \code{#pragma} directive is skipped by \code{cpp} if it is not 
+recognized and the directive is retianed its output. It is purposefully a 
+hook for other preprocessors to use and implement their own code generation.
+If an alternative preprocessor only uses \code{#pragma}s as it interface, 
+the developer will be able to write in pure and valid C++ and reap the benefits
+of an extra code generator. 
 
 \subsection{Type System Abstraction}
 
