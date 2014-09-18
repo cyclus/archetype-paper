@@ -72,20 +72,57 @@ archetypes. The following subsections present greater detail about the
 strategies themselves.
 
 \subsection{Preprocessing \& Code Generation}
-Every \cyclus archetype is required to implement the member functions 
-seen in Listing \ref{req-api}.
 
-\begin{lstlisting}[caption=Required Archetype API, label=req-api]
+Every \cyclus archetype is required to implement the member functions 
+seen in Listing \ref{req-api} and optionally may implement those seen in 
+Listing \ref{opt-api}. Due to the way object orietation works in 
+C++ and how \cyclus stores state, these member functions must be implemented directly
+on the archetype itself. The implementation that archetypes inherit 
+from the \code{Agent} class is not sufficient. 
+
+\begin{lstlisting}[caption={Required Archetype API}, label=req-api]
 void InfileToDb(InfileTree* tree, DbInit di);
 void InitFrom(cyclus::QueryableBackend*);
 void InitInv(cyclus::Inventories& invs);
 cyclus::Inventories SnapshotInv();
-void Snapshot(Agent*);
+void Snapshot(cyclus::Agent*);
 std::string schema();
 Json::Value annotations();
 cyclus::Agent* Clone();
-void InitFrom(Agent*);
+void InitFrom(cyclus::Agent*);
 \end{lstlisting}
+
+\begin{lstlisting}[caption={Optional Archetype API}, label=opt-api]
+void Build(cyclus::Agent* parent);
+void EnterNotify();
+void BuildNotify(cyclus::Agent* child);
+void Decommission(cyclus::Agent* child);
+\end{lstlisting}
+
+This is because archetypes store state as public or private member variables
+directly on the class.  For example, a \code{Reactor} archetype class
+could have a burnup declared as `\code{double burnup};'. Not every agent has 
+a burnup, say for example \code{Enrichment}, and so the \code{burnup} member 
+should not be part of \code{Agent}. Furthermore, archetypes are modularly 
+defined. Thus there is no way for \cyclus to know all possible field names 
+for all possible archetypes for all time.  \Cyclus can only react to how 
+archetypes happen to have been written. In a dynamic language, the \code{Agent}
+superclass would still be able to to \emph{inspect} instances of its subclasses
+to discover field names at runtime. Such introspections is called \emph{reflection}. 
+This would allow \code{Agent} to hold a single, generic implementation of each of the
+member functions in Listing \ref{req-api}, preventing archetype developers from 
+having to impplement them manually.
+
+However, C++ lacks reflection. Neither \code{Agent} nor archetypes are allowed
+to dynamically discover what their member variable names are at runtime.  This 
+implies that the archetype developer must explicitly code in the approriate variable
+names in the correct way for each of the nine required functions.  For instance, 
+the \code{Reactor} class must explicitly save the \code{burnup} member in the 
+\code{Snapshot()} function if \code{burnup} is to be saved to the database.
+Nothing comes along for free and minor typos can cause large breakages. 
+
+Since implementing this part of the archtype API is both highly error-prone and 
+very regular it is ripe for automatic code generation. 
 
 \subsection{Type System Abstraction}
 
