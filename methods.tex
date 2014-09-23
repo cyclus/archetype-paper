@@ -150,16 +150,23 @@ of an extra code generation step.
 
 Any code generator, however, must be supplied with sufficient information about
 where and how to create the code. These tasks may also be accomplished through 
-the use of pragmas. Certain pragmas may be used to parse only the needed information 
+the use of pragmas. To handle a suite of such utilities a custom preproccessor
+is needed.
+
+Certain pragmas may be used to parse only the needed information 
 about an archetype, rather than parsing the entire class. For archetypes, the 
 member variables that are saved and loaded from its instances are the most important.
 This is because it is these variables that the fully describe the state of an agent 
 at all point in the simulation. Thus they are known as \emph{state variables}. 
 To generate the appropriate I/O routines for an archetype the names and C++ types 
 of all state variables must be known at a minimum. Hence this process is 
-called \emph{state accumulation}. Still other pragmas may 
-signal where to insert automatically generated code. To handle a suite of such 
-utilities, a custom preproccessor is needed.
+called \emph{state accumulation}. 
+
+Still other pragmas may 
+signal where to insert automatically generated code. The tedious 
+part of the \code{cyclus::Agent} interface should be created. In specific, 
+the member functions given in Listing \ref{req-api} should be inserted automatically
+so that archetype developer need not write them.
 
 The \cyclus preprocessor, called \cycpp, handles all of the cyclus code generation
 and state accumulation. This tool looks only for directives that begin with 
@@ -180,6 +187,30 @@ initial pass to make state accumulation easier. Further passes could be added wh
 implement reflection onto the generated code itself but this is often uncessary. 
 In \cyclus further passes would be excessive since only portions of the 
 \code{cyclus::Agent} interface are generated and these are known ahead of time.
+
+\cyclus-specific pragmas are broken up into two catergories depending on whether 
+they are most relevant to the state accumulation or to code generation. They 
+are denoted as \emph{annotation directives} and \emph{code generation directives}
+respectively.
+
+The \cycpp annotation interface has two main directives:
+\begin{itemize}
+    \item \code{#pragma cyclus var <dict>} - state variable annotation
+    \item \code{#pragma cyclus note <dict>} - agent annotation or note
+\end{itemize}
+The state variable annotation is used on the line immeadiately above an archetype
+member variable to declare it as being a state variable. The note directive is used
+anywhere in an archetype class declaration and applies to the archetype itself.
+Both of these have a \code{<dict>} argument that is a Python dictionary. This 
+holds metadata about the state variable or the archetype. For example, a \code{flux}
+state variable may be declared as in Listing \ref{flux-pragma}.
+
+\begin{lstlisting}[caption={Flux State Variable Annotation}, label=flux-pragma]
+#pragma cyclus var {"default": 42.0, "units": "n/cm2/s"}
+double flux;
+\end{lstlisting}
+
+
 
 \subsection{Type System Abstraction}
 
