@@ -210,7 +210,54 @@ state variable may be declared as in Listing \ref{flux-pragma}.
 double flux;
 \end{lstlisting}
 
+The code generation interface in it is simplest form occurs via the \cyclus 
+prime directive, or merley \code{#pragma cyclus}.  This expression will 
+generate the entire archetype interface and insert it in place of the pragma.
+More fine-grained code generation may be used by passing additional arguments.
+The signature for such targeted code generation may be seen in Listing \ref{targ-cg}.
+The first argumnet is one of \code{decl}, \code{def}, or \code{impl} representing 
+interface declarations, definitions (the declaration and the implementation together), 
+or implementions (just the body without the declaration) of the archetype member
+functions. Lacking any further arguments, this will produce the desired code for 
+all of member functions in Listing \ref{req-api}.  Optionally, a member function 
+name in all lowercase (ie \code{inittodb} rather than \code{InitToDb}) may 
+be supplied to generate code for the given function alone.  Lastly, in 
+cases where \cycpp cannot figure out the archetype to apply the code generation for
+such as an in an implementation file (\code{*.cc} or \code{*.cpp}), the agent
+class name may be provided as a final parameter.
 
+\begin{lstlisting}[caption={Targeted Code Generation Directive Signatures}, 
+                   label=targ-cg]
+#pragma cyclus <decl|def|impl> [<func> [<agent>]]
+\end{lstlisting}
+
+When the annotation and code generation directives are combined and expanded with 
+\cycpp, simple agent become simple to write and complex agents confine their 
+complexity to the physics and economics that they seek to implement. The base \cyclus
+infrastructure largely is removed from the concern of the archetype developer.
+For example, a simple reactor model may be completely implemented as seen in 
+Listing \ref{rx-eg}. The barrier to creating new archetypes is much lower than 
+compared to the hundreds of lines that this would take without \cycpp.
+
+\begin{lstlisting}[caption={Simple Reactor Archetype}, label=rx-eg]
+class Reactor : public cyclus::Facility {
+ public:
+  Reactor(cyclus::Context* ctx) {};
+  virtual ~Reactor() {};
+
+  #pragma cyclus
+
+ private:
+  #pragma cyclus var {'default': 4e14, 'units': 'n/cm2/2'}
+  double flux;
+
+  #pragma cyclus var {'default': 1000, 'units': 'MWe'}
+  float power;
+
+  #pragma cyclus var {'doc': 'Are we operating?'}
+  bool shutdown;
+};
+\end{lstlisting}
 
 \subsection{Type System Abstraction}
 
