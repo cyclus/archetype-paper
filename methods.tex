@@ -283,7 +283,8 @@ a map by the archetype itself.
 
 \Cyclus increases expressiveness of archetypes and reduces error from extraneous 
 transcription by natively supporting its own extensible type system. Every type
-has its own unique integer identifier that distinguishes it. All types
+has its own unique integer identifier that distinguishes it as well as 
+a variable name cooresponding to this type. All types
 must have a C++ representation. This is what is used for the type of the state
 variables. Every database format may then choose which types in the type system it 
 supports and how the it implements them. All types have a static \emph{rank}, or the 
@@ -293,6 +294,13 @@ vectors having arbitrary length. As an optimization, the archetype developer
 may also give a \emph{shape}, a maximum size along each dimension, for a state 
 variable. The type system is extensible in that new types may be added in the future, 
 allowing for expressiveness to grow and evolve with the needs of archetype developers.
+
+This strategy represents a significant abstraction over the needs and usage of most 
+other simulator technologies. This level of detail is required by \cyclus due to the
+dynamicaly loadable angents. Without a strong type system, state variables 
+would only be minimally useful and archetypes would have to rely on out-of-simulator
+mechanims to save and load their state.
+
 
 \subsection{Validation}
 
