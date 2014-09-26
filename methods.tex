@@ -261,7 +261,38 @@ class Reactor : public cyclus::Facility {
 
 \subsection{Type System Abstraction}
 
-\textbf{Anthony}
+Related to the issue of how to snapshot and restart simulations is the issue of 
+what fundemtnal data types are allowed to be saved and loaded natively by the 
+simulation. For many physics simulators, primitive data types such as \code{float}, 
+\code{int}, and \code{string} and arrays of these types are sufficient to 
+express and evaluate the underlying equations. This handful of types is small enough 
+that most simulators can handle them in an ad hoc manner. Furthermore, these types
+often aline with the structure of most all database, allowing for easy translation
+between disk and memory.
+
+Agent-based fuel cycle modeling, however, subsumes physical modeling frameworks.
+The types of data that are needed to naturally express many fuel cycle concepts 
+do not fit into the standard `arrays of floats' mindset.  More sophisticated types
+such as maps and sets of primitive types are needed at a minimum. For example, 
+a reprocessing facility needs to have a mapping from elements to separation 
+efficiencies. To avoid hardcoding the elements into the archetype, the user should 
+be able to state which elements for which separation is allowable. The correct data
+type in C++ for such information is \code{std::map<int, double>}. Any other 
+representation, say an int array and a float array,  would likely be converted to 
+a map by the archetype itself.
+
+\Cyclus increases expressiveness of archetypes and reduces error from extraneous 
+transcription by natively supporting its own extensible type system. Every type
+has its own unique integer identifier that distinguishes it. All types
+must have a C++ representation. This is what is used for the type of the state
+variables. Every database format may then choose which types in the type system it 
+supports and how the it implements them. All types have a static \emph{rank}, or the 
+number of variable length dimensions, they support.  For example, \code{int} and 
+\code{double} are both rank-0 though \code{vector<float>} is rank-1 due to 
+vectors having arbitrary length. As an optimization, the archetype developer 
+may also give a \emph{shape}, a maximum size along each dimension, for a state 
+variable. The type system is extensible in that new types may be added in the future, 
+allowing for expressiveness to grow and evolve with the needs of archetype developers.
 
 \subsection{Validation}
 
