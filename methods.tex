@@ -72,6 +72,7 @@ archetypes. The following subsections present greater detail about the
 strategies themselves.
 
 \subsection{Preprocessing \& Code Generation}
+\label{subsec-ppgc}
 
 Every \cyclus archetype is required to implement the member functions 
 seen in Listing \ref{req-api} and optionally may implement those seen in 
@@ -303,7 +304,20 @@ mechanims to save and load their state.
 
 \subsection{Metadata Annotations}
 
-\textbf{Radio}
+Coupled with code generation are metadata annotations.  State variable annotations
+may be provided with the \code{#pragma cyclus var} directive and annotations for 
+the archetypes as a whole may be given with the \code{#pragma cyclus note} directive,
+as specified in \S \ref{subsec-ppgc}. Both of these directives take a dictionary 
+as an argument. This mapping must have string keys.
+
+Metadata serves an important purpose by comunicating information to the \cyclus
+preprocessor, to the \cyclus kernel, and even beyond the simulation to analysis 
+and visulaization tools. Some metadata is automatically generated from the 
+archetype declaration itself.  These are considered read-only and required. 
+Other annotations are supplied by the archetype developers and are optional, 
+though for some keys (such as documentation) they are highly recommended.
+
+With respect to \cycpp
 
 \subsection{Validation}
 
