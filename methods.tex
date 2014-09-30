@@ -565,7 +565,20 @@ in \cycpp.
 
 \subsection{Package System}
 
-\textbf{Robert C.}
+In a robust ecosystem of archetypes, it is nearly gaurenteed that different archetype
+developers will want to use the same name. No single person or organization can 
+reasonably lay sole claim to terms such as \emph{reactor}, \emph{source}, \emph{sink},
+and a plethora of other such names. The archetype developer should not be concerned 
+with accidiental name collision between their archetypes and anyone elses archetypes
+past, present, or future.  Furthermore, it is often useful in a simulation or 
+development campaign to group similar or related archetypes together. Uniqueness
+and collection problems are simeltaneously solved through a hardy \emph{package system}.
+
+\cyclus packaging is a system that defines where on the file system 
+archetypes are installed to, how thee \cyclus kernel will load installed
+packages, and how to uniquely identify an archetype in an input file.
+
+Archetype specifications also have a single-string form where the three parts are separated by colons. This form is used in places such as in the database and on the command line. For example, to print out the schema for an agent archetype on the command line (note the starting colon indicating an empty pat
 
 \subsection{Removal of Markets}
 
