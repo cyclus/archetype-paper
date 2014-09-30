@@ -317,7 +317,131 @@ archetype declaration itself.  These are considered read-only and required.
 Other annotations are supplied by the archetype developers and are optional, 
 though for some keys (such as documentation) they are highly recommended.
 
-With respect to \cycpp
+Any key may be supplied to the annotation directives. For most keys, the 
+purpose of the entry is given entirely by the archetype developer. However, 
+some keys are resereved and have special meanings in various contexts. Table
+\ref{sv-anno} lists these special keys for state variable annotations while Table
+\ref{ag-anno} displays the special keys for \code{#pragma cyclus note}.
+
+\begin{table}
+\label{sv-anno}
+\caption{Special State Variable Annotations}
+\begin{tabular}[htbc]{|p{0.2\linewidth}|p{0.75\linewidth}|}
+\hline
+\textbf{key} & \textbf{meaning} \\
+\hline
+\code{type}    & The C++ type. \emph{Read-only}.\\
+\hline
+\code{index}   & State variable order-of-appearence, 0-indexed. \emph{Read-only}.\\
+\hline
+\texttt{default} & The default value for this variable that is used if otherwise 
+                 unspecified by the user. The type of the value must match the 
+                 type of the variable.\\
+\hline
+\code{shape}   & The shape of variable-length data types. If present this must
+                 be a list of integers whose length (the rank) makes sense for this
+                 type. Specifying positive values will, depending on the 
+                 backend, turn a variable-length type into a fixed-length one
+                 with the provided length. Putting a \code{-1} in the 
+                 shape will retain the variable-length nature along that axis. 
+                 Fixed-length variables are normally more performant and thus it is 
+                 often a good idea to specify the shape where possible. For 
+                 example, a length-5 string would have a shape of \code{[5]} and 
+                 a length-10 vector of variable-length strings would have a 
+                 shape of \code{[10, -1]}.\\
+\hline
+\code{doc}     & Documentation string.\\
+\hline
+\code{tooltip} & Brief documentation string for user interfaces.\\
+\hline
+\code{units}   & The physical units, if any, as a string.\\
+\hline
+\code{userlevel} & Integer from 0 - 10 for representing ease (0) or difficulty (10) 
+                   in using this variable, default 0.\\
+\hline
+\code{schematype} & The data type that is used in the schema for input file
+                    validation. This enables the user to supply just the data type
+                    rather than having to overwrite the full schema for this state
+                    variable. In most cases - when the shape is rank 0 or 1 such
+                    as for scalars or vectors - this is simply a string. In cases
+                    where the rank is 2+ this is a list of strings. Please refer to
+                    the XML Schema Datatypes \cite{xml-datatypes}
+                    for more information.\\
+\hline
+\code{initfromcopy} & String code snippet to use in the \code{InitFrom(Agent* m)} 
+                      function for the state variable instead of automatic code 
+                      generation.\\
+\hline
+\code{initfromdb} & String Code snippet to use in the 
+                    \code{InitFrom(QueryableBackend* b)} 
+                    function for this state variable instead of automatic code 
+                    generation.\\
+\hline
+\code{infiletodb} & Code snippets to use in the \code{InfileToDb()} function 
+                    for this state variable instead of automatic code generation.
+                    This is a dictionary of string values with the two keys `read'
+                    and `write' which represent reading values from the input file 
+                    writing them out to the database respectively.\\
+\hline
+\code{schema}  & Code snippet to use in the \code{schema()} function for 
+                 this state variable instead of using code generation.
+                 This is an RNG string. If this is supplied then 
+                 \code{infiletodb} is likely needed as well to ensure that the custom
+                 schema is read into the database correctly.\\
+\hline
+\code{snapshot} & String code snippet to use in the \code{Snapshot()} function for 
+                  this state variable instead of automatic code generation.\\
+\hline
+\code{snapshotinv} & String code snippet to use in the \code{SnapshotInv()} function 
+                     for this state variable instead of automatic code generation.\\
+\hline
+\code{initinv} & String code snippet to use in the \code{InitInv()} function for 
+                 this state variable instead of automatic code generation.\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}
+\label{ag-anno}
+\caption{Special Agent Archetype Annotations}
+\begin{tabular}[htbc]{|p{0.2\linewidth}|p{0.75\linewidth}|}
+\hline
+\textbf{key} & \textbf{meaning}\\
+\hline
+\code{vars} & The state variable annotations. \emph{Read-only}.\\
+\hline
+\code{name} & C++ class name (string) of the archetype. \emph{Read-only}.\\
+\hline
+\code{entity} &  The kind of archetype based on which class it 
+                 inherits from. If this inherits from \code{cyclus::Region},
+                 \code{cyclus::Institution}, or \code{cyclus::Facility} then this 
+                 will be the string `region', `institution', or `facility'
+                 respecively. If the class inherits from \code{cyclus::Agent} but 
+                 does not inherit from the previous three then this will be 
+                 the string `archetype'. If the class does not even inherit 
+                 from \code{cyclus::Agent}, then this will be `unknown'.
+                 \emph{Read-only}.\\
+\hline
+\code{parents} & List of string class names of the direct superclasses of this
+                 archetype. \emph{Read-only}.\\
+\hline
+\code{all_parents} & List of string class names of all the superclasses of this
+                     archetype. \emph{Read-only}.\\
+\hline
+\code{doc} & Documentation string.\\
+\hline
+\code{tooltip} & Brief documentation string for user interfaces.\\
+\hline
+\code{userlevel} & Integer from 0 - 10 for representing ease (0) or 
+                   difficulty (10) in using this variable, default 0.\\
+
+\hline
+\end{tabular}
+\end{table}
+
+With respect to \cycpp, metadata enables the customization of code generation
+without the need to alter the preprocessor itself or create an entirely new 
+code generator.
 
 \subsection{Validation}
 
