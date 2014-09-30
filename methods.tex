@@ -567,16 +567,52 @@ in \cycpp.
 
 In a robust ecosystem of archetypes, it is nearly gaurenteed that different archetype
 developers will want to use the same name. No single person or organization can 
-reasonably lay sole claim to terms such as \emph{reactor}, \emph{source}, \emph{sink},
-and a plethora of other such names. The archetype developer should not be concerned 
-with accidiental name collision between their archetypes and anyone elses archetypes
-past, present, or future.  Furthermore, it is often useful in a simulation or 
+reasonably lay sole claim to generic terms such as \emph{reactor}, \emph{source}, 
+\emph{sink}, and a plethora of other such names. The archetype developer should not 
+be concerned with accidiental name collision between their archetypes and archetypes
+of other
+past, present, and future developers.  Furthermore, it is often useful in a 
+simulation or 
 development campaign to group similar or related archetypes together. Uniqueness
 and collection problems are simeltaneously solved through a hardy \emph{package system}.
 
-\cyclus packaging is a system that defines where on the file system 
-archetypes are installed to, how thee \cyclus kernel will load installed
-packages, and how to uniquely identify an archetype in an input file.
+\cyclus packaging is an organizational structure that defines where on the file system 
+archetypes are installed to, how the \cyclus kernel will load installed
+packages, and how to uniquely identify an archetype in an input file.  Archetypes 
+are denoted with a three-part \emph{archetype specification}. When spelled out, this
+is a colon separated string with the following elements:
+\begin{enumerate}
+    \item a slash (\texttt{/}) separated directory path,
+    \item a library name, and
+    \item an archetype name.
+\end{enumerate}
+For example, \code{my/path:mylib:MyAgent} represents \code{MyAgent} living
+in \code{mylib} residing in the \code{'my/path'} directory. More than just 
+a simple spelling convention, this is a necessary
+tool for searching for and discovering archetypes on the machine of the user.
+
+The path portion of the specification is relative to the \code{CYCLUS_PATH}. This is 
+an list of directories on the machine that will be searched in order to find the 
+archetype of interested. By default, \code{CYCLUS_PATH} contains the current working 
+directory, the \cyclus install directory, and the \cyclus build directory. 
+\code{CYCLUS_PATH} may also be modified as an environment variable, allowing the user
+to permenantly or temporarily alter the \cyclus search behavior.  Thus the path 
+specification (e.g. \code{'my/path'}) is interpreted as a sub-directory of all of 
+the directories on the \code{CYCLUS_PATH}. For a directory \code{d1} on 
+\code{CYCLUS_PATH}, if  \code{'d1/my/path'} does not exist then the search for 
+the archetype will continue along with \code{d2}, and so on. The path portion 
+may be an empty string, indicating that the library lives directly on the 
+\code{CYCLUS_PATH}.
+
+The library name is the dynamically loadable library file name that stores the 
+archetype. This does not include the \code{lib-} prefix or the file extension 
+(which is generally operating system dependent).  For example on a posix system,
+a file named \code{libmyagents.so} would recive the library name \code{myagents}
+in the archetype specification. A single library may hold many archetypes, if desired.
+Similarly, a single path may hold many libraries. Thus, archetypes may be grouped
+together coarsely or finely, depending on the needs of the archetype developers.
+
+
 
 Archetype specifications also have a single-string form where the three parts are separated by colons. This form is used in places such as in the database and on the command line. For example, to print out the schema for an agent archetype on the command line (note the starting colon indicating an empty pat
 
