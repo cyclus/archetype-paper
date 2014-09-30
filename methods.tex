@@ -608,13 +608,20 @@ The library name is the dynamically loadable library file name that stores the
 archetype. This does not include the \code{lib-} prefix or the file extension 
 (which is generally operating system dependent).  For example on a posix system,
 a file named \code{libmyagents.so} would recive the library name \code{myagents}
-in the archetype specification. A single library may hold many archetypes, if desired.
+in the archetype specification. 
+If a library name is not specified then it is assumed to be the same as the 
+archetype name.
+A single library may hold many archetypes, if desired.
 Similarly, a single path may hold many libraries. Thus, archetypes may be grouped
 together coarsely or finely, depending on the needs of the archetype developers.
 
-
-
-Archetype specifications also have a single-string form where the three parts are separated by colons. This form is used in places such as in the database and on the command line. For example, to print out the schema for an agent archetype on the command line (note the starting colon indicating an empty pat
+The path and library names together allow for complete disambiquation of 
+archetypes as they enforce an important degree of namespacing.  It is unlikely
+that two well-designed libraries will overlap in both library and archetype name.
+However even if they do, one or both libraries may be placed in respective
+sub-directories and the extra path may be used to truly establish uniqueness.
+This strategy for specify archetypes ultimately removes confusion and error from 
+both archetype developers and users alike.
 
 \subsection{Removal of Markets}
 
