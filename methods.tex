@@ -623,6 +623,42 @@ sub-directories and the extra path may be used to truly establish uniqueness.
 This strategy for specify archetypes ultimately removes confusion and error from 
 both archetype developers and users alike.
 
-\subsection{Removal of Markets}
+\subsection{Stock Resource Exchange Algorithms}
 
-\textbf{Matt}
+In early versions of \cyclus, the dynamic resource exchange algorithm that the 
+kernel used was itself dynamically loadable. Such an algorithm was called a
+\emph{market} and stood on even footing with region, institution, and facility 
+entities. Each commodity was traded in its own market which needed to be specified by 
+the user in the input file.
+
+Unlike the other entities, though, a market did not have agency.  It could not 
+communicate with other agents in the simulation because it was itself the method
+for agent communication.  Furthermore, dynamic resource exhange is the keystone
+part of all fuel cycle simulators.  Relegating such algorithms to live outside of 
+the kernel minimized the value of \cyclus itself and lead to maintenance problems 
+ensuring that all markets correctly supported the proper exchange interface.
+
+Therefore the notion of markets as a simulation entity was removed. In their stead
+dynamic resource exchange algorithms were brought into the core as a way of 
+guarenteing exchange feasibility. Moreover, all commodities are now traded through a
+single global exchange. The commodity itself automatically defines the sub-exchange 
+graph, which may be thought of as analogous to the old markets, in which
+the commodity participates.
+
+Since markets did not have any agency in the first place their removal does not 
+hurt the agent-based
+nature of \cyclus.  Rather, market removal helps archetypes by allowing them to 
+speak to each other through a common resource exchange interface.
+
+When taken in total, the current interpretation of dynamic resource exchange 
+eases the burden of archetype developers. This is because the primary duty of the 
+kernel is now to provide generic and valid generic resource exchange algorithms.
+The archetype developer need not also portentially construct a custom exchange for 
+each commodity an archetype trades. Furthermore, market removal does not 
+impinge on exchange solver availablity or customization.  Many exchanges may 
+be provided and have thier parameters tuned by the user.  The only resrtiction 
+is that the exchange algorithms must exist within \cyclus itself.  This is not 
+considered overly burdensome, because individuals seeking to writing custom 
+exhanges - arguably the most advanced task in \cyclus - have likely already 
+transitioned from being an archetype developer to also being a kernel developer
+as well.
