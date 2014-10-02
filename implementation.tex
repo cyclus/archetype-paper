@@ -20,9 +20,25 @@ implements. In particular, the implemention of the \cyclus preprocessor,
 the type system, input file validation, metadata annotations will all 
 be covered here.
 
-\subsection{cycpp}
+\subsection{The \Cyclus Preprocessor}
 
-\textbf{Anthony and Matt}
+The \cyclus preprocessor, \cycpp, is resposnible for all metadata collection and 
+code generation for archetypes. It is implemented as a small Python utility 
+currently less than 2000 lines in a single file.  It has no dependencies other 
+than the Python standard library. It is thus light-weight enough to move around 
+between code projects, if needed. For the scale of its responsibility, \cycpp
+is extremely efficient. 
+
+The preprocessor implements the three passes detailed in \S\ref{subsec-ppgc}:
+normalization via standard \code{cpp}, annotation accumulation, and code 
+generation. The \cycpp tool must be run on all C++ header and source files that
+contain archetype code and the \code{#pragma cyclus} directives. Running \cycpp
+on files without such directives does no harm and will result in exactly the 
+original file. The first \cycpp
+pass, running the C preprocessor over these files, is a trivial subprocess 
+spawn. The only potential trouble spots here are ensureing that \cycpp sees the
+same include, macro defintitions, and macro undefinitions that actual compilation 
+of the source code will have.
 
 \subsection{Database Types \& Backends}
 
