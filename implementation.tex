@@ -97,25 +97,48 @@ in order of decreasing precedence.
                          The results of this code are added the context that 
                          evaluated other \cycpp directives.\\ 
 \hline
-4  & \code{UsingNamespaceFilter} & \\ 
+4  & \code{UsingNamespaceFilter} & Adds and removes a namespace from the 
+                                   current scope via the C++ \code{using namespace}
+                                   statement.\\ 
 \hline
-5  & \code{NamespaceAliasFilter} & \\ 
+5  & \code{NamespaceAliasFilter} & Implements namespace aliasing in the current 
+                                   scope.\\ 
 \hline
-6  & \code{NamespaceFilter} & \\ 
+6  & \code{NamespaceFilter} & Sets and reverts a new namepsace scope.\\ 
 \hline
-7  & \code{TypedefFilter} & \\ 
+7  & \code{TypedefFilter} & Adds a type alias to the current scope via the 
+                            C++ \code{typedef} statement.\\ 
 \hline
-8  & \code{UsingFilter} & \\ 
+8  & \code{UsingFilter} & Removes scope from a type by adding an alias in the 
+                          current scope via the C++ \code{using} statement.\\ 
 \hline
-9  & \code{LinemarkerFilter} & \\ 
+9  & \code{LinemarkerFilter} & Interprets \code{cpp} linemarker dirctives in order
+                               to produce more useful debugging information in 
+                               \cycpp.\\ 
 \hline
-10 & \code{NoteDecorationFilter} & \\ 
+10 & \code{NoteDecorationFilter} & Handles the \cycpp \code{#pragma cyclus note <dict>}
+                                   directive by evaluating the contents of 
+                                   \code{<dict>} and adding them to the archetype 
+                                   annotations.\\ 
 \hline
-11 & \code{VarDecorationFilter} & \\ 
+11 & \code{VarDecorationFilter} & Implements the \cycpp \code{#pragma cyclus var <dict>}
+                                  directive for state variable annotations. The 
+                                  \code{<dict>} is evaluated in the current 
+                                  context and queued up to be applied to the 
+                                  next state variable declaration.\\ 
 \hline
-12 & \code{VarDeclarationFilter} & \\ 
+12 & \code{VarDeclarationFilter} & State variable declaration. Applies the results 
+                                   of the immeadiately prior \code{VarDecorationFilter}
+                                   as the state variable annotations. Furthermore, 
+                                   this filter parses out the name of the 
+                                   state variable, its index with respect to other 
+                                   state variables on this class, and resolves its
+                                   C++ type into an unambiquous form.\\ 
 \hline
-13 & \code{PragmaCyclusErrorFilter} & \\
+13 & \code{PragmaCyclusErrorFilter} & Throws errors if \code{#pragma cyclus} 
+                                      directive is incorrectly implmeneted.
+                                      This moves errors from happening at compile 
+                                      or run time to \cycpp.\\
 \hline
 \end{tabular}
 \end{table}
