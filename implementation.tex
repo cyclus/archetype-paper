@@ -48,7 +48,7 @@ may be thought of as a traditional parser which tranforms tokens (line of the
 C++ file) into a more meaningful in-memory data structure. As a parser, pass 2 
 may be implemented as a \emph{state machine} \cite{mertz2003text,wagner2006modeling}.
 
-Pass is represented in \cycpp by the \code{StateAccumulator} class.  This is a
+Pass 2 is represented in \cycpp by the \code{StateAccumulator} class.  This is a
 state machine which takes lines output from the C preproessor and compares them 
 against a seires of \emph{filters}.  If a line matches the expected structure 
 for a filter, then the filter executes a \emph{transformation} function on the 
@@ -56,10 +56,10 @@ line and no further filters are executed. If the line does not match any filters
 then the line is allowed to pass through the \code{StateAccumulator}. 
 The filter-transformation sequence can be thought of in analogy to a sphere of a 
 given radius (a line of code) attempting to pass through concentric windows 
-(the filters) of decreasing appeture. This first windown where the sphere stops 
+(the filters) of decreasing appeture. This first window where the sphere stops 
 represents the transformation that is executed.  This sphere is allowed to 
 move through the system without being stopped. This analogy may be seen in 
-Figure \ref{filter-analogy}.
+Figure \ref{filter-analogy}.  
 
 \begin{figure}[htbc]
 \label{filter-analogy}
@@ -69,10 +69,56 @@ Figure \ref{filter-analogy}.
 a series of filters, each of which may transform the information heretofore gathered
 by previous filters. 
 This may be thought of analogous to a spheres of various radii rolling through 
-concentric windows.  The spheres, or lines, stop rolling when they hit a  
+concentric windows.  The spheres, or lines of code, stop rolling when they hit a  
 window, or filter. This triggers the execution of the transformation function of just 
 that filter and that filter alone.}
 \end{figure}
+
+The filters implemented for pass 2 of \cycpp may be seen in Table \ref{pass2-filters}, 
+in order of decreasing precedence. 
+
+\begin{table}
+\label{pass2-filters}
+\caption{\cyclus Preprocessor Pass 2 Filters, higher order filters have 
+         lower execution precedence.}
+\begin{tabular}[htb]{|p{0.05\linewidth}|p{0.33\linewidth}|p{0.6\linewidth}|}
+\hline
+\textbf{order} & \textbf{filter} & \textbf{description} \\
+\hline
+1  & \code{ClassAndSuperclassFilter} & Accumultes the class name from a class 
+                                       declaration. Also stores the names of the 
+                                       superclasses from the declaration.\\ 
+\hline
+2  & \code{AccessFilter} & Sets the current access control level, either 
+                           \code{public}, \code{private}, or \code{protected}.\\
+\hline
+3  & \code{ExecFilter} & Implements the \code{#pragma cyclus exec <code>} directive
+                         that allows for the execution of arbitrary Python code.
+                         The results of this code are added the context that 
+                         evaluated other \cycpp directives.\\ 
+\hline
+4  & \code{UsingNamespaceFilter} & \\ 
+\hline
+5  & \code{NamespaceAliasFilter} & \\ 
+\hline
+6  & \code{NamespaceFilter} & \\ 
+\hline
+7  & \code{TypedefFilter} & \\ 
+\hline
+8  & \code{UsingFilter} & \\ 
+\hline
+9  & \code{LinemarkerFilter} & \\ 
+\hline
+10 & \code{NoteDecorationFilter} & \\ 
+\hline
+11 & \code{VarDecorationFilter} & \\ 
+\hline
+12 & \code{VarDeclarationFilter} & \\ 
+\hline
+13 & \code{PragmaCyclusErrorFilter} & \\
+\hline
+\end{tabular}
+\end{table}
 
 
 \subsection{Database Types \& Backends}
