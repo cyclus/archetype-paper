@@ -74,8 +74,29 @@ window, or filter. This triggers the execution of the transformation function of
 that filter and that filter alone.}
 \end{figure}
 
-The filters implemented for pass 2 of \cycpp may be seen in Table \ref{pass2-filters}, 
-in order of decreasing precedence. 
+The filters implemented for pass 2 of \cycpp are described in Table \ref{pass2-filters}, 
+in order of decreasing precedence. The most importnat of these filters implement 
+the \code{#pragma cyclus} dirctives that the archetype uses to communicate
+with the preprocessor.  The pragma filters tend to modify attributes of
+the \code{StateAccumulator} such as the \code{context}, the \code{execns} 
+(or \emph{execution namespace}), the \code{aliases} set, and the \code{namespaces}. 
+These represent the classes, types, aliases, and other information that defines
+the scope of the C++ code that has been seen thusfar. Such information is necessary 
+for accurately representing archetypes and their state variables. 
+
+Most pass 2 filters that do not implement a preprocessor directive instead
+aggregate information about the available types. The \code{VarDeclarationFilter} has
+the important job of determining the C++ type of state variables from the 
+member variable declaration on the archetype class. However, the C++ type system 
+is a complex beast that allows for a number of programmer modifications prior 
+to the type declarations.  Types may be aliased to any number of alternative 
+names, template types are white-space insensitive, scoping rules apply 
+to new type names, and other issues must be resolved to accurately and uniquely 
+represent a C++ type.  This requires that \cycpp reimplement relevant type handling
+simply to get the spellings correct. 
+Thus the \code{StateAccumulator} accumulator acts as its own type system and is 
+able to return the canonical form of any type it knows about at all points during 
+pass 2 of \cycpp.
 
 \begin{table}
 \label{pass2-filters}
