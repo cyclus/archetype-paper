@@ -211,7 +211,16 @@ alias lookup while if it was declared as \code{mynumber} there be two. The canon
 form for all \code{float}, \code{myfloat}, and \code{mynumber} would all be 
 \code{float}.  This is what \cycpp should record.  Templates need to recurively 
 determine the template type name and the types of all template parameters.
+Computing the canonical form of a type automaically is necessary to avoid an 
+entire class of typographic errors by the archetype developers.  The investment
+into this mini-type system by the kernel developers has alreade been repaid several 
+times over.
 
+Aside from the type system semantics, pass 2 represents a relatively straightforward
+process of building up archetype information for later use. Pass 3 of \cycpp where 
+code generation happens is the fist instance of later use.  Conceptually, 
+pass 3 is a more complex process than pass 2 because it must implement 
+all of the member functions in Listing \ref{req-api}.
 
 \subsection{Database Types \& Backends}
 
