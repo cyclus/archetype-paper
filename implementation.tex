@@ -164,6 +164,54 @@ pass 2 of \cycpp.
 \end{tabular}
 \end{table}
 
+In \cycpp, the only relevant type information is the name.  The concrete size in bits
+of a type and the operations that are availble for that type are not directly 
+relevenat. This is because the primary purpose of the type of a state variable is
+to be able to fill in the relevant value in the pass 3 code generation. Further 
+reflection is not used by \cycpp itself. Thus the canonical spelling of the type 
+name is the only relevant piece of information.  
+
+The canonical form of a type has the following spelling rules:
+\begin{itemize}
+    \item Primitive types (\code{int}, \code{double}, \code{std::string}, etc.) 
+          and classes (\code{cyclus::Blob}, etc.) are spelled with strings 
+          of the names.
+    \item Template types (\code{std::vector}, \code{std::map}, etc.) are spelled 
+          with lists of length of the number of template parameters plus one.
+          The first element of the list is a string that represents the 
+          template type (e.g. \code{std::pair}). The remaining elements of 
+          the list represent the template parameter types, in order, and may 
+          be either strings or lists.  For example, the type 
+          \code{std::map<int, std::vector<double>>} would have the canonical form 
+          of \code{['std::map', 'int' ['vector', 'double']]}.
+    \item All namespaces must be included in the type name.
+    \item Pointer and reference types are not allowed because these may not be 
+          represented in the database.
+\end{itemize}
+When taken together, these rules create an acurate and language-indpendent
+mechanism for spelling C++ types, including templates. The preprocessor is aware
+of the following types which may be present in a cyclus database in various 
+combinations:
+\begin{itemize}
+    \item \textbf{Primitives:} \code{bool}, \code{int}, \code{float}, \code{double}, 
+                               \code{std::string}
+    \item \textbf{Known Classes:} \code{cyclus::Blob}, \code{boost::uuids::uuid}, 
+                                  \code{cyclus::toolkit::ResourceBuff}
+    \item \textbf{Templates:} \code{std::vector}, \code{std::set}, \code{std::list}, 
+                              \code{std::pair}, \code{std::map}
+\end{itemize}
+
+Resolving a canonical type name is necessarily a recursive process.
+This is because aliases may point to other aliases and not just primitive type names.
+Thus to resolve an alias, one must walk through an arbitarly deep graph of aliases 
+to find the associated primitve.  For example, given that \code{myfloat} points 
+to \code{float} (the primitive) and \code{mynumber} points to \code{myfloat}, 
+if a state variable was declared as \code{myfloat} there would only be one 
+alias lookup while if it was declared as \code{mynumber} there be two. The canonical
+form for all \code{float}, \code{myfloat}, and \code{mynumber} would all be 
+\code{float}.  This is what \cycpp should record.  Templates need to recurively 
+determine the template type name and the types of all template parameters.
+
 
 \subsection{Database Types \& Backends}
 
