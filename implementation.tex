@@ -220,7 +220,145 @@ Aside from the type system semantics, pass 2 represents a relatively straightfor
 process of building up archetype information for later use. Pass 3 of \cycpp where 
 code generation happens is the fist instance of later use.  Conceptually, 
 pass 3 is a more complex process than pass 2 because it must implement 
-all of the member functions in Listing \ref{req-api}.
+all of the member functions in Listing \ref{req-api}. However, in parctice the bodies 
+of each of these member functions follows its own pattern with respect to the 
+state variables. This makes implementing pass 3 signifcantly easier.
+
+Much like pass 2, pass 3 is also a state machine. The class that implements it is 
+called \code{CodeGenerator} and the filters that live on this class implement 
+the cooresponding code generation routines.  While the \code{CodeGenerator}  does 
+reuse some meta-data accumulation filters, it largely relies on the results of 
+pass 2 for archetype and state variable information.  The only data that cannot be 
+reused and is recompueted is that which pertains to the scope of each line of C++ code.
+
+Pass 3 necessiarily must traverse all lines of the source code for the third time.
+On this pass, the \code{CodeGenerator} will replace certain \code{#pragma cyclus}
+directives with the generated implementations.  Pass 3 may act on the output of
+\code{cpp}, the results of pass 1.  However, it is more common for this 
+to act on the original source and header files.  This requires that the 
+archetype developer write in mostly normative C++ and not abuse the C preprocessor.
+However, doing so avoids double include errors and other downstream issues with 
+compilation. The reulsts of pass 3, therefore, are a new version of the archetype
+source code that differs only in that it contains automatically implemeted 
+member functions.
+
+Table \ref{pass3-filters} displays the filters that the \code{CodeGenerator} 
+employs, in order of precednece.  There is some overlap between these filters
+and thoses used with the \code{StateAccumulator}.
+
+\begin{table}
+\label{pass3-filters}
+\caption{\cyclus Preprocessor Pass 3 Filters, higher order filters have 
+         lower execution precedence.}
+\begin{tabular}[htb]{|p{0.05\linewidth}|p{0.33\linewidth}|p{0.6\linewidth}|}
+\hline
+\textbf{order} & \textbf{filter} & \textbf{description} \\
+\hline
+1  & \code{InitFromCopyFilter} & Implements code generation for copy-constructor-like 
+                                 \code{InitFrom()} member function. This may be called
+                                 with the 
+                        \code{#pragma cyclus [def\|decl\|impl] initfromcopy [classname]}
+                                 directive.\\
+\hline
+2  & \code{InitFromDbFilter} & Implements code generation for database constructor 
+                               \code{InitFrom()} member function. This may be called
+                               with the 
+                        \code{#pragma cyclus [def\|decl\|impl] initfromdb [classname]}
+                               directive.\\
+\hline
+3  & \code{InfileToDbFilter} & Implements code generation for the \code{InfileToDb()} 
+                               member function that converts an input file into its 
+                               database representation. This may be called with the 
+                        \code{#pragma cyclus [def\|decl\|impl] infiletodb [classname]}
+                               directive.\\
+\hline
+4  & \code{CloneFilter} & Implements code generation for the \code{Clone()} member
+                          function that clones prototypes. This may be called
+                          with the 
+                        \code{#pragma cyclus [def\|decl\|impl] clone [classname]}
+                          directive.\\
+\hline
+5  & \code{SchemaFilter} & Implements code generation for the \code{schema()} member
+                           function that returns the RelaxNG schema of the archetype
+                           for input file validation. This may be called with the 
+                        \code{#pragma cyclus [def\|decl\|impl] schema [classname]}
+                           directive.\\
+\hline
+6  & \code{AnnotationsFilter} & Implements code generation for the \code{annotations()} 
+                                member function that returns the archetype metadata
+                                that was compiled durring \cycpp pass 2.
+                                This may be called with the 
+                        \code{#pragma cyclus [def\|decl\|impl] annotations [classname]}
+                                directive.\\
+\hline
+7  & \code{InitInvFilter} & Implements code generation for the \code{InitInv()} 
+                            member function that sets the initial resource inventories 
+                            of the agent. This may be called with the 
+                        \code{#pragma cyclus [def\|decl\|impl] initinv [classname]}
+                            directive.\\
+\hline
+8  & \code{SnapshotInvFilter} & Implements code generation for the \code{SnapshotInv()} 
+                                member function that writes inventories to the 
+                                database. This may be called with the 
+                        \code{#pragma cyclus [def\|decl\|impl] snapshotinv [classname]}
+                                directive.\\
+\hline
+9  & \code{SnapshotFilter} & Implements code generation for the \code{Snapshot()} 
+                             member function that writes state variables to the
+                             database. This may be called with the 
+                        \code{#pragma cyclus [def\|decl\|impl] snapshot [classname]}
+                             directive.\\
+\hline
+10 & \code{ClassFilter} & Sets the current class name and scope.\\
+\hline
+11 & \code{AccessFilter} & Sets the current access control level, either 
+                           \code{public}, \code{private}, or \code{protected}.\\
+\hline
+12 & \code{NamespaceAliasFilter} & Implements namespace aliasing in the current 
+                                   scope.\\ 
+\hline
+13 & \code{NamespaceFilter} & Sets and reverts a new namepsace scope.\\ 
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}
+\label{pass3-filters-2}
+\caption{\cyclus Preprocessor Pass 3 Filters (part 2).}
+\begin{tabular}[htb]{|p{0.05\linewidth}|p{0.33\linewidth}|p{0.6\linewidth}|}
+\hline
+\textbf{order} & \textbf{filter} & \textbf{description} \\
+\hline
+14 & \code{VarDecorationFilter} & Implements the \cycpp \code{#pragma cyclus var <dict>}
+                                  directive for state variable annotations. The 
+                                  \code{<dict>} is evaluated in the current 
+                                  context and queued up to be applied to the 
+                                  next state variable declaration.\\ 
+\hline
+15 & \code{VarDeclarationFilter} & State variable declaration. Applies the results 
+                                   of the immeadiately prior \code{VarDecorationFilter}
+                                   as the state variable annotations. Furthermore, 
+                                   this filter parses out the name of the 
+                                   state variable, its index with respect to other 
+                                   state variables on this class, and resolves its
+                                   C++ type into an unambiquous form.\\ 
+\hline
+16 & \code{LinemarkerFilter} & Interprets \code{cpp} linemarker dirctives in order
+                               to produce more useful debugging information in 
+                               \cycpp.\\ 
+\hline
+17 & \code{DefaultPragmaFilter} & Implements the default code generation directive,
+                                  \code{#pragma cyclus [def\|decl\|impl]}. This 
+                                  calls out to all of the other code generation
+                                  filter to obtain member function implementions.\\
+\hline
+18 & \code{PragmaCyclusErrorFilter} & Throws errors if \code{#pragma cyclus} 
+                                      directive is incorrectly implmeneted.
+                                      This moves errors from happening at compile 
+                                      or run time to \cycpp.\\
+\hline
+\end{tabular}
+\end{table}
 
 \subsection{Database Types \& Backends}
 
