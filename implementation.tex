@@ -485,9 +485,25 @@ the relection features, use more advanced annotation features, or have more than
 a handfu of state variables.  However, even here the value of a code generating
 preprocessor is readily appearent.
 
-\subsection{Database Types \& Backends}
+\subsection{Database Backends \& Types}
 
-\textbf{Robert C. and Anthony}
+\Cyclus transparently supports a potentially limitless number of different database 
+backends. Currently two refernce backends exist: SQLite \cite{owens2006definitive} 
+and HDF5 \cite{folk2011overview}. These two represent relational and heirarchical 
+databases respectively and have very different underlying design philosophies.
+Futures formats that could be supported are plaintext comma-separated value files 
+(CSV) or JSON.  Given the wide range of potential uses cases, \cyclus must be able 
+to execute only based on the feature set that is common between these formats.
+Features that are note available to a format must either be provided by \cyclus 
+itself or become optional.
+
+The type system and reflection provided by \cycpp serve the primary purpose of 
+allowing archetypes to represent themsevles in the database, though this 
+relefection can be taken adavatage of and used elsewhere. On the other hand, 
+the database model extends well beyond the needs of the archetypes alone by 
+serving as the fundemental on-disk representation for all input and output.
+
+\Cyclus databases follow these fundemental abstractions
 
 \subsubsection{Hashability}
 
