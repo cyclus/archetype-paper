@@ -488,22 +488,107 @@ preprocessor is readily appearent.
 \subsection{Database Backends \& Types}
 
 \Cyclus transparently supports a potentially limitless number of different database 
-backends. Currently two refernce backends exist: SQLite \cite{owens2006definitive} 
+backends. Currently two reference backends exist: SQLite \cite{owens2006definitive} 
 and HDF5 \cite{folk2011overview}. These two represent relational and heirarchical 
 databases respectively and have very different underlying design philosophies.
-Futures formats that could be supported are plaintext comma-separated value files 
+Future formats that could be supported are plaintext comma-separated value files 
 (CSV) or JSON.  Given the wide range of potential uses cases, \cyclus must be able 
 to execute only based on the feature set that is common between these formats.
-Features that are note available to a format must either be provided by \cyclus 
-itself or become optional.
+Features that are not available in a single format must either be provided by \cyclus 
+itself or become optional in the backend interface.
 
 The type system and reflection provided by \cycpp serve the primary purpose of 
-allowing archetypes to represent themsevles in the database, though this 
-relefection can be taken adavatage of and used elsewhere. On the other hand, 
+allowing archetypes to represent themsevles in the database. Though this 
+relefection can be taken adavatage of and used elsewhere, it was initially called for 
+by the need to be able to restart a simulation. On the other hand, 
 the database model extends well beyond the needs of the archetypes alone by 
-serving as the fundemental on-disk representation for all input and output.
+serving as the fundemental on-disk representation for all \cyclus input and output.
 
-\Cyclus databases follow these fundemental abstractions
+\Cyclus databases follow these fundemental abstractions:
+\begin{itemize}
+    \item All data are stored in tables with named columns,
+    \item Tables live in a flat heirarchy,
+    \item Columns may have any type described by the \cyclus type system, and
+    \item All tables must have a \code{SimId} column which uniquely and 
+          universally identifies the simulation.
+\end{itemize}
+This means that common databases notions such as the shape of a column, raw arrays, or
+querability must be optional, left out, or implemented inside the backend itself.
+Of these, querability is the most important. If a database format or its backend lacks 
+queryability (such as CSV) then it is impossible to start or restart a 
+\cyclus simulation from simply this backend.  Such a format may be used in 
+conjunction with another queryable format. Both HDF5 and SQLite are queryable.
+
+The database backends are deeply tied to the \cyclus type system. Types in \cyclus
+are represented by unique integers given in the \code{enum} called \code{DbTypes}
+which map onto C++ types.
+Simple types are represented by simple name, such as \code{float} becomes
+\code{FLOAT} which is assigned to 2. Container types, such as \code{vector},
+are more complex in that each template specification (\code{vector<int>}) has
+its own type in the \cyclus type system.  Containers are further delineated by the 
+a distnction between fixed-length and variable-length (VL) versions. Thus even the 
+relatively simple C++ type \code{std::vector<int>} receieves two entries in the 
+\cyclus type system: \code{VECTOR_INT} and \code{VL_VECTOR_INT} which are given 
+the identifers 10 and 11 and represent fixed- and variable-length versions 
+respectively.  Thus the number of types in the \cyclus type system is obtained as 
+2 to the power of the \emph{rank} or teh total number of variable length parameters, 
+including nestings.
+For example, the number of \cyclus types for \code{std::map<itnt, std::string>} is 
+four (\code{MAP_INT_STRING}, \code{VL_MAP_INT_STRING}, \code{MAP_INT_VL_STRING}, 
+\code{VL_MAP_INT_VL_STRING}) since both maps and strings may be variable length.
+Table \ref{some-types} displays a samplging of types currently implemented in 
+\cyclus.
+Each backend determines which types it wishes to support, though this must extend 
+to a relatively robust subset in order to be able to run even simple simulation.
+
+\begin{table}
+\label{some-types}
+\caption{Sample \cyclus Types}
+\centering
+\begin{tabular}[htb]{|c|l|l|c|}
+\hline
+\textbf{id} & \textbf{name} & \textbf{C++ type} & \textbf{rank} \\
+\hline
+0 & \code{BOOL} & \code{bool} & 0 \\
+1 & \code{INT} & \code{int} & 0 \\
+2 & \code{FLOAT} & \code{float} & 0 \\
+3 & \code{DOUBLE} & \code{double} & 0 \\
+4 & \code{STRING} & \code{std::string} & 1 \\
+5 & \code{VL_STRING} & \code{std::string} & 1 \\
+6 & \code{BLOB} & \code{cyclus::Blob} & 0 \\
+7 & \code{UUID} & \code{boost::uuids::uuid} & 0 \\
+8 & \code{VECTOR_BOOL} & \code{std::vector<bool>} & 1 \\
+9 & \code{VL_VECTOR_BOOL} & \code{std::vector<bool>} & 1 \\
+10 & \code{VECTOR_INT} & \code{std::vector<int>} & 1 \\
+11 & \code{VL_VECTOR_INT} & \code{std::vector<int>} & 1 \\
+ & $\cdots$ & $\cdots$ & \\
+32 & \code{SET_STRING} & \code{std::set<std::string>} & 2 \\
+33 & \code{VL_SET_STRING} & \code{std::set<std::string>} & 2 \\
+34 & \code{SET_VL_STRING} & \code{std::set<std::string>} & 2 \\
+35 & \code{VL_SET_VL_STRING} & \code{std::set<std::string>} & 2 \\
+ & $\cdots$ & $\cdots$ & \\
+42 & \code{LIST_INT} & \code{std::list<int>} & 1 \\
+43 & \code{VL_LIST_INT} & \code{std::list<int>} & 1 \\
+ & $\cdots$ & $\cdots$ & \\
+57 & \code{PAIR_INT_INT} & \code{std::pair<int, int>} & 0 \\
+ & $\cdots$ & $\cdots$ & \\
+104 & \code{MAP_STRING_STRING} & \code{std::map<std::string, std::string>} & 3 \\
+105 & \code{VL_MAP_STRING_STRING} & \code{std::map<std::string, std::string>} & 3 \\
+106 & \code{MAP_STRING_VL_STRING} & \code{std::map<std::string, std::string>} & 3 \\
+107 & \code{VL_MAP_STRING_VL_STRING} & \code{std::map<std::string, std::string>} & 3 \\
+ & $\cdots$ & $\cdots$ & \\
+120 & \code{MAP_VL_STRING_STRING} & \code{std::map<std::string, std::string>} & 3 \\
+121 & \code{VL_MAP_VL_STRING_STRING} & \code{std::map<std::string, std::string>} & 3 \\
+122 & \code{MAP_VL_STRING_VL_STRING} & \code{std::map<std::string, std::string>} & 3 \\
+123 & \code{VL_MAP_VL_STRING_VL_STRING} & \code{std::map<std::string, std::string>} & 3 \\
+ & $\cdots$ & $\cdots$ & \\
+\hline
+\end{tabular}
+\end{table}
+
+Hashing, no referneces
+
+List of standard tables
 
 \subsubsection{Hashability}
 
