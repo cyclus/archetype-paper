@@ -596,8 +596,8 @@ classes of errors are avoided entirely.
 
 Hashability serves a dual role with respect to the backends. The first is that 
 it provides a mechanism for uniquely identifying all elements of a type, within 
-reason. \Cyclus uses the standard SHA1 \citeme algorithm to compute hash values
-as 160-bit integer.  Thus for types with a fixed bit width less than 
+reason. \Cyclus uses the standard SHA1 \cite{eastlake2001us} algorithm to compute 
+hash values as 160-bit integer.  Thus for types with a fixed bit width less than 
 160, such as \code{int} (typically 32-bits) or \code{double} (64-bits), every 
 element is uniquley identifiable. For variable-length data types or very long types,
 the probability of a hash collision is only $2^{-160}$, which is approximately 
