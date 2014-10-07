@@ -884,10 +884,29 @@ complex to implement, it usage and underbelly is mostly transparent to users and
 archetype developers alike. Even for complex template types, the \cyclus type system
 allows archetypes to be as expressive as they need to be to fit the model. 
 
+\subsection{JSON Annotations}
+
+Archetype metadata is an important part of \cyclus because it allows for 
+reflection on the archetype classes. Well-defined metadata entries are 
+described in Tables \ref{sv-anno} \& \ref{ag-anno}. 
+Additionally though, archetype developers may supply 
+yany other information they wish and ascribe to it the semantics that they desire.
+This is done simply by adding undefined keys to the \code{#pragma cyclus var} and
+\code{#pragma cyclus note} \cycpp directives.
+While this ensures that metadata is robust to future changes and archetype developer
+customization, the annotations have implications for the \cyclus and archetype 
+implementations.
+
+Allowing for unknown metadata keys with unknown types for each value implies that 
+metadata is \emph{unstructured} \cite{feldman2007text}. From a C++ implmentation 
+standpoint, this means that there is no class or struct that can be declared whose
+member variables encompass all possible metadata without at least one of those
+members being a pointer or refernece. This is because determining the type 
+of a blob of memory at runtime in C++ must use \code{void*}, \code{char*}, 
+or other pointer indirection.
+
+
 \subsection{XML Validation}
 
 \textbf{Katy}
 
-\subsection{JSON Annotations}
-
-\textbf{Radio}
