@@ -586,11 +586,44 @@ to a relatively robust subset in order to be able to run even simple simulation.
 \end{tabular}
 \end{table}
 
-Hashing, no referneces
+A key feature of the \cyclus type system that enables the databases is that 
+the values of all types must be directly \emph{hashable} using a crytographic hash.
+The directness implies that pointer and refernece types are not allowed. For most 
+database backends, indirection is not a supported feature. For those backends which 
+do support indirection, such as HDF5 and its linking mechanism, there is not a 
+clear translation from indriection in memory to indirection on disk.  Thus several 
+classes of errors are avoided entirely.  
+
+Hashability serves a dual role with respect to the backends. The first is that 
+it provides a mechanism for uniquely identifying all elements of a type, within 
+reason. \Cyclus uses the standard SHA1 \citeme algorithm to compute hash values
+as 160-bit integer.  Thus for types with a fixed bit width less than 
+160, such as \code{int} (typically 32-bits) or \code{double} (64-bits), every 
+element is uniquley identifiable. For variable-length data types or very long types,
+the probability of a hash collision is only $2^{-160}$, which is approximately 
+equal to $10^{-48}$.  This is a astronomically small possibility, even over the 
+course of billions of simulations.  Thus backends may use the hash to automatically
+de-deuplicate data and store every unique value ony once.
+
+The second purpose for hashing is that backends may implement the storage 
+of variable-length types as a \emph{bidirectional hash map} using the SHA1 as a key.
+This data structure is a particular kind of associative array where the values are 
+uniquely determined from the keys \emph{and} the keys are unquiely determined from 
+the values. Furthermore, in \cyclus the keys of this data structure are simply the 
+hashes themselves. This differs from a typical hash map (e.g. Python dictionaries) 
+in that they only require that values may be determined from the keys and only the
+keys mus be unique.  With a bidirectional hash map, knowing either the key or the value
+will grant one the value of the key respetively.  The HDF5 backend takes advantage 
+of this data structure to store variable-length data in a 5-dimensional sparse array.
+The hash is chopped up into an array of five 32-bit unsigned integers that 
+index into this array. Then the hash is stored in the table and used to lookup 
+the value in the cooresponding sparse array for that type.  This creates an efficient 
+mechanism for storing vast amounts of potentially redundant variable-length data in 
+a manner that mirrors the column storage for primitive types (\code{bool}, \code{int}, 
+etc.). Since the hash is itself the index into a sparse array, the overhead from 
+this lookup is minimal as compared with other parts of backend infrastructure.
 
 List of standard tables
-
-\subsubsection{Hashability}
 
 \subsection{XML Validation}
 
