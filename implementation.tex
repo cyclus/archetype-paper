@@ -623,7 +623,89 @@ a manner that mirrors the column storage for primitive types (\code{bool}, \code
 etc.). Since the hash is itself the index into a sparse array, the overhead from 
 this lookup is minimal as compared with other parts of backend infrastructure.
 
+Archetype developers may create their own custom tables in the database as well.
+This is done through using the backend interface directly in the archetype. Data 
+which may not be appropriate as state variable because it is a fully dependent 
+parameter of the archetype model should be stored in this way.  Custom tables 
+have the same restrictions as other parts of the database.  However, custom tables
+have the additional restriction that they may not reuse the table names that 
+\cyclus itself uses. Writing to such tables is considered reserved to only
+the kernel. 
+Table \ref{std-tabs} shows the standard tables written by \cyclus.
+The kernel will also produce tables whose names are based on the 
+archtype specification for representing the archetype on disk.  These tables
+are disctinct from custom tables mentioned above but are also reserved for the 
+kernel alone. 
+
+\begin{table}
+\label{std-tabs}
+\caption{Standard Tables Reserved by the \Cyclus Kernel, Columns given in order with 
+names and types.}
+\centering
+\begin{tabular}[htb]{|llp{0.75\linewidth}|}
+\hline
+\textbf{name} & \textbf{type} & \textbf{description} \\
+\hline
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{Resources Table:} 
+This table encodes a heritage tree for all resources. 
+Because resources 
+are tracked as immutable objects, every time a resource is changed in the 
+simulation (split, combined, transmuted, decayed, etc.), it gets a new entry in 
+this table.If two resources are 
+combined into a new one, then the new resource entry will have the identifiers of the 
+other two in its ``Parent1'' and ``Parent2'' columns. 
+It is interesting to note that the \code{Resources}
+table does not encode any information about where a resource exists. This information 
+can be inferred by corroborating resource identifiers with the \code{ResCreators} and 
+\code{Transactions} tables.} \\
+& & \\
+\code{SimId} & \code{UUID} & simulation identifier \\
+\code{ResourceId} & \code{INT} & The unique ID for this resource entry. \\
+\code{ObjId} & \code{INT} & A resources object id (\code{obj_id}) as it existed 
+                            during the simulation simulation.\\
+\code{Type} & \code{VL_STRING} & One of ``Material'' or ``Product''. These two types 
+                                 of resources have different internal state stored 
+                                 in different tables. If the type is product, 
+                                 then the internal state can be found in the 
+                                 \code{Products} table. If it is material, 
+                                 then it is in the \code{Compositions} table.\\
+\code{TimeCreated} & \code{INT} & The simulation time step at which this resource 
+                                  state came into existence.\\
+\code{Quantity} & \code{DOUBLE} & Amount of the resource in ``kg'' for material 
+                                  resources. Amount in terms of the specific quality 
+                                  for product resources.\\
+\code{Units} & \code{VL_STRING} & ``kg'' for all material resources, ``NONE'' for 
+                                   product resources.\\
+\code{QualId} & \code{INT} & Used to identify the corresponding internal-state 
+                             entry (or entries) in the \code{Products} or 
+                             \code{Compositions} table depending on the resource type.\\
+\code{Parent1} & \code{INT} & If a resource was newly created, this is zero. If this 
+                              resource came from another via is transmutation, 
+                              combining, or splitting, or decay then this is the 
+                              parent ResourceId.\\
+\code{Parent2} & \code{INT} & If a resource was newly created, this is zero. If this 
+                              resource came from another via transmutation, decay, 
+                              or splitting, Parent2 is also zero. If the resource 
+                              came from another via combining this is the second 
+                              parent's ResourceId.\\
+\hline
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{Compositions Table:}
+A composition consists of one or more nuclides and their respective mass fractions. 
+Each nuclide for a composition gets its own row and have the same \code{QualId}.}\\
+& & \\
+\code{SimId} & \code{UUID} & simulation identifier \\
+\code{QualId} & \code{INT} & Key to associate this composition with one or more 
+                             entries in the \code{Resources} table.\\
+\code{NucId} & \code{INT} & Nuclide identifier in zzzaaammmm form.\\
+\code{MassFrac} & \code{DOUBLE} & Mass fraction for the nuclide in this composition.\\
+\hline
+\end{tabular}
+\end{table}
+
+
 List of standard tables
+
+expressiveness given to the archtype developer by nativiley implemeneting complex types.
 
 \subsection{XML Validation}
 
