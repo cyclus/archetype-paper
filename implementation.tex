@@ -659,7 +659,7 @@ table does not encode any information about where a resource exists. This inform
 can be inferred by corroborating resource identifiers with the \code{ResCreators} and 
 \code{Transactions} tables.} \\
 & & \\
-\code{SimId} & \code{UUID} & simulation identifier \\
+\code{SimId} & \code{UUID} & Simulation identifier \\
 \code{ResourceId} & \code{INT} & The unique ID for this resource entry. \\
 \code{ObjId} & \code{INT} & A resources object id (\code{obj_id}) as it existed 
                             during the simulation simulation.\\
@@ -693,11 +693,141 @@ can be inferred by corroborating resource identifiers with the \code{ResCreators
 A composition consists of one or more nuclides and their respective mass fractions. 
 Each nuclide for a composition gets its own row and have the same \code{QualId}.}\\
 & & \\
-\code{SimId} & \code{UUID} & simulation identifier \\
+\code{SimId} & \code{UUID} & Simulation identifier \\
 \code{QualId} & \code{INT} & Key to associate this composition with one or more 
                              entries in the \code{Resources} table.\\
 \code{NucId} & \code{INT} & Nuclide identifier in zzzaaammmm form.\\
 \code{MassFrac} & \code{DOUBLE} & Mass fraction for the nuclide in this composition.\\
+\hline
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{Recipes Table:} Store composition names.}\\
+& & \\
+\code{SimId} & \code{UUID} & Simulation identifier \\
+\code{Recipe} & \code{VL_STRING} & Recipe name as given in the input file.\\
+\code{QualId} & \code{INT} & Key to identify the composition for this recipe in the 
+                             \code{Compositions} table.\\
+\hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}
+\label{std-tabs-2}
+\caption{Standard Tables Reserved by the \Cyclus Kernel (cont.)} 
+\centering
+\begin{tabular}[htb]{|llp{0.75\linewidth}|}
+\hline
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{Products Table}}\\
+& & \\
+\code{SimId} & \code{UUID} & Simulation identifier \\
+\code{QualId} & \code{INT} & Key to associate this quality with one or more entries 
+                             in the \code{Resources} table.\\
+\code{Quality} & \code{VL_STRING} & Describes a product's quality (e.g. ``bananas'', 
+                                    ``KWh'', etc.).\\
+\hline
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{ResCreators Table:} Every time an agent 
+                                     creates a new resource from scratch, that event 
+                                     is recorded in this table.}\\
+& & \\
+\code{SimId} & \code{UUID} & Simulation identifier. \\
+\code{ResourceId} & \code{INT} & ID of a resource that was created at some point in 
+                                 the simulation.\\
+\code{AgentId} & \code{INT} & ID of the agent that created the resource associated 
+                              with the \code{ResourceId}.\\
+\hline
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{AgentEntry Table:} Each agent that enters 
+                                     and participates in a simulation gets a row in 
+                                     this table.}\\
+& & \\
+\code{SimId} & \code{UUID} & Simulation identifier. \\
+\code{AgentId} & \code{INT} & Every agent in a simulation gets its own, unique ID.\\
+\code{Kind} & \code{VL_STRING} & One of ``Region'', ``Inst'', ``Facility'', 
+                                 or ``Agent''.\\
+\code{Spec} & \code{VL_STRING} & The single-string of the agent specification.\\
+\code{Prototype} & \code{VL_STRING} & The prototype name, as defined in the input file, 
+                                      that was used to create this agent.\\
+\code{ParentId} & \code{INT} & The AgentId of this agent’s parent - the agent that 
+                               built or created this agent.\\
+\code{Lifetime} & \code{INT} & Number of time steps an agent is designed to operate 
+                               over. -1 indicates an infinite lifetime. Note that 
+                               depending on how agents use the lifetime parameter, 
+                               this may be entirely unrelated to how long agents 
+                               were actually operating in the simulation.\\
+\code{EnterTime} & \code{INT} & The time step when the agent was built and entered 
+                                the simulation.\\
+\hline
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{AgentExit Table:} Due to implementation 
+                                     details in the \Cyclus kernel, this table is 
+                                     separate from the \code{AgentEntry} table. 
+                                     If this table does not exist, then no agents 
+                                     were decommissioned in the simulation.}\\
+& & \\
+\code{SimId} & \code{UUID} & Simulation identifier. \\
+\code{AgentId} & \code{INT} & Key to the \code{AgentId} on the \code{AgentEntry} table.\\
+\code{ExitTime} & \code{INT} & The time step when the agent was decommissioned and 
+                               exited the simulation.\\
+\hline
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{Transactions Table:} Every single resource 
+                                     transfer between two agents is recorded as a row 
+                                     in this table.}\\
+& & \\
+\code{SimId} & \code{UUID} & Simulation identifier. \\
+\code{TransactionId} & \code{INT} & A unique identifier for this resource transfer.\\
+\code{SenderId} & \code{INT} & \code{AgentId} for the sending agent.\\
+\code{ReceiverId} & \code{INT} & \code{AgentId} for the receiving agent.\\
+\code{ResourceId} & \code{INT} & Key to the entry in the \code{Resources} table that 
+                                 describes the transferred resource.\\
+\code{Commodity} & \code{VL_STRING} & The commodity under which this transfer was 
+                                      negotiated.\\
+\code{Time} & \code{INT} & The time step at which the resource transfer took place.\\
+\end{tabular}
+\end{table}
+
+
+\begin{table}
+\label{std-tabs-3}
+\caption{Standard Tables Reserved by the \Cyclus Kernel (cont.)} 
+\centering
+\begin{tabular}[htb]{|llp{0.65\linewidth}|}
+\hline
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{Info Table:} Each simulation gets a 
+                                     single row in this table describing global 
+                                     simulation parameters and \Cyclus dependency 
+                                     version information.}\\
+& & \\
+\code{SimId} & \code{UUID} & Simulation identifier. \\
+\code{Handle} & \code{VL_STRING} & A custom user-specified value from the input 
+                                   file allowing for convenient identification of 
+                                   simulations in a database (because the simulation 
+                                   uuid is not very memorable by mere mortals).\\
+\code{InitialYear} & \code{INT} & The year in which time step zero occurs.\\
+\code{InitialMonth} & \code{INT} & The month that time step zero represents.\\
+\code{Duration} & \code{INT} & The length of the simulation in time steps. Note that it 
+                               is possible a simulation to terminate early before 
+                               running its entire duration - see the \code{Finish} 
+                               table section.\\
+\code{ParentSimId} & \code{UUID} &  The SimId for this simulation's parent. Zero if 
+                                    this simulation has no parent.\\
+\code{ParentType} & \code{VL_STRING} &  One of:
+    \begin{enumerate}
+        \item ``init'' for simulations that are not based on any other simulation.
+        \item ``restart'' for simulations that were restarted another simulation's 
+              snapshot.
+        \item ``branch'' for simulations that were started from a perturbed state of 
+              another simulation's snapshot.
+    \end{enumerate}\\
+\code{BranchTime} & \code{INT} & Zero if this was not a restarted or branched 
+                                 simulation. Otherwise, the time step of the 
+                                 \code{ParentSim} at which the restart or branch 
+                                 occurred.\\
+\code{CyclusVersion} & \code{VL_STRING} & Version of \Cyclus used to run this 
+                                          simulation.\\
+\code{CyclusVersionDescribe} & \code{VL_STRING} & Detailed \Cyclus version info 
+                                                  (with commit hash).\\
+\code{SqliteVersion} & \code{VL_STRING} & \\
+\code{Hdf5Version} & \code{VL_STRING} & \\
+\code{BoostVersion} & \code{VL_STRING} & \\
+\code{LibXML2Version} & \code{VL_STRING} & \\
+\code{CoinCBCVersion} & \code{VL_STRING} & \\
 \hline
 \end{tabular}
 \end{table}
