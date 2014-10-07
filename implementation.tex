@@ -823,11 +823,58 @@ Each nuclide for a composition gets its own row and have the same \code{QualId}.
                                           simulation.\\
 \code{CyclusVersionDescribe} & \code{VL_STRING} & Detailed \Cyclus version info 
                                                   (with commit hash).\\
-\code{SqliteVersion} & \code{VL_STRING} & \\
-\code{Hdf5Version} & \code{VL_STRING} & \\
-\code{BoostVersion} & \code{VL_STRING} & \\
-\code{LibXML2Version} & \code{VL_STRING} & \\
-\code{CoinCBCVersion} & \code{VL_STRING} & \\
+\code{SqliteVersion} & \code{VL_STRING} & SQLite version information.\\
+\code{Hdf5Version} & \code{VL_STRING} & HDF5 version information.\\
+\code{BoostVersion} & \code{VL_STRING} & Boost version information.\\
+\code{LibXML2Version} & \code{VL_STRING} & libxml2 version information.\\
+\code{CoinCBCVersion} & \code{VL_STRING} & COIN version information.\\
+\hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}
+\label{std-tabs-4}
+\caption{Standard Tables Reserved by the \Cyclus Kernel (cont.)} 
+\centering
+\begin{tabular}[htb]{|llp{0.75\linewidth}|}
+\hline
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{Finish Table:} Each simulation gets 
+                                     one row in this table.}\\
+& & \\
+\code{SimId} & \code{UUID} & Simulation identifier. \\
+\code{EarlyTerm} & \code{BOOL} & True if the simulation terminated early and did 
+                                 not complete normally. False otherwise.\\
+\code{EndTime} & \code{INT} & The time step at which the simulation ended.\\
+\hline
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{InputFiles Table:} Stores the simulation 
+                                     input.}\\
+& & \\
+\code{SimId} & \code{UUID} & Simulation identifier. \\
+\code{Data} & \code{BLOB} & A dump of the entire input file used for this simulation.\\
+\hline
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{DecomSchedule Table:}}\\
+& & \\
+\code{SimId} & \code{UUID} & Simulation identifier. \\
+\code{AgentId} & \code{INT} & \\
+\code{SchedTime} & \code{INT} & \\
+\code{DecomTime} & \code{INT} & \\
+\hline
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{BuildSchedule Table:}} \\
+& & \\
+\code{SimId} & \code{UUID} & Simulation identifier. \\
+\code{ParentId} & \code{INT} & \\
+\code{Prototype} & \code{VL_STRING} & \\
+\code{SchedTime} & \code{INT} & \\
+\code{BuildTime} & \code{INT} & \\
+\hline
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{Snapshots Table:} Every snapshot made 
+                                     during the simulation gets an entry in this table. 
+                                     All times in this table are candidates for 
+                                     simulation restart and branching.}\\
+& & \\
+\code{SimId} & \code{UUID} & Simulation identifier. \\
+\code{Time} & \code{INT} & The time step a snapshot was taken for this simulation.\\
 \hline
 \end{tabular}
 \end{table}
