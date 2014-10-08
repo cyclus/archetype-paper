@@ -853,20 +853,40 @@ Each nuclide for a composition gets its own row and have the same \code{QualId}.
 \code{SimId} & \code{UUID} & Simulation identifier. \\
 \code{Data} & \code{BLOB} & A dump of the entire input file used for this simulation.\\
 \hline
-\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{DecomSchedule Table:}}\\
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{DecomSchedule Table:} When agents are 
+                                     scheduled to be decommissioned in the simulation, 
+                                     the details are recorded in this table.  Note that 
+                                     this table contains an entry for each scheduling 
+                                     regardless of whether or not it actually occurred; 
+                                     if a simulation ended before time reached the 
+                                     scheduled time, the agent would not have been
+                                     decommissioned.}\\
 & & \\
 \code{SimId} & \code{UUID} & Simulation identifier. \\
-\code{AgentId} & \code{INT} & \\
-\code{SchedTime} & \code{INT} & \\
-\code{DecomTime} & \code{INT} & \\
+\code{AgentId} & \code{INT} & ID of the agent that is to be decommissioned.\\
+\code{SchedTime} & \code{INT} & The time step on which this decommissioning event was
+                                created.\\
+\code{DecomTime} & \code{INT} & The time step on which the agent was (or would have
+                                been) decommissioned.\\
 \hline
-\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{BuildSchedule Table:}} \\
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{BuildSchedule Table:} When agents are 
+                                     scheduled to be built in the simulation, the 
+                                     details are recorded in this table.  Note that 
+                                     this table contains an entry for each scheduling 
+                                     regardless of whether or not it actually occurred; 
+                                     if a simulation ended before time reached the 
+                                     scheduled time, the agent would not have been
+                                     built.} \\
 & & \\
 \code{SimId} & \code{UUID} & Simulation identifier. \\
-\code{ParentId} & \code{INT} & \\
-\code{Prototype} & \code{VL_STRING} & \\
-\code{SchedTime} & \code{INT} & \\
-\code{BuildTime} & \code{INT} & \\
+\code{ParentId} & \code{INT} & The id of the agent that will become this new agent's
+                               parent.\\
+\code{Prototype} & \code{VL_STRING} & The name of the agent prototype that will be 
+                                      used to generate the new agent. This corresponds 
+                                      to the prototypes defined in an input files.\\
+\code{SchedTime} & \code{INT} & The time step on which this build event was created.\\
+\code{BuildTime} & \code{INT} & The time step on which the agent was (or would have
+                                been) built and deployed into the simulation.\\
 \hline
 \multicolumn{3}{|p{0.95\linewidth}|}{\textbf{Snapshots Table:} Every snapshot made 
                                      during the simulation gets an entry in this table. 

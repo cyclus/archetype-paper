@@ -1,5 +1,36 @@
 \section{Conclusions}
 
-\textbf{Anthony}
+Writing archetypes can be a daunting task because reasonably accurate models 
+involve physics, economics, and computer science to solve a single nuclear engineering 
+problem.  Unlike other spheres of nuclear engineering, decoupling these domains from
+one another is often not possible without significant simplification. \cyclus is 
+no exception to this and is designed to allow for complete fidelity throughout 
+all aspects of the simulation. However, enabling full modeling fidelity does
+not imply that archetype developers need to actively address this every class of 
+problem every time they pursue a new archetype.
 
-Software needed to implement working facilities drops dramatically.
+\Cyclus succeeds in simplifying archetype developement by identifying a category 
+of computer science \& software developement problems that are addressed 
+algorithmically. This moves effort away from humans, who are pursing physics and
+economics, and onto computers. This automation happens by default for as much of
+an archetype as possible. In this case the archetype developer writes approximately
+$10\times$ less software, excluding physics and resource exchange routines, than
+they would manually. However the automation may be cherry-picked piece by piece,
+down to nothing if desired. The \cyclus system of archetype development nibmly 
+adapts to the needs of the archetype by allowing the developer to select the 
+the level of computer science that they explitily use.  
+
+The \cyclus system makes for better fuel cycle simulations by creating better 
+archetypes.  This is because of two consequences of the preprocessor. The first 
+\cyclus encorages developers to write the archetype
+that they intended to implement. The second is that the archetypes are automatically
+validated.
+
+State variables are easy to create. When a software feature has a high cost to use,
+developers will minimize the number of times that they invoke it. This can 
+sometimes lead to sacraficing model fidelity in an effort to author more concise
+code, which is its own virtue. However, the long-term completeness of an archtype
+with repscet to its physics calculations should not be based, even in part, on the
+short-term impetus to have a minimum-viable product.
+
+Further imporvements.
