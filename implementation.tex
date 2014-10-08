@@ -903,8 +903,42 @@ standpoint, this means that there is no class or struct that can be declared who
 member variables encompass all possible metadata without at least one of those
 members being a pointer or refernece. This is because determining the type 
 of a blob of memory at runtime in C++ must use \code{void*}, \code{char*}, 
-or other pointer indirection.
+or other pointer indirection. Representing annotation in memory is thus 
+necessarily more complex than a single metadata class.
 
+JSON and its derivatives are largely acknowledged as sufficiently expressive 
+formats for unstructured data \cite{moniruzzaman2013nosql}. This is because the
+JSON primitives, which include integers, floats, strings, booleans, null, arrays, 
+and objects (hash tables with string keys), are easily translatable into native
+data structures in most modern programming languages such as Python and C++. 
+Furthermore the JSON syntax is concise and intuitive. XML could have been used 
+as an alternative format, but a schema and the translation to native data structures 
+would have to be handled manually. YAML \cite{ben2009yaml} or Python itself offer 
+more likely  alternatives to JSON but require a more sophisticated interpreters 
+cooresponding to their more powerful syntax. JSON is enough and just enough.
+
+However, JSON is a metadata representation that is meant to reside on disk, 
+not in memory. Translation from plain text JSON to C++ data structures is 
+performed via the JsonCpp software \cite{eltuhamy2014native}. This does the work 
+of parsing JSON code, implementing the JSON type system, and translating back and
+forth between JSON types and C++ types as need. It provides as fully introspectible 
+container for arbitrary metadata called \code{Json::Value}.  Thus an isntance of this 
+class is precisely what the \code{annotations()} archetype member function returns.
+Therefore, the entire metadata workflow is as follows:
+\begin{enumerate}
+    \item Archetype developer writes metadata using annotation directives as a
+          Python dictionary with string keys.
+    \item \cycpp parses, evaluates, and accumulates the annotations into a single 
+          metadata dictionary per archetype durring pass 2 of preprocessing.
+    \item Pass 3 of \cycpp converts the metadata to a JSON formatted string using 
+          JSON utilities in the Python standard library. This is used as the meat of
+          code generated code for \code{annotations()} member function.
+    \item From C++ when \code{annotation()} is called, the JSON string is parsed 
+          by JsonCpp and a new instance of \code{Json::Value} is returned that
+          corresponds to the metadata.
+\end{enumerate}
+In this way JSON is used as an exchange format between Python and C++, between 
+archetype developer and user, and between compile time and run time.
 
 \subsection{XML Validation}
 
