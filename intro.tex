@@ -12,14 +12,14 @@ fuel cycle modeling fidelity. The genesis of \cyclus lies in the desire to
 treat mass balances as discrete, model facilities individually rather than as 
 a fleet, and to be able to quantitatively compare the effects of changing the 
 fidelity of the facilities themselves. These goals imply a large degree of 
-sophistication on th part of the simulator infrastrucute.  Resource exchange
-must be handled in a generic and dynamic way as oppossed to being hard coded 
+sophistication on th part of the simulator infrastructure.  Resource exchange
+must be handled in a generic and dynamic way as opposed to being hard coded 
 for select commodities. Simulations must be inherently comparable, which involves 
-storage infrastucture that is designed around this need. Agents must be able 
+storage infrastructure that is designed around this need. Agents must be able 
 to communicate with one another and learn about the environment in which they 
 exist. Agents must be able to be dynamically deployed and the set of 
-availble agent models may not be collected until run time. Building and using such a
-simulator, while difficult, is not nearly as sisyphean as it might seem. 
+available agent models may not be collected until run time. Building and using such a
+simulator, while difficult, is not nearly as Sisyphean as it might seem. 
 
 What sets fuel cycle simulation apart from traditional agent-based simulations 
 is the high degree of agent specialization. Standard agent based simulators
@@ -35,31 +35,31 @@ that implement their own physic calculations independent of one another.
 \Cyclus takes agent specialization along two separate axes. The first is 
 that each agent is an \emph{entity} that determines its role in the 
 fuel cycle. There are three kinds of entities: \emph{regions} which 
-represent geographic and governemental concerns, \emph{instituions} 
+represent geographic and governmental concerns, \emph{institutions} 
 which manage other agents, and \emph{facilities} that implement 
-physics calcualations and are usually in charge or reasource management.
+physics calculations and are usually in charge or resource management.
 
 The other axis of agent specialization distinguishes between who 
 writes the model, who sets up the model for potential use in a simulation,
 and who actually deploys concrete representations of the model.
-At the highest level are \emph{archetypes}, which are software implmemtations
+At the highest level are \emph{archetypes}, which are software implementations
 of physical, chemical, economic, and political models and whose behavior
-is paraemterizable. For example, a \code{Reactor} archetype may be 
+is parameterizable. For example, a \code{Reactor} archetype may be 
 parameterized by a target burnup. Authors of these highly reusable models 
 are known as \emph{archetype developers}. Archetypes are in turn 
 \emph{configured} into \emph{prototypes}. A prototype is a copy 
 of the archetype but with all parameterizations set to concrete 
 values. Hence, a \code{Reactor} with a burnup of 42 MWd/kg is a 
 prototype. Configuration is often specified by the \cyclus user 
-in the input file. Confuguration requires no underlying knowledge of 
+in the input file. Configuration requires no underlying knowledge of 
 how the archetype is implemented, though that often helps.
 Finally, prototypes are copied and \emph{deployed} into the simulation 
 and become \emph{agents}. This usage of the term `agent' to mean 
 the \emph{in situ} object is consistent with other agent-based
-liturature \citeme.  Agent creation happens exclusively via 
+literature \citeme.  Agent creation happens exclusively via 
 \cyclus itself; manual deployement of agents is not allowed.
 Archetypes which wish to deploy agents must \emph{schedule} their building
-and decomissioning.
+and decommissioning.
 
 Of the above, archetype development is certainly the most taxing.
 Not only must physical models be determined, implemented, and 
@@ -68,13 +68,13 @@ validated, but this is also where agents interface with the
 coupled with the compulsion to have traditional simulator features 
 such as restart engenders a complex interface with the kernel.
 Archetype development would be much simplified if saving and 
-loading from disk and comunicating with other agents were 
-never a concern, though such a simlator would be of marginal use.
+loading from disk and communicating with other agents were 
+never a concern, though such a simulator would be of marginal use.
 Due to these complexities archetype development in \cyclus
 has historically been difficult. Obtaining a working archetype
-that performed no physics calulations from scratch would 
+that performed no physics calculations from scratch would 
 take novice developers upwards of two weeks effort.  The complexities
-that lead to such a high bar are emblamatic of, not just \cyclus
+that lead to such a high bar are emblematic of, not just \cyclus
 but, any agent-based fuel cycle simulator.
 
 This paper describes the strategies and efforts, the interfaces
@@ -82,22 +82,22 @@ and implementations which considerably reduce the complexity
 an archetype developer must deal with directly. This has been 
 found to reduce development effort for simple agents down to a couple 
 of hours for novices. Expert archetype developers see further 
-reductions down to a couple of minutes. This has has been acomplished 
-without sacraficing an iota of simulation fidelity. Since such 
+reductions down to a couple of minutes. This has has been accomplished 
+without sacrificing an iota of simulation fidelity. Since such 
 problems proliferate throughout all possible simulators in 
 the \cyclus category, the methods found here apply beyond \cyclus.
-Though such methods sometimes dive into the minutae of 
-computer science and agent-based modeling, they are always implmenented
-with the express goal of making fuel cycle simulaton 
+Though such methods sometimes dive into the minutia of 
+computer science and agent-based modeling, they are always implemented
+with the express goal of making fuel cycle simulation 
 simpler, easier, faster, more expressive, and validated.
 
 This paper proceeds by first providing a more detailed motivation 
 in \S \ref{sec-motive}. Then, \S \ref{sec-methods} describes 
 methods and mindsets that are used to ease archetype development.
 Some of these are high-level strategies. Others amount to 
-software interfaces that have been painstakenly determined to 
+software interfaces that have been painstakingly determined to 
 provide the correct fuel cycle agent abstractions. 
 \S \ref{sec-impl} describes the underlying algorithms and usages
-for those methodolgies which also require concrete implmentations.
+for those methodologies which also require concrete implementations.
 Lastly, \S \ref{sec-conc} provides final remarks and illustrates
 potential future directions for \cyclus archetype development.
