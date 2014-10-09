@@ -1,29 +1,29 @@
 \section{Motivations \& Problem Statement}
 \label{sec-motive}
 
-Agent-based modeling frameworks necessarily place the agent as the fundemtnal 
+Agent-based modeling frameworks necessarily place the agent as the fundamental 
 abstraction. This is true in \cyclus as well. However, many problems which are 
-solved with an ABM approach are sufficiently reprersented by one or two kinds of 
+solved with an ABM approach are sufficiently represented by one or two kinds of 
 agents \citeme. However, in nuclear fuel cycle simulations we know that there is
 a proliferation of facility types that are distinct both conceptually and in the 
 kinds of physical processes that they implement. While it would be \emph{possible}
 to merge all facility types into a single, highly-parameterized agent abstraction
-it would be \emph{unwise} to do so. Facilities that model fundementally different
+it would be \emph{unwise} to do so. Facilities that model fundamentally different
 physics should not be combined into a single class. Not only is it more work to 
 do so but it is also less intelligible. The same reasoning applies to why it is 
 not a good idea to merge the concepts of institutions and regions with that of
-facilitities; the subject of the model is fundementally distinct form other models
+facilities; the subject of the model is fundamentally distinct form other models
 and this separation of concerns should be maintained.
 
 So unlike other agent-based frameworks, the modularity of \cyclus drives 
 an ecosystem of \emph{archtypes}. An archetype is an agent class that specifies 
-how the agent should behave via its own implementation of physics, chemisity, 
+how the agent should behave via its own implementation of physics, chemistry, 
 economic, and social policies. Archtypes are parameterized only in ways that 
 make sense to the policies that they implement. Extraneous policies are left to 
 other archetypes. For example, a nuclear reactor would not be parameterized based 
 on separation efficiencies capacity, that would be left for a reprocessing facility.
 
-All archetypes share agenthood. They are able to communicate (through resource 
+All archetypes share agent-hood. They are able to communicate (through resource 
 exchange) with all other agents and they have access to the same information 
 about the environment in which they live. The archetype abstraction provides
 speciation of agents so that each archetype may fill its own fuel cycle niche.
@@ -38,13 +38,13 @@ developers}.
 The archetype abstraction has the added advantage that archetype developers 
 need only be specialists in the field of the archetype that they are developing.
 Someone who knows everything about gaseous centrifuges could design 
-an enrichment facility. Someone who knows all about deep geologic reposiotries
-could model a long-term storage faciity. A reactor physicist could create 
+an enrichment facility. Someone who knows all about deep geologic repositories
+could model a long-term storage facility. A reactor physicist could create 
 a suite of archetypes for various reactor technologies. In this way, an ecosystem 
 of archetypes from representative experts can be built up. Since you do not need
 to be an expert to use an archetype, a well developed ecosystem would provide 
 a huge benefit to everyone. The separation of concerns provided by the archetype 
-abstraction maximizes quality over the entire fuel cycle modelling process.
+abstraction maximizes quality over the entire fuel cycle modeling process.
 
 Still, for any simulator to be successful its key abstractions must be easily 
 configured by users and and easily modified by developers.  If these activities are 
@@ -57,16 +57,16 @@ An informal study
 by the developers at the time showed that a new developer circa \cyclus v0.1
 took 2+ work weeks to get a working `do-nothing' archetype running. This is obviously 
 too long because most researchers do not have two weeks of time `just to try 
-somthing out.' By \cyclus v0.3 the do-nothing developement time had been reduced 
+something out.' By \cyclus v0.3 the do-nothing development time had been reduced 
 to approximately one business week. In \cyclus v0.4 this time became about 3 days.
 As of \cyclus v1.0, this finally was reduced down to 1 - 4 hours, which meets
-approriate expectations for someone attempting cyclus out as a first time archetype 
+appropriate expectations for someone attempting cyclus out as a first time archetype 
 developer.
 
 These dramatic development time reductions were caused be two forces:
 clarification of the archetype abstraction and explicit tools to help with 
-archetype creation. Initatially the region-institution-facility heirarchy 
-had been firmly established. How this heirarchy fit into an agent-based 
+archetype creation. Initially the region-institution-facility hierarchy 
+had been firmly established. How this hierarchy fit into an agent-based 
 paradigm took much longer to fully illustrate. Once the notion was fleshed out,
 \Cyclus should make creation of archetypes as easy as possible. 
 For a long time in the history of this simulator and its predecessors, such as 
