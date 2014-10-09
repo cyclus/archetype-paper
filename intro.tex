@@ -1,3 +1,63 @@
 \section{Introduction}
 
-\textbf{Anthony}
+\Cyclus \citeme is the first truly agent-based \citeme fuel cycle simulator. 
+New technologies, while exciting, often pose new and unforeseen challenges.
+\Cyclus is no exception to this rule.  This paper answers the questions,
+\emph{``What precisley is an agent in a fuel cycle context?''} and 
+\emph{``What is the best way to program an agent?''}
+
+A discrete time agent-based simulator is needed to sate the want for increased 
+fuel cycle modeling fidelity. The genesis of \cyclus lies in the desire to 
+treat mass balances as discrete, model facilities individually rather than as 
+a fleet, and to be able to quantitatively compare the effects of changing the 
+fidelity of the facilities themselves. These goals imply a large degree of 
+sophistication on th part of the simulator infrastrucute.  Resource exchange
+must be handled in a generic and dynamic way as oppossed to being hard coded 
+for select commodities. Simulations must be inherently comparable, which involves 
+storage infrastucture that is designed around this need. Agents must be able 
+to communicate with one another and learn about the environment in which they 
+exist. Agents must be able to be dynamically deployed and the set of 
+availble agent models may not be collected until run time. Building and using such a
+simulator, while difficult, is not nearly as sisyphean as it might seem. 
+
+What sets fuel cycle simulation apart from traditional agent-based simulations 
+is the high degree of agent specialization. Standard agent based simulators
+are characterized by a very small number of types of agents, often only one and 
+almost always less than five \citeme. The agent types are then specialized 
+when they are instantiated \emph{in situ}. This model falls apart for the 
+fuel cycle.  For example, it would be unwise to have a single facility model 
+that represented both enrichment and reactors, called \code{EnrichmentOrReactor},
+that decides via a switch how it behaves when it is deployed. It is much 
+more natural to have two models, \code{Enrichment} and \code{Reactor}, 
+that implement their own physic calculations independent of one another.
+
+\Cyclus takes agent specialization along two separate axes. The first is 
+that each agent is an \emph{entity} that determines its role in the 
+fuel cycle. There are three kinds of entities: \emph{regions} which 
+represent geographic and governemental concerns, \emph{instituions} 
+which manage other agents, and \emph{facilities} that implement 
+physics calcualations and are usually in charge or reasource management.
+
+The other axis of agent specialization distinguishes between who 
+writes the model, who sets up the model for potential use in a simulation,
+and who actually deploys concrete representations of the model.
+At the highest level are \emph{archetypes}, which are software implmemtations
+of physical, chemical, economic, and political models and whose behavior
+is paraemterizable. For example, a \code{Reactor} archetype may be 
+parameterized by a target burnup. Authors of these highly reusable models 
+are known as \emph{archetype developers}. Archetypes are in turn 
+\emph{configured} into \emph{prototypes}. A prototype is a copy 
+of the archetype but with all parameterizations set to concrete 
+values. Hence, a \code{Reactor} with a burnup of 42 MWd/kg is a 
+prototype. Configuration is often specified by the \cyclus user 
+in the input file. Confuguration requires no underlying knowledge of 
+how the archetype is implemented, though that often helps.
+Finally, prototypes are copied and \emph{deployed} into the simulation 
+and become \emph{agents}. This usage of the term `agent' to mean 
+the \emph{in situ} object is consistent with other agent-based
+liturature \citeme.  Agent creation happens exclusively via 
+\cyclus itself; manual deployement of agents is not allowed.
+Archetypes which wish to deploy agents must \emph{schedule} their building
+and decomissioning.
+
+C++ Design constraint of C++
