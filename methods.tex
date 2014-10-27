@@ -264,8 +264,8 @@ class Reactor : public cyclus::Facility {
 
 Related to the issue of how to snapshot and restart simulations is the issue of 
 what fundamental data types are allowed to be saved and loaded natively by the 
-simulation. For many physics simulators, primitive data types such as \code{float}, 
-\code{int}, and \code{string} and arrays of these types are sufficient to 
+simulation. For many physics simulators, primitive data types (i.e., \code{float}, 
+\code{int}, and \code{string}) and arrays of these types are sufficient to 
 express and evaluate the underlying equations. This handful of types is small enough 
 that most simulators can handle them in an ad hoc manner. Furthermore, these types
 often align with the structure of most databases, allowing for easy translation
