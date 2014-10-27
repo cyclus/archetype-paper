@@ -132,14 +132,14 @@ performed prior to compilation and generated valid C++. Second, the
 code generator must be provided with enough information about the archetype in 
 order to accurately create the function implementation. Third and finally, it 
 is highly desirable to keep archetypes in valid C++. Templating languages 
-such as Jinja \citeme or any other variety of custom solutions would allow for 
+such as Jinja \TODO{CITE} or any other variety of custom solutions would allow for 
 expressive code generation. However, such template languges would be yet another 
 tool for the archetype developer to learn, running counter to the goal of 
 simplifying development.
 
 The limitiations above are all elegantly addressed through the use of a 
 \cyclus-aware preprocessor. The first stage of C/C++ compilation is the 
-C Prepocessor or \code{cpp} \citeme. This tool is responsible for expanading 
+C Prepocessor or \code{cpp} \TODO{CITE}. This tool is responsible for expanading 
 \code{#include} directives and implementing other \code{#} directives. It is executed
 prior to any other stage of compilation (lexing, parsing, tokenizing, \emph{etc.}).
 Importantly, the \code{#pragma} directive is skipped by \code{cpp} if it is not 
