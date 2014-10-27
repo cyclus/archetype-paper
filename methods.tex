@@ -186,7 +186,7 @@ cannot guarantee that all relevant class information has been seen by the point
 where code generation must happen. Thus \cycpp has this two passes and an additional 
 initial pass to make state accumulation easier. Further passes could be added which 
 implement reflection onto the generated code itself but this is often unnecessary. 
-In \cyclus further passes would be excessive since only portions of the 
+In \cyclus, further passes would be excessive since only portions of the 
 \code{cyclus::Agent} interface are generated and these are known ahead of time.
 
 \cyclus-specific pragmas are broken up into two categories depending on whether 
@@ -233,7 +233,7 @@ class name may be provided as a final parameter.
 \end{lstlisting}
 
 When the annotation and code generation directives are combined and expanded with 
-\cycpp, simple agent become simple to write and complex agents confine their 
+\cycpp, simple agents become simple to write and complex agents confine their 
 complexity to the physics and economics that they seek to implement. The base \cyclus
 infrastructure largely is removed from the concern of the archetype developer.
 For example, a simple reactor model may be completely implemented as seen in 
