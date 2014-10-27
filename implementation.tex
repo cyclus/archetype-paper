@@ -29,7 +29,7 @@ than the Python standard library \citeme. It is thus light-weight enough to move
 between code projects, if needed. For the scale of its responsibility, \cycpp
 is extremely efficient. 
 
-The preprocessor implements the three passes detailed in \S\ref{subsec-ppgc}:
+The preprocessor implements the three phases detailed in \S\ref{subsec-ppgc}:
 normalization via standard \code{cpp}, state variable annotation accumulation, and code 
 generation. The \cycpp tool must be run on all C++ header and source files that
 contain archetype code and the \code{#pragma cyclus} directives. Running \cycpp
