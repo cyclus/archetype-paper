@@ -624,9 +624,9 @@ etc.). Since the hash is itself the index into a sparse array, the overhead from
 this lookup is minimal as compared with other parts of backend infrastructure.
 
 Archetype developers may create their own custom tables in the database as well.
-This is done through using the backend interface directly in the archetype. Data 
-which may not be appropriate as state variable because it is a fully dependent 
-parameter of the archetype model should be stored in this way.  Custom tables 
+This is done through using the backend interface directly in the archetype. 
+Data that are fully dependent parameters of the archetype are not appropriate 
+as state variables. Those data should not be stored in this way.  Custom tables 
 have the same restrictions as other parts of the database.  However, custom tables
 have the additional restriction that they may not reuse the table names that 
 \cyclus itself uses. Writing to such tables is considered reserved to only
