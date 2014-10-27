@@ -47,7 +47,7 @@ The preprocessor, however, generates schema for archetypes. This provides a mech
 for validating user input automatically.  Without user input validation the archetype 
 developer has no guarantee that the user entered a meaningful or physically possible 
 value (e.g. negative fluxes). Rather than approaching this problem in an \emph{ad hoc}
-manner, the \cyclus interface demands that this go through RelaxNG.  The overhead 
+manner, the \cyclus interface demands that this go through \acrlong{RNG}.  The overhead 
 of this requirement is mitigated since the archetype developer obtains the schema
 for free. This assures a high level of quality in using archetypes as well as 
 developing them.
@@ -76,7 +76,7 @@ The preprocessor could also improve the generated code. \Cyclus reserves the rig
 to add additional metadata keys and associated meanings.  For example, a \code{'range'}
 key could specify the acceptable range for a state variable. This could in turn 
 provide better validation by adding bounds checks beyond the what is performed
-by RelaxNG. A similar strategy could be followed for categorical variables whereby
+by \gls{RNG}. A similar strategy could be followed for categorical variables whereby
 set membership would be verified. The code that is generated for future keys 
 depends largely on the meaning ascribed to those keys. However, there is no limit 
 to the richness of available metadata.
