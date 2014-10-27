@@ -123,12 +123,12 @@ the \code{Reactor} class must explicitly save the \code{burnup} member in the
 Nothing comes along for free and minor typos can cause large breakages. 
 
 Since implementing this part of the archetype \gls{API} is both highly error-prone and 
-very regular it is ripe for automatic code generation. This would replace the 
+very regular, it is ripe for automatic code generation. This would replace the 
 tedious task of writing the required member functions with software that will 
 insert such member functions into an otherwise fully developed archetype. 
 
-The code generation strategy has some limitations. The first is that it must be 
-performed prior to compilation and generated valid C++. The second is that the 
+The code generation strategy has some limitations. First, it must be 
+performed prior to compilation and generated valid C++. Second, the
 code generator must be provided with enough information about the archetype in 
 order to accurately create the function implementation. Third and finally, it 
 is highly desirable to keep archetypes in valid C++. Templating languages 
