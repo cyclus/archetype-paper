@@ -642,14 +642,14 @@ part of all fuel cycle simulators.  Relegating such algorithms to live outside o
 the kernel minimized the value of \cyclus itself and lead to maintenance problems 
 ensuring that all markets correctly supported the proper exchange interface.
 
-Therefore the notion of markets as a simulation entity was removed. In their stead
-dynamic resource exchange algorithms were brought into the core as a way of 
-guaranteeing exchange feasibility. Moreover, all commodities are now traded through a
-single global exchange. The commodity itself automatically defines the sub-exchange 
-graph, which may be thought of as analogous to the old markets, in which
-the commodity participates.
+Therefore the notion of markets as a simulation entity was removed. In their 
+stead, dynamic resource exchange algorithms were brought into the core as a way 
+of guaranteeing exchange feasibility. Moreover, all commodities are now traded 
+through a single global exchange. The commodity itself automatically defines 
+the sub-exchange graph, which may be thought of as analogous to the old 
+markets, in which the commodity participates.
 
-Since markets did not have any agency in the first place their removal does not 
+Since markets did not have any agency in the first place, their removal does not 
 hurt the agent-based
 nature of \cyclus.  Rather, market removal helps archetypes by allowing them to 
 speak to each other through a common resource exchange interface.
