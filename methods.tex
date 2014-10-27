@@ -479,16 +479,18 @@ keys as possible.
 \subsection{Validation}
 
 When writing \cyclus input files, users configure archetypes into prototypes 
-for the simulation.  Configuration is done by 
-setting all state variables to initial values. Since this is the main mechanism 
-by which information flows from users to archetype developers, it is reasonable for
-archetype developers to ask, ``Does what the user gave me make sense?'' For example:
+for the simulation.  Configuration is done by setting all state variables to 
+  initial values. This is the principal mechanism by which information flows 
+  from users to archetype developers. Therefore, it is reasonable for archetype 
+  developers to ask, ``Does what the user gave me make sense?'' For example: 
+
 \begin{itemize} 
     \item a flux state variable clearly should not be negative, 
     \item an integer variable should not receive the string ``Toaster'', and
     \item a vector representing an N-group cross section should have exactly N 
           elements.
 \end{itemize} 
+
 If the user were to not follow these rules, the input file would be break physical
 constraints, type constraints, or shape constraints respectively. 
 
