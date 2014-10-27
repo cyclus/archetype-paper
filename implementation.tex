@@ -609,7 +609,7 @@ The second purpose for hashing is that backends may implement the storage
 of variable-length types as a \emph{bidirectional hash map} using the 
 \gls{SHA1} as a key.  This data structure is a particular kind of associative array where the values are 
 uniquely determined from the keys \emph{and} the keys are unquietly determined from 
-the values. Furthermore, in \cyclus the keys of this data structure are simply the 
+the values. Furthermore, in \cyclus, the keys of this data structure are simply the 
 hashes themselves. This differs from a typical hash map (e.g. Python dictionaries) 
 in that they only require that values may be determined from the keys and only the
 keys mus be unique.  With a bidirectional hash map, knowing either the key or the value
