@@ -4,7 +4,7 @@
 \Cyclus \citeme is the first truly agent-based \citeme fuel cycle simulator. 
 New technologies, while exciting, often pose new and unforeseen challenges.
 \Cyclus is no exception to this rule.  This paper answers the questions,
-\emph{``What precisley is an agent in a fuel cycle context?''} and 
+\emph{``What precisely is an agent in a fuel cycle context?''} and 
 \emph{``What is the best way to program an agent?''}
 
 A discrete time agent-based simulator is needed to sate the want for increased 
@@ -12,7 +12,7 @@ fuel cycle modeling fidelity. The genesis of \cyclus lies in the desire to
 treat mass balances as discrete, model facilities individually rather than as 
 a fleet, and to be able to quantitatively compare the effects of changing the 
 fidelity of the facilities themselves. These goals imply a large degree of 
-sophistication on th part of the simulator infrastructure.  Resource exchange
+sophistication on the part of the simulator infrastructure.  Resource exchange
 must be handled in a generic and dynamic way as opposed to being hard coded 
 for select commodities. Simulations must be inherently comparable, which involves 
 storage infrastructure that is designed around this need. Agents must be able 
@@ -30,14 +30,14 @@ fuel cycle.  For example, it would be unwise to have a single facility model
 that represented both enrichment and reactors, called \code{EnrichmentOrReactor},
 that decides via a switch how it behaves when it is deployed. It is much 
 more natural to have two models, \code{Enrichment} and \code{Reactor}, 
-that implement their own physic calculations independent of one another.
+that implement their own physics calculations independent of one another.
 
-\Cyclus takes agent specialization along two separate axes. The first is 
+\Cyclus enables agent specialization along two separate axes. The first is 
 that each agent is an \emph{entity} that determines its role in the 
 fuel cycle. There are three kinds of entities: \emph{regions} which 
 represent geographic and governmental concerns, \emph{institutions} 
 which manage other agents, and \emph{facilities} that implement 
-physics calculations and are usually in charge or resource management.
+physics calculations and are usually in charge of resource management.
 
 The other axis of agent specialization distinguishes between who 
 writes the model, who sets up the model for potential use in a simulation,
@@ -57,7 +57,7 @@ Finally, prototypes are copied and \emph{deployed} into the simulation
 and become \emph{agents}. This usage of the term `agent' to mean 
 the \emph{in situ} object is consistent with other agent-based
 literature \citeme.  Agent creation happens exclusively via 
-\cyclus itself; manual deployement of agents is not allowed.
+\cyclus itself; manual deployment of agents is not allowed.
 Archetypes which wish to deploy agents must \emph{schedule} their building
 and decommissioning.
 
@@ -95,7 +95,7 @@ This paper proceeds by first providing a more detailed motivation
 in \S \ref{sec-motive}. Then, \S \ref{sec-methods} describes 
 methods and mindsets that are used to ease archetype development.
 Some of these are high-level strategies. Others amount to 
-software interfaces that have been painstakingly determined to 
+software interfaces that 
 provide the correct fuel cycle agent abstractions. 
 \S \ref{sec-impl} describes the underlying algorithms and usages
 for those methodologies which also require concrete implementations.

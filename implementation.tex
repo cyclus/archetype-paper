@@ -1,11 +1,11 @@
 \section{Implementation}
 \label{sec-impl}
 
-In \S \ref{sec-methods} the strategies and interfaces that \Cyclus uses to 
+In \S \ref{sec-methods}, the strategies and interfaces that \Cyclus uses to 
 simplify archetype development were presented. These represent notions about
 the amount of information and prior knowledge that the archetype developer 
-must have in order to write archetypes.  If a particular particular strategy 
-decreased the knowledge required by archetype developers then it is considered
+must have in order to write archetypes.  If a particular strategy 
+decreases the knowledge required by archetype developers then it is considered
 easier and beneficial to implement.  
 
 However, methods that are more intuitive for new users to understand are often
@@ -17,7 +17,7 @@ herculean effort. This section describes the infrastructure that holds up
 current \cyclus archetype development.  This is relevant to other fuel 
 cycle simulators that wish to adopt the same strategies that \cyclus 
 implements. In particular, the implementation of the \cyclus preprocessor, 
-the type system, input file validation, metadata annotations will all 
+the type system, input file validation, and metadata annotations will all 
 be covered here.
 
 \subsection{The \Cyclus Preprocessor}
@@ -25,7 +25,7 @@ be covered here.
 The \cyclus preprocessor, \cycpp, is responsible for all metadata collection and 
 code generation for archetypes. It is implemented as a small Python utility 
 currently less than 2000 lines in a single file.  It has no dependencies other 
-than the Python standard library. It is thus light-weight enough to move around 
+than the Python standard library \citeme. It is thus light-weight enough to move around 
 between code projects, if needed. For the scale of its responsibility, \cycpp
 is extremely efficient. 
 
@@ -52,14 +52,14 @@ Pass 2 is represented in \cycpp by the \code{StateAccumulator} class.  This is a
 state machine which takes lines output from the C preprocessor and compares them 
 against a series of \emph{filters}.  If a line matches the expected structure 
 for a filter, then the filter executes a \emph{transformation} function on the 
-line and no further filters are executed. If the line does not match any filters
-then the line is allowed to pass through the \code{StateAccumulator}. 
-The filter-transformation sequence can be thought of in analogy to a sphere of a 
-given radius (a line of code) attempting to pass through concentric windows 
+line and no further filters are executed. If the line does not match any 
+filters, then the line is allowed to pass through the \code{StateAccumulator}.  
+The filter-transformation sequence can be thought of in analogy to a sphere of 
+a given radius (a line of code) attempting to pass through concentric windows 
 (the filters) of decreasing aperture. This first window where the sphere stops 
-represents the transformation that is executed.  This sphere is allowed to 
-move through the system without being stopped. This analogy may be seen in 
-Figure \ref{filter-analogy}.  
+represents the transformation that is executed.  This sphere is allowed to move 
+through the system without being stopped. This analogy may be seen in Figure 
+\ref{filter-analogy}.  
 
 \begin{figure}[htbc]
 \label{filter-analogy}
@@ -190,7 +190,7 @@ The canonical form of a type has the following spelling rules:
 \end{itemize}
 When taken together, these rules create an accurate and language-independent
 mechanism for spelling C++ types, including templates. The preprocessor is aware
-of the following types which may be present in a cyclus database in various 
+of the following types which may be present in a \cyclus database in various 
 combinations:
 \begin{itemize}
     \item \textbf{Primitives:} \code{bool}, \code{int}, \code{float}, \code{double}, 
@@ -202,7 +202,7 @@ combinations:
 \end{itemize}
 
 Resolving a canonical type name is necessarily a recursive process.
-This is because aliases may point to other aliases and not just primitive type names.
+This is because aliases may point to other aliases --- not just primitive type names.
 Thus to resolve an alias, one must walk through an arbitrarily deep graph of aliases 
 to find the associated primitive.  For example, given that \code{myfloat} points 
 to \code{float} (the primitive) and \code{mynumber} points to \code{myfloat}, 
@@ -280,7 +280,7 @@ of filters between state machines.
                           directive.\\
 \hline
 5  & \code{SchemaFilter} & Implements code generation for the \code{schema()} member
-                           function that returns the RelaxNG schema of the archetype
+                           function that returns the \gls{RNG} schema of the archetype
                            for input file validation. This may be called with the 
                         \code{#pragma cyclus [def\|decl\|impl] schema [classname]}
                            directive.\\
@@ -482,23 +482,23 @@ class Reactor : public cyclus::Facility {
 Of course, archetypes may be much more complex than the \code{Reactor} example.
 This archetype does not participate in resource exchange, take advantage of 
 the reflection features, use more advanced annotation features, or have more than 
-a handful of state variables.  However, even here the value of a code generating
+a handful of state variables.  However, even here, the value of a code generating
 preprocessor is readily apparent.
 
 \subsection{Database Backends \& Types}
 
 \Cyclus transparently supports a potentially limitless number of different database 
-backends. Currently two reference backends exist: SQLite \cite{owens2006definitive} 
-and HDF5 \cite{folk2011overview}. These two represent relational and hierarchical 
+backends. Currently two reference backends exist: \gls{SQLite} \cite{owens2006definitive} 
+and \gls{HDF5} \cite{folk2011overview}. These two represent relational and hierarchical 
 databases respectively and have very different underlying design philosophies.
-Future formats that could be supported are plain text comma-separated value files 
-(CSV) or JSON.  Given the wide range of potential uses cases, \cyclus must be able 
+Future formats that could be supported are plain text 
+\gls{CSV} files or \gls{JSON}.  Given the wide range of potential uses cases, \cyclus must be able 
 to execute only based on the feature set that is common between these formats.
 Features that are not available in a single format must either be provided by \cyclus 
 itself or become optional in the backend interface.
 
-The type system and reflection provided by \cycpp serve the primary purpose of 
-allowing archetypes to represent themselves in the database. Though this 
+The type system and reflection provided by \cycpp 
+allow archetypes to represent themselves in the database. Though this 
 reflection can be taken advantage of and used elsewhere, it was initially called for 
 by the need to be able to restart a simulation. On the other hand, 
 the database model extends well beyond the needs of the archetypes alone by 
@@ -513,11 +513,11 @@ serving as the fundamental on-disk representation for all \cyclus input and outp
           universally identifies the simulation.
 \end{itemize}
 This means that common databases notions such as the shape of a column, raw arrays, or
-querability must be optional, left out, or implemented inside the backend itself.
-Of these, querability is the most important. If a database format or its backend lacks 
-queryability (such as CSV) then it is impossible to start or restart a 
+queryability must be optional, left out, or implemented inside the backend itself.
+Of these, queryability is the most important. If a database format or its backend lacks 
+queryability (such as \gls{CSV}) then it is impossible to start or restart a 
 \cyclus simulation from simply this backend.  Such a format may be used in 
-conjunction with another queryable format. Both HDF5 and SQLite are queryable.
+conjunction with another queryable format. Both \gls{HDF5} and \gls{SQLite} are queryable.
 
 The database backends are deeply tied to the \cyclus type system. Types in \cyclus
 are represented by unique integers given in the \code{enum} called \code{DbTypes}
@@ -525,8 +525,8 @@ which map onto C++ types.
 Simple types are represented by simple name, such as \code{float} becomes
 \code{FLOAT} which is assigned to 2. Container types, such as \code{vector},
 are more complex in that each template specification (\code{vector<int>}) has
-its own type in the \cyclus type system.  Containers are further delineated by the 
-a distinction between fixed-length and variable-length (VL) versions. Thus even the 
+its own type in the \cyclus type system.  Containers are further delineated by 
+the distinction between fixed-length and \gls{VL} versions. Thus even the 
 relatively simple C++ type \code{std::vector<int>} receives two entries in the 
 \cyclus type system: \code{VECTOR_INT} and \code{VL_VECTOR_INT} which are given 
 the identifiers 10 and 11 and represent fixed- and variable-length versions 
@@ -586,17 +586,17 @@ to a relatively robust subset in order to be able to run even simple simulation.
 \end{tabular}
 \end{table}
 
-A key feature of the \cyclus type system that enables the databases is that 
+A key database-enabling feature of the \cyclus type system is that 
 the values of all types must be directly \emph{hashable} using a cryptographic hash.
 The directness implies that pointer and reference types are not allowed. For most 
 database backends, indirection is not a supported feature. For those backends which 
-do support indirection, such as HDF5 and its linking mechanism, there is not a 
+do support indirection, such as \gls{HDF5} and its linking mechanism, there is not a 
 clear translation from indirection in memory to indirection on disk.  Thus several 
 classes of errors are avoided entirely.  
 
 Hashability serves a dual role with respect to the backends. The first is that 
 it provides a mechanism for uniquely identifying all elements of a type, within 
-reason. \Cyclus uses the standard SHA1 \cite{eastlake2001us} algorithm to compute 
+reason. \Cyclus uses the standard \gls{SHA1} \cite{eastlake2001us} algorithm to compute 
 hash values as 160-bit integer.  Thus for types with a fixed bit width less than 
 160, such as \code{int} (typically 32-bits) or \code{double} (64-bits), every 
 element is uniquely identifiable. For variable-length data types or very long types,
@@ -606,14 +606,14 @@ course of billions of simulations.  Thus backends may use the hash to automatica
 de-duplicate data and store every unique value only once.
 
 The second purpose for hashing is that backends may implement the storage 
-of variable-length types as a \emph{bidirectional hash map} using the SHA1 as a key.
-This data structure is a particular kind of associative array where the values are 
+of variable-length types as a \emph{bidirectional hash map} using the 
+\gls{SHA1} as a key.  This data structure is a particular kind of associative array where the values are 
 uniquely determined from the keys \emph{and} the keys are unquietly determined from 
-the values. Furthermore, in \cyclus the keys of this data structure are simply the 
+the values. Furthermore, in \cyclus, the keys of this data structure are simply the 
 hashes themselves. This differs from a typical hash map (e.g. Python dictionaries) 
 in that they only require that values may be determined from the keys and only the
 keys mus be unique.  With a bidirectional hash map, knowing either the key or the value
-will grant one the value of the key respectively.  The HDF5 backend takes advantage 
+will grant one the value of the key respectively.  The \gls{HDF5} backend takes advantage 
 of this data structure to store variable-length data in a 5-dimensional sparse array.
 The hash is chopped up into an array of five 32-bit unsigned integers that 
 index into this array. Then the hash is stored in the table and used to lookup 
@@ -624,9 +624,9 @@ etc.). Since the hash is itself the index into a sparse array, the overhead from
 this lookup is minimal as compared with other parts of backend infrastructure.
 
 Archetype developers may create their own custom tables in the database as well.
-This is done through using the backend interface directly in the archetype. Data 
-which may not be appropriate as state variable because it is a fully dependent 
-parameter of the archetype model should be stored in this way.  Custom tables 
+This is done through using the backend interface directly in the archetype. 
+Data that are fully dependent parameters of the archetype are not appropriate 
+as state variables. Those data should not be stored in this way.  Custom tables 
 have the same restrictions as other parts of the database.  However, custom tables
 have the additional restriction that they may not reuse the table names that 
 \cyclus itself uses. Writing to such tables is considered reserved to only
@@ -900,25 +900,25 @@ Each nuclide for a composition gets its own row and have the same \code{QualId}.
 \end{table}
 
 Though the database backend implementation and the associated type system may be 
-complex to implement, it usage and underbelly is mostly transparent to users and 
+complex to implement, its usage and underbelly is mostly transparent to users and 
 archetype developers alike. Even for complex template types, the \cyclus type system
 allows archetypes to be as expressive as they need to be to fit the model. 
 
 \subsection{JSON Annotations}
 
-Archetype metadata is an important part of \cyclus because it allows for 
+Archetype metadata annotation is an important part of \cyclus because it allows for 
 reflection on the archetype classes. Well-defined metadata entries are 
 described in Tables \ref{sv-anno} \& \ref{ag-anno}. 
 Additionally though, archetype developers may supply 
 any other information they wish and ascribe to it the semantics that they desire.
 This is done simply by adding undefined keys to the \code{#pragma cyclus var} and
 \code{#pragma cyclus note} \cycpp directives.
-While this ensures that metadata is robust to future changes and archetype developer
+While this ensures that the metadata is robust to future changes and archetype developer
 customization, the annotations have implications for the \cyclus and archetype 
 implementations.
 
 Allowing for unknown metadata keys with unknown types for each value implies that 
-metadata is \emph{unstructured} \cite{feldman2007text}. From a C++ implementation 
+the metadata is \emph{unstructured} \cite{feldman2007text}. From a C++ implementation 
 standpoint, this means that there is no class or struct that can be declared whose
 member variables encompass all possible metadata without at least one of those
 members being a pointer or reference. This is because determining the type 
@@ -926,23 +926,24 @@ of a blob of memory at runtime in C++ must use \code{void*}, \code{char*},
 or other pointer indirection. Representing annotation in memory is thus 
 necessarily more complex than a single metadata class.
 
-JSON and its derivatives are largely acknowledged as sufficiently expressive 
+\acrlong{JSON} and its derivatives are largely acknowledged as sufficiently expressive 
 formats for unstructured data \cite{moniruzzaman2013nosql}. This is because the
-JSON primitives, which include integers, floats, strings, booleans, null, arrays, 
+\gls{JSON} primitives, which include integers, floats, strings, booleans, null, arrays, 
 and objects (hash tables with string keys), are easily translatable into native
 data structures in most modern programming languages such as Python and C++. 
-Furthermore the JSON syntax is concise and intuitive. XML could have been used 
+Furthermore the \gls{JSON} syntax is concise and intuitive. \gls{XML} could have been used 
 as an alternative format, but a schema and the translation to native data structures 
-would have to be handled manually. YAML \cite{ben2009yaml} or Python itself offer 
-more likely  alternatives to JSON but require a more sophisticated interpreters 
-corresponding to their more powerful syntax. JSON is enough and just enough.
+would have to be handled manually. \gls{YAML} \cite{ben2009yaml} or Python itself offer 
+more likely  alternatives to \gls{JSON} but require a more sophisticated interpreters 
+corresponding to their more powerful syntax. \gls{JSON} is enough and just enough.
 
-However, JSON is a metadata representation that is meant to reside on disk, 
-not in memory. Translation from plain text JSON to C++ data structures is 
+However, \gls{JSON} is a metadata representation that is meant to reside on disk, 
+not in memory. Translation from plain text \gls{JSON} to C++ data structures is 
 performed via the JsonCpp software \cite{eltuhamy2014native}. This does the work 
-of parsing JSON code, implementing the JSON type system, and translating back and
-forth between JSON types and C++ types as need. It provides as fully introspectible 
-container for arbitrary metadata called \code{Json::Value}.  Thus an instance of this 
+of parsing \gls{JSON} code, implementing the \gls{JSON} type system, and translating back and
+forth between \gls{JSON} types and C++ types as need. It provides as fully 
+introspective 
+container for arbitrary metadata called \code{Json::Value}. Thus, an instance of this 
 class is precisely what the \code{annotations()} archetype member function returns.
 Therefore, the entire metadata workflow is as follows:
 \begin{enumerate}
@@ -950,14 +951,14 @@ Therefore, the entire metadata workflow is as follows:
           Python dictionary with string keys.
     \item \cycpp parses, evaluates, and accumulates the annotations into a single 
           metadata dictionary per archetype during pass 2 of preprocessing.
-    \item Pass 3 of \cycpp converts the metadata to a JSON formatted string using 
-          JSON utilities in the Python standard library. This is used as the meat of
+    \item Pass 3 of \cycpp converts the metadata to a \gls{JSON} formatted string using 
+          \gls{JSON} utilities in the Python standard library. This is used as the meat of
           code generated code for \code{annotations()} member function.
-    \item From C++ when \code{annotation()} is called, the JSON string is parsed 
+    \item From C++ when \code{annotation()} is called, the \gls{JSON} string is parsed 
           by JsonCpp and a new instance of \code{Json::Value} is returned that
           corresponds to the metadata.
 \end{enumerate}
-In this way JSON is used as an exchange format between Python and C++, between 
+In this way \gls{JSON} is used as an exchange format between Python and C++, between 
 archetype developer and user, and between compile time and run time.
 
 \subsection{XML Validation}
@@ -965,9 +966,9 @@ archetype developer and user, and between compile time and run time.
 A key benefit to the \Cyclus simulation infrastructure is the run time guarantee
 of valid input files provided to both users and archetype developers. Developers
 are guaranteed valid construction of archetypes within a simulation, and users
-are notified immediately if a given input file is would have resulted in invalid
+are notified immediately if a given input file would have resulted in invalid
 archetype construction. The processes required to provide such guarantees are
-implemented using XML's robust schema validation using the RelaxNG schema.
+implemented using robust schema validation with \acrlong{XML} and \acrlong{RNG}.
 
 For a given archetype, a developer defines the expected input structure in the
 \code{schema()} function manually or via the \code{#pragma cyclus var}
@@ -1034,7 +1035,7 @@ archetype discussed in section \S \ref{subsec-ppgc}.
 
 After generating master \Cyclus schema, user input is then sent to an instance
 of the \code{cyclus::RelaxNGValidator} class which utilizes the C++ libxml2
-library to validate the provided input against the generated RelaxNG schema. If
+library to validate the provided input against the generated \gls{RNG} schema. If
 input validation is successful, the defined simulation is then instantiated and
 executed. A snippet of valid input for the \code{Reactor} is shown in Listing
 \ref{valid-xml}. Note that because the \code{<optional>} tag is utilized in the
