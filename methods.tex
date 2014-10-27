@@ -122,7 +122,7 @@ the \code{Reactor} class must explicitly save the \code{burnup} member in the
 \code{Snapshot()} function if \code{burnup} is to be saved to the database.
 Nothing comes along for free and minor typos can cause large breakages. 
 
-Since implementing this part of the archetype API is both highly error-prone and 
+Since implementing this part of the archetype \gls{API} is both highly error-prone and 
 very regular it is ripe for automatic code generation. This would replace the 
 tedious task of writing the required member functions with software that will 
 insert such member functions into an otherwise fully developed archetype. 
@@ -449,7 +449,8 @@ creation of these keys minimizes human transcription error for the most importan
 metadata. This is a core simplification of archetype development.
 
 Metadata is similarly important for the \cyclus kernel itself. All metadata is 
-directly available via the \code{annotations()} member function, which returns JSON 
+directly available via the \code{annotations()} member function, which returns 
+\gls{JSON} 
 object (equivalent to a Python dictionary with string keys). Combined with the 
 auto-generated read-only keys from \cycpp, the metadata provides much needed 
 reflection to the archetypes.  Unlike most C++ classes, archetypes have 
@@ -496,8 +497,8 @@ the simulator to check that whether or not any input file adheres to them prior
 to execution. This is known as \emph{validation} and \cyclus implements it 
 automatically to the extent that it is able. 
 
-\Cyclus input files are written in XML. XML itself may be validated against a 
-known structure called a \emph{schema}. The schema is itself XML that describes 
+\Cyclus input files are written in \gls{XML}. \gls{XML} itself may be validated against a 
+known structure called a \emph{schema}. The schema is itself \gls{XML} that describes 
 the layout, types, and attributes of the input that it attempts to validate.
 \Cyclus provides a default schema that describes the overall structure of the 
 input file.
@@ -514,7 +515,7 @@ that archetypes provide their own validation via the \code{schema()} member
 function seen in Listing \ref{req-api}.
 
 That said, schemas are two steps removed from the C++ that the archetypes
-are written in: XML itself and the schema interface. This provides additional 
+are written in: \gls{XML} itself and the schema interface. This provides additional 
 cognitive load to the archetype developer as they now must learn two additional
 tools even to write a trivial archetype. Furthermore, the schema for most state
 variables may be derived automatically from information known to the preprocessor:
@@ -522,7 +523,7 @@ the name of the state variable, its type, and optionally its shape and size in
 the case of containers. Thus the \code{schema()} member function is auto-generated
 by \cycpp. The archetype developer obtains user input validation for free.
 
-XML-based schema are extraordinarily useful as mechanism for validating types. 
+\gls{XML}-based schema are extraordinarily useful as mechanism for validating types. 
 For example, the user typed in a floating point number and not a string or that 
 a number is positive.
 Moreover since schema can also validate structure they can be used to assert that 
