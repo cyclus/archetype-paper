@@ -52,14 +52,14 @@ Pass 2 is represented in \cycpp by the \code{StateAccumulator} class.  This is a
 state machine which takes lines output from the C preprocessor and compares them 
 against a series of \emph{filters}.  If a line matches the expected structure 
 for a filter, then the filter executes a \emph{transformation} function on the 
-line and no further filters are executed. If the line does not match any filters
-then the line is allowed to pass through the \code{StateAccumulator}. 
-The filter-transformation sequence can be thought of in analogy to a sphere of a 
-given radius (a line of code) attempting to pass through concentric windows 
+line and no further filters are executed. If the line does not match any 
+filters, then the line is allowed to pass through the \code{StateAccumulator}.  
+The filter-transformation sequence can be thought of in analogy to a sphere of 
+a given radius (a line of code) attempting to pass through concentric windows 
 (the filters) of decreasing aperture. This first window where the sphere stops 
-represents the transformation that is executed.  This sphere is allowed to 
-move through the system without being stopped. This analogy may be seen in 
-Figure \ref{filter-analogy}.  
+represents the transformation that is executed.  This sphere is allowed to move 
+through the system without being stopped. This analogy may be seen in Figure 
+\ref{filter-analogy}.  
 
 \begin{figure}[htbc]
 \label{filter-analogy}
@@ -202,7 +202,7 @@ combinations:
 \end{itemize}
 
 Resolving a canonical type name is necessarily a recursive process.
-This is because aliases may point to other aliases and not just primitive type names.
+This is because aliases may point to other aliases --- not just primitive type names.
 Thus to resolve an alias, one must walk through an arbitrarily deep graph of aliases 
 to find the associated primitive.  For example, given that \code{myfloat} points 
 to \code{float} (the primitive) and \code{mynumber} points to \code{myfloat}, 
