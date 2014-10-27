@@ -527,8 +527,8 @@ the case of containers. Thus the \code{schema()} member function is auto-generat
 by \cycpp. The archetype developer obtains user input validation for free.
 
 \gls{XML}-based schema are extraordinarily useful as mechanism for validating types. 
-For example, the user typed in a floating point number and not a string or that 
-a number is positive.
+For example, if the user types in a floating point number rather than an 
+expected string, they should be alerted to this error immediately.
 Moreover since schema can also validate structure they can be used to assert that 
 a variable has the right shape. A length-5 vector must be initialized with 
 five elements. However, rules about type and shape are at the limit of what may 
