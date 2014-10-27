@@ -15,11 +15,11 @@ may increase while the productivity of the simulation developer remains constant
 \Cyclus avoids such bottlenecks by empowering users to create and maintain 
 their own archetypes independent of the development time line of the \cyclus 
 kernel. However this modularity comes with its own costs. Being able to 
-plug in user-created archetypes implies a programing contract (API) where 
+plug in user-created archetypes implies an \gls{API} where 
 the archetype conforms to certain well-defined expectations. This is an 
 additional burden to nascent and experience archetype developers that 
 does not effect the underlying behavior or physics. Rather, a large portion 
-of archetype code exists to satisfy the \cyclus API.
+of archetype code exists to satisfy the \cyclus \gls{API}.
 
 Mitigating the difficulties in writing archetypes has been a major effort 
 for \cyclus. This includes the all of the difficulties in interfacing with 
@@ -39,7 +39,7 @@ a variety of strategies that are used by \cyclus ease development. They are,
         complex types in the database. It alleviates the need for archetype
         developers to invent and implement custom persistence solutions.
 
-    \item \textbf{Validation:} Archetypes use XML schema to validate that 
+    \item \textbf{Validation:} Archetypes use \gls{XML} schema to validate that 
         the prototypes that are generated from them are created correctly.
         This ensures the user of an archetype are using it correctly.
 
@@ -365,7 +365,7 @@ some keys are reserved and have special meanings in various contexts. Table
                     variable. In most cases - when the shape is rank 0 or 1 such
                     as for scalars or vectors - this is simply a string. In cases
                     where the rank is 2+ this is a list of strings. Please refer to
-                    the XML Schema Datatypes \cite{xml-datatypes}
+                    the \gls{XML} Schema Datatypes \cite{xml-datatypes}
                     for more information.\\
 \hline
 \code{initfromcopy} & String code snippet to use in the \code{InitFrom(Agent* m)} 
@@ -385,7 +385,7 @@ some keys are reserved and have special meanings in various contexts. Table
 \hline
 \code{schema}  & Code snippet to use in the \code{schema()} function for 
                  this state variable instead of using code generation.
-                 This is an RNG string. If this is supplied then 
+                 This is an \gls{RNG} string. If this is supplied then 
                  \code{infiletodb} is likely needed as well to ensure that the custom
                  schema is read into the database correctly.\\
 \hline
