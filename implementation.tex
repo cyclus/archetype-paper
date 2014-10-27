@@ -17,7 +17,7 @@ herculean effort. This section describes the infrastructure that holds up
 current \cyclus archetype development.  This is relevant to other fuel 
 cycle simulators that wish to adopt the same strategies that \cyclus 
 implements. In particular, the implementation of the \cyclus preprocessor, 
-the type system, input file validation, metadata annotations will all 
+the type system, input file validation, and metadata annotations will all 
 be covered here.
 
 \subsection{The \Cyclus Preprocessor}
@@ -25,7 +25,7 @@ be covered here.
 The \cyclus preprocessor, \cycpp, is responsible for all metadata collection and 
 code generation for archetypes. It is implemented as a small Python utility 
 currently less than 2000 lines in a single file.  It has no dependencies other 
-than the Python standard library. It is thus light-weight enough to move around 
+than the Python standard library \citeme. It is thus light-weight enough to move around 
 between code projects, if needed. For the scale of its responsibility, \cycpp
 is extremely efficient. 
 
