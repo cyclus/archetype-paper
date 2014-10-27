@@ -190,7 +190,7 @@ The canonical form of a type has the following spelling rules:
 \end{itemize}
 When taken together, these rules create an accurate and language-independent
 mechanism for spelling C++ types, including templates. The preprocessor is aware
-of the following types which may be present in a cyclus database in various 
+of the following types which may be present in a \cyclus database in various 
 combinations:
 \begin{itemize}
     \item \textbf{Primitives:} \code{bool}, \code{int}, \code{float}, \code{double}, 
@@ -513,8 +513,8 @@ serving as the fundamental on-disk representation for all \cyclus input and outp
           universally identifies the simulation.
 \end{itemize}
 This means that common databases notions such as the shape of a column, raw arrays, or
-querability must be optional, left out, or implemented inside the backend itself.
-Of these, querability is the most important. If a database format or its backend lacks 
+queryability must be optional, left out, or implemented inside the backend itself.
+Of these, queryability is the most important. If a database format or its backend lacks 
 queryability (such as \gls{CSV}) then it is impossible to start or restart a 
 \cyclus simulation from simply this backend.  Such a format may be used in 
 conjunction with another queryable format. Both \gls{HDF5} and \gls{SQLite} are queryable.
@@ -525,8 +525,8 @@ which map onto C++ types.
 Simple types are represented by simple name, such as \code{float} becomes
 \code{FLOAT} which is assigned to 2. Container types, such as \code{vector},
 are more complex in that each template specification (\code{vector<int>}) has
-its own type in the \cyclus type system.  Containers are further delineated by the 
-a distinction between fixed-length and \gls{VL} versions. Thus even the 
+its own type in the \cyclus type system.  Containers are further delineated by 
+the distinction between fixed-length and \gls{VL} versions. Thus even the 
 relatively simple C++ type \code{std::vector<int>} receives two entries in the 
 \cyclus type system: \code{VECTOR_INT} and \code{VL_VECTOR_INT} which are given 
 the identifiers 10 and 11 and represent fixed- and variable-length versions 
@@ -941,7 +941,8 @@ However, \gls{JSON} is a metadata representation that is meant to reside on disk
 not in memory. Translation from plain text \gls{JSON} to C++ data structures is 
 performed via the JsonCpp software \cite{eltuhamy2014native}. This does the work 
 of parsing \gls{JSON} code, implementing the \gls{JSON} type system, and translating back and
-forth between \gls{JSON} types and C++ types as need. It provides as fully introspectible 
+forth between \gls{JSON} types and C++ types as need. It provides as fully 
+introspective 
 container for arbitrary metadata called \code{Json::Value}.  Thus an instance of this 
 class is precisely what the \code{annotations()} archetype member function returns.
 Therefore, the entire metadata workflow is as follows:
@@ -967,7 +968,7 @@ of valid input files provided to both users and archetype developers. Developers
 are guaranteed valid construction of archetypes within a simulation, and users
 are notified immediately if a given input file is would have resulted in invalid
 archetype construction. The processes required to provide such guarantees are
-implemented using robus schema validation with \acrlong{XML} and \acrlong{RNG}.
+implemented using robust schema validation with \acrlong{XML} and \acrlong{RNG}.
 
 For a given archetype, a developer defines the expected input structure in the
 \code{schema()} function manually or via the \code{#pragma cyclus var}
