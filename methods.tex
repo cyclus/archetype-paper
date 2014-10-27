@@ -145,7 +145,7 @@ prior to any other stage of compilation (lexing, parsing, tokenizing, \emph{etc.
 Importantly, the \code{#pragma} directive is skipped by \code{cpp} if it is not 
 recognized and the directive is retained its output. It is a
 purposeful hook for other preprocessors to use and implement their own code generation.
-If an alternative preprocessor only uses \code{#pragma}s as its interface, 
+If an alternative preprocessor only uses \code{#pragma} directives as its interface, 
 the developer will be able to write in pure C++ and reap the benefits
 of an extra code-generation step. 
 
