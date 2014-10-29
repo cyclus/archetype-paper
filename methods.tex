@@ -4,28 +4,26 @@
 Archetype development can be a daunting task on its own. For this reason, 
 many fuel cycle simulators choose to supply only a limited corral of 
 pre-built archetypes. This places the responsibility of creating an maintaining 
-the archetypes with the authors of the simulator.
-
-When only pre-built archetypes are available, then this suite defines the scope 
+the archetypes with the authors of the simulator.  When only pre-built archetypes are available, then this suite defines the scope 
 of all possible fuel cycles that a user can model. If the scope is not broad 
 enough for the needs of a user, then the simulator developer  must expand the 
 scope or lose the user.  This creates a bottleneck because the number of users 
 may increase while the productivity of the simulation developer remains constant.
 
 \Cyclus avoids such bottlenecks by empowering users to create and maintain 
-their own archetypes independent of the development time line of the \cyclus 
+their own archetypes independent of the development timeline of the \cyclus 
 kernel. However this modularity comes with its own costs. Being able to 
-plug in user-created archetypes implies an \gls{API} where 
+plug in user-created archetypes implies an \gls{API} \sout{where} \comment{so that (?)} 
 the archetype conforms to certain well-defined expectations. This is an 
-additional burden to nascent and experience archetype developers that 
+additional burden to both nascent and experienced archetype developers that 
 does not effect the underlying behavior or physics. Rather, a large portion 
-of archetype code exists to satisfy the \cyclus \gls{API}.
+of archetype code exists to satisfy the \cyclus \gls{API}. \comment{unclear transition}
 
 Mitigating the difficulties in writing archetypes has been a major effort 
 for \cyclus. This includes all of the difficulties in interfacing with 
 \cyclus itself and, to the extent possible, providing tools that make it 
 easier to implement the physics and behavior desired. Here, we illustrate 
-a variety of strategies that are used by \cyclus ease development. They are, 
+a variety of strategies that are used by \cyclus to ease development: 
 
 \begin{itemize}
     \item \textbf{Preprocessing \& Code Generation:}  By automatically 
@@ -36,18 +34,18 @@ a variety of strategies that are used by \cyclus ease development. They are,
 
     \item \textbf{Type System Abstraction:} The \Cyclus type system 
         provides a common basis for archetypes to store and retrieve 
-        complex types in the database. It alleviates the need for archetype
+        complex types in the database. This alleviates the need for archetype
         developers to invent and implement custom persistence solutions.
 
     \item \textbf{Validation:} Archetypes use \gls{XML} schema to validate that 
         the prototypes that are generated from them are created correctly.
-        This ensures the user of an archetype are using it correctly.
+        This ensures the users of an archetype are using it correctly.
 
     \item \textbf{Metadata Annotations:} Archetypes have a standard place to 
         store and retrieve both pre-defined and arbitrary metadata about themselves.
         This allows for archetype developers to communicate relevant information
         to tools outside of \cyclus (such as a visualization tool) without
-        losing any information in the process of being an archetype.
+        losing any information in \comment{the process of being an archetype. (awk)}
 
     \item \textbf{Package System:} \Cyclus has a packaging system for archetypes and 
         libraries of archetypes. This means that all archetype developers can 
@@ -56,12 +54,12 @@ a variety of strategies that are used by \cyclus ease development. They are,
         archetype, but they would live in different packages and be 
         disambiguated.
 
-    \item \textbf{Removal of Markets:} In moving to an agent-based methodology, 
+    \item \textbf{Removal of Markets:} In an agent-based methodology, 
         the mechanism for communication between agents is not an agent itself.
         Thus in \cyclus, market resolution was moved to be solely in the purview 
         of kernel. In order to transfer resources, agents must now communicate 
         in a well-defined way. This makes it easier to develop an archetype than 
-        the situation where markets specify how they wish to be communicated with 
+        it would be in the situation where markets specify how they wish to be communicated with 
         and the archetype has to adapt. 
 
 \end{itemize}
@@ -75,9 +73,9 @@ strategies themselves.
 \label{subsec-ppgc}
 
 Every \cyclus archetype is required to implement the member functions 
-seen in Listing \ref{req-api} and optionally may implement those seen in 
+seen in Listing \ref{req-api} and may optionally implement those seen in 
 Listing \ref{opt-api}. Due to the way object orientation works in 
-C++ and how \cyclus stores state, these member functions must be implemented directly
+C++ and how \cyclus stores \sout{state}\comment{states?}, these member functions must be implemented directly
 on the archetype itself. The implementation that archetypes inherit 
 from the \code{Agent} class is not sufficient. 
 
@@ -100,7 +98,7 @@ void BuildNotify(cyclus::Agent* child);
 void Decommission(cyclus::Agent* child);
 \end{lstlisting}
 
-This is because archetypes store state as public or private member variables
+\comment{awk paragraph start} This is because archetypes store state as public or private member variables
 directly on the class.  For example, a \code{Reactor} archetype class
 could have a burnup declared as `\code{double burnup};'. Not every agent has 
 a burnup, say for example \code{Enrichment}, and so the \code{burnup} member 
@@ -109,9 +107,9 @@ defined. Thus there is no way for \cyclus to know all possible field names
 for all possible archetypes for all time.  \Cyclus can only react to how 
 archetypes happen to have been written. In a dynamic language, the \code{Agent}
 superclass would still be able to to \emph{inspect} instances of its subclasses
-to discover field names at runtime. Such introspections is called \emph{reflection}. 
+to discover field names at runtime. Such introspection is called \emph{reflection}. 
 This would allow \code{Agent} to hold a single, generic implementation of each of the
-member functions in Listing \ref{req-api}, preventing archetype developers from 
+member functions in Listing \ref{req-api}, relieving archetype developers from 
 having to implement them manually.
 
 However, C++ lacks reflection. Neither \code{Agent} nor archetypes are allowed
@@ -123,27 +121,27 @@ the \code{Reactor} class must explicitly save the \code{burnup} member in the
 Nothing comes along for free and minor typos can cause large breakages. 
 
 Since implementing this part of the archetype \gls{API} is both highly error-prone and 
-very regular, it is ripe for automatic code generation. This would replace the 
+very regular, it is ripe for automatic code generation. Code generation replaces the 
 tedious task of writing the required member functions with software that will 
 insert such member functions into an otherwise fully developed archetype. 
 
 The code generation strategy has some limitations. First, it must be 
-performed prior to compilation and generated valid C++. Second, the
+performed prior to compilation and generated valid C++ \comment{awk}. Second, the
 code generator must be provided with enough information about the archetype in 
 order to accurately create the function implementation. Third and finally, it 
-is highly desirable to keep archetypes in valid C++. Templating languages 
+is highly desirable to keep archetypes in valid C++ \comment{depending on target journal, you may want to define this concept (the reader perhaps assuming that invalid code would simply not run)}. Templating languages 
 such as Jinja \TODO{CITE} or any other variety of custom solutions would allow for 
-expressive code generation. However, such template languges would be yet another 
+expressive code generation. However, such template languages would be yet another 
 tool for the archetype developer to learn, running counter to the goal of 
 simplifying development.
 
-The limitiations above are all elegantly addressed through the use of a 
+The limitations above are all elegantly addressed through the use of a 
 \cyclus-aware preprocessor. The first stage of C/C++ compilation is the 
-C Prepocessor or \code{cpp} \TODO{CITE}. This tool is responsible for expanading 
+C Prepocessor or \code{cpp} \TODO{CITE}. This tool is responsible for expanding 
 \code{#include} directives and implementing other \code{#} directives. It is executed
 prior to any other stage of compilation (lexing, parsing, tokenizing, \emph{etc.}).
 Importantly, the \code{#pragma} directive is skipped by \code{cpp} if it is not 
-recognized and the directive is retained its output. It is a
+recognized and the directive \comment{is retained its output (awk)}. It is a
 purposeful hook for other preprocessors to use and implement their own code generation.
 If an alternative preprocessor only uses \code{#pragma} directives as its interface, 
 the developer will be able to write in pure C++ and reap the benefits
@@ -155,43 +153,41 @@ the use of pragmas. To handle a suite of such utilities, a custom preprocessor
 is needed.
 
 Certain pragmas may be used to parse only the needed information 
-about an archetype, rather than parsing the entire class. For archetypes, the 
-member variables that are saved and loaded from its instances are the most important.
-This is because it is these variables that the fully describe the state of an agent 
-at all point in the simulation. Thus they are known as \emph{state variables}. 
-To generate the appropriate I/O routines for an archetype the names and C++ types 
+about an archetype, rather than parsing the entire class. For an archetype, the 
+member variables that are saved and loaded from its instances are the most important \sout{.This is because it is} \comment{because} these variables \sout{that the} fully describe the state of an agent 
+at all points in the simulation. Thus they are known as \emph{state variables}. 
+To generate the appropriate I/O routines for an archetype, the names and C++ types 
 of all state variables must be known at a minimum. Hence this process is 
 called \emph{state accumulation}. 
 
-Still other pragmas may 
+\comment{Still other pragmas may 
 signal where to insert automatically generated code. The tedious 
 part of the \code{cyclus::Agent} interface should be created. In specific, 
 the member functions given in Listing \ref{req-api} should be inserted automatically
-so that archetype developer need not write them.
+so that archetype developer need not write them. (Awk)}
 
 The \cyclus preprocessor, called \cycpp, handles all of the cyclus code generation
-and state accumulation. This tool looks only for directives that begin with 
-with \code{#pragma cyclus} so as to uniquely distinguish it from other preprocessors.
+and state accumulation. This tool looks only for directives that begin with \code{#pragma cyclus} so as to uniquely distinguish it from other preprocessors.
 There are three main passes that \cycpp uses on archetype code:
 \begin{enumerate}
-    \item Normalization of the source via the standard preprocessor \code{cpp}, 
-    \item Accumulation of state and other agent annotations from normalized code, 
-    \item Code generation into original source.
+    \item Normalization of the source via the standard preprocessor \code{cpp} 
+    \item Accumulation of state and other agent annotations from normalized code 
+    \item Code generation into original source
 \end{enumerate}
 It is important to note that any preprocessor that adds reflection must have at
 minimum two passes: discovery of what exists (state accumulation) and adding this
 information back to the class (code generation). Single-pass preprocessors such 
 as the standard \code{cpp} utility are not sufficient to add reflection because they 
-cannot guarantee that all relevant class information has been seen by the point 
-where code generation must happen. Thus \cycpp has this two passes and an additional 
+cannot guarantee that all relevant class information has been seen when code generation begins. \sout{by the point 
+where code generation must happen.} Thus \cycpp has these two passes plus an additional 
 initial pass to make state accumulation easier. Further passes could be added which 
 implement reflection onto the generated code itself but this is often unnecessary. 
-In \cyclus, further passes would be excessive since only portions of the 
-\code{cyclus::Agent} interface are generated and these are known ahead of time.
+In \cyclus, further passes would be excessive since the portions of the 
+\code{cyclus::Agent} interface that are generated are known ahead of time.
 
 \cyclus-specific pragmas are broken up into two categories depending on whether 
-they are most relevant to the state accumulation or to code generation. They 
-are denoted as \emph{annotation directives} and \emph{code generation directives}
+they are most relevant to the state accumulation or code generation. They 
+are denoted as \emph{annotation directives} and \emph{code generation directives},
 respectively.
 
 The \cycpp annotation interface has two main directives:
@@ -204,15 +200,15 @@ member variable to declare it as being a state variable. The note directive is u
 anywhere in an archetype class declaration and applies to the archetype itself.
 Both of these have a \code{<dict>} argument that is a Python dictionary. This 
 holds metadata about the state variable or the archetype. For example, a \code{flux}
-state variable may be declared as in Listing \ref{flux-pragma}.
+state variable declaration is shown in Listing \ref{flux-pragma}.
 
 \begin{lstlisting}[caption={Flux State Variable Annotation}, label=flux-pragma]
 #pragma cyclus var {"default": 42.0, "units": "n/cm2/s"}
 double flux;
 \end{lstlisting}
 
-The code generation interface in it is simplest form occurs via the \cyclus 
-prime directive, or merely \code{#pragma cyclus}.  This expression will 
+The code generation interface in its simplest form occurs via the \cyclus 
+prime directive, \code{#pragma cyclus}.  This expression will 
 generate the entire archetype interface and insert it in place of the pragma.
 More fine-grained code generation may be used by passing additional arguments.
 The signature for such targeted code generation may be seen in Listing \ref{targ-cg}.
@@ -232,9 +228,10 @@ class name may be provided as a final parameter.
 #pragma cyclus <decl|def|impl> [<func> [<agent>]]
 \end{lstlisting}
 
-When the annotation and code generation directives are combined and expanded with 
+\sout{When the annotation and code generation directives are combined and expanded with 
 \cycpp, simple agents become simple to write and complex agents confine their 
-complexity to the physics and economics that they seek to implement. The base \cyclus
+complexity to the physics and economics that they seek to implement.} \comment{When the annotation and code generation directives are combined and expanded with 
+\cycpp, agents become simple to write and complexity is confined to their physics and economics.} The base \cyclus
 infrastructure largely is removed from the concern of the archetype developer.
 For example, a simple reactor model may be completely implemented as seen in 
 Listing \ref{rx-eg}. The barrier to creating new archetypes is much lower than 
@@ -274,23 +271,23 @@ between disk and memory.
 Agent-based fuel cycle modeling, however, subsumes physical modeling frameworks.
 The types of data that are needed to naturally express many fuel cycle concepts 
 do not fit into the standard `arrays of floats' mindset.  More sophisticated types
-such as maps and sets of primitive types are needed at a minimum. For example, 
+such as maps and sets of primitive types are needed \sout{at a minimum}. For example, 
 a reprocessing facility needs to have a mapping from elements to separation 
 efficiencies. To avoid hard-coding the elements into the archetype, the user should 
-be able to state which elements for which separation is allowable. The correct data
+be able to state which elements are allowed for each separation. The correct data
 type in C++ for such information is \code{std::map<int, double>}. Any other 
-representation, say an int array and a float array,  would likely be converted to 
-a map by the archetype itself.
+representation, say an \code{int array} or a \code{float array},  would likely be converted to 
+a \code{map} by the archetype itself.
 
 \Cyclus increases expressiveness of archetypes and reduces error from extraneous 
 transcription by natively supporting its own extensible type system. Every type
 has its own unique integer identifier that distinguishes it as well as 
 a variable name corresponding to this type. All types
-must have a C++ representation. This is what is used for the type of the state
+must have a C++ representation, which is used for the type of the state
 variables. Every database format may then choose which types in the type system it 
-supports and how the it implements them. All types have a static \emph{rank}, or the 
+supports and how it implements them. All types have a static \emph{rank}, or the 
 number of variable length dimensions, they support.  For example, \code{int} and 
-\code{double} are both rank-0 though \code{vector<float>} is rank-1 due to 
+\code{double} are both rank-0, while \code{vector<float>} is rank-1 due to 
 vectors having arbitrary length. As an optimization, the archetype developer 
 may also give a \emph{shape}, a maximum size along each dimension, for a state 
 variable. The type system is extensible in that new types may be added in the future, 
@@ -313,7 +310,7 @@ as an argument. This mapping must have string keys.
 Metadata serves an important purpose by communicating information to the \cyclus
 preprocessor, to the \cyclus kernel, and even beyond the simulation to analysis 
 and visualization tools. Some metadata is automatically generated from the 
-archetype declaration itself.  These are considered read-only and required. 
+archetype declaration itself.  This information is considered read-only and required. 
 Other annotations are supplied by the archetype developers and are optional, 
 though for some keys (such as documentation) they are highly recommended.
 
@@ -441,8 +438,8 @@ some keys are reserved and have special meanings in various contexts. Table
 
 With respect to \cycpp, metadata enables the customization of code generation
 without the need to alter the preprocessor itself or create an entirely new 
-code generator. These hooks into \cycpp are exemplified by keys such as shape, 
-schematype, and initfromcopy.  Still other keys are generated by \cycpp itself
+code generator. These hooks into \cycpp are exemplified by keys such as \code{'shape'}, 
+\code{'schematype'}, and \code{'initfromcopy'}.  Still other keys are generated by \cycpp itself
 and are considered read-only.
 These include the all-important \code{'type'}, \code{'index'}, \code{'name'}, and 
 \code{'parents'} keys.  The automatic
@@ -464,11 +461,11 @@ save and load themselves. However, other uses are anticipated.
 Lastly, metadata is useful beyond \cyclus itself. Annotation keys such as `doc',
 `tooltip', and `units' are used to provide end-user documentation. The `userlevel'
 and other keys signal how archetypes and state variables should be treated in 
-downstream user interfaces.  Even keys that might have a primary usage elsewhere, 
+downstream user interfaces\comment{should these keys be formatted as above, using the code command?}.  Even keys that might have a primary usage elsewhere, 
 such as for `default' values, may still be helpful beyond the scope of \cyclus 
 itself.  
 
-The var and note directives provide unambiguous locations for implementing and 
+The var and note\comment{(formatting)} directives provide unambiguous locations for implementing and 
 generating metadata annotations. That all metadata lives within archetype 
 declarations increases the worth of both the metadata and the archetypes.
 There is a single source for information about archetypes written in a single file.
@@ -485,22 +482,21 @@ for the simulation.  Configuration is done by setting all state variables to
   developers to ask, ``Does what the user gave me make sense?'' For example: 
 
 \begin{itemize} 
-    \item a flux state variable clearly should not be negative, 
-    \item an integer variable should not receive the string ``Toaster'', and
-    \item a vector representing an N-group cross section should have exactly N 
-          elements.
+    \item a flux state variable clearly should not be negative
+    \item an integer variable should not receive the string ``Toaster''
+    \item a vector representing an N-group cross-section should have exactly N 
+          elements
 \end{itemize} 
-
 If the user were to not follow these rules, the input file would be break physical
 constraints, type constraints, or shape constraints respectively. 
 
 Such breaking of constraints must be an error and the simulation should not be 
-allowed to run. Luckily these rules can be codified into the archetypes allowing 
+allowed to run. Therefore, these rules can be codified into the archetypes allowing 
 the simulator to check that whether or not any input file adheres to them prior
 to execution. This is known as \emph{validation} and \cyclus implements it 
-automatically to the extent that it is able. 
+automatically to the extent possible. 
 
-\Cyclus input files are written in \gls{XML}. \gls{XML} itself may be validated against a 
+\Cyclus input files are written in \gls{XML}, \sout{. \gls{XML} itself} \comment{which}  may be validated against a 
 known structure called a \emph{schema}. The schema is itself \gls{XML} that describes 
 the layout, types, and attributes of the input that it attempts to validate.
 \Cyclus provides a default schema that describes the overall structure of the 
@@ -524,12 +520,12 @@ tools even to write a trivial archetype. Furthermore, the schema for most state
 variables may be derived automatically from information known to the preprocessor:
 the name of the state variable, its type, and optionally its shape and size in 
 the case of containers. Thus the \code{schema()} member function is auto-generated
-by \cycpp. The archetype developer obtains user input validation for free.
+by \cycpp and input validation is obtained for free. 
 
-\gls{XML}-based schema are extraordinarily useful as mechanism for validating types. 
+\gls{XML}-based schema are extraordinarily useful as a mechanism for validating types. 
 For example, if the user types in a floating point number rather than an 
 expected string, they should be alerted to this error immediately.
-Moreover since schema can also validate structure they can be used to assert that 
+Moreover since schema can also validate structure, they can be used to assert that 
 a variable has the right shape. A length-5 vector must be initialized with 
 five elements. However, rules about type and shape are at the limit of what may 
 be auto-generated.
@@ -543,15 +539,14 @@ archetype developer via metadata.
 
 Metadata for physical validation amounts to modifications to the schema. There are 
 two annotation keys that may be used to accomplish this.  The first clarifies the 
-type that the schema uses and is thus called \code{'schematype'}.  For example, for a
-group structure, the \code{'schematype'} could be assigned a value of 
+type that the schema uses and is called \code{'schematype'}.  \comment{In the example of a group structure shown in Listing \ref{ngroups}, the \code{'schematype'} could be assigned a value of 
 \code{'positiveInteger'} rather than relying on the default \code{'int'} type
-that permits negatives and zeros. This example may be seen in Listing \ref{ngroups}. 
+that permits negatives and zeros.} \sout{This example may be seen in Listing \ref{ngroups}. }
 Additionally, the metadata key \code{'schema'}
 can be used to wholly replace the auto-generated schema for the state variable at 
 hand. This key can be used to change the name of the state variable with respect 
-to the schema or to make a variable optional without providing a default value 
-and other less dangerous operations.
+to the schema or to make a variable optional \comment{without providing a default value 
+and other less dangerous operations (awk)}.
 
 \begin{lstlisting}[caption={Physical Constraint Addition via `schematype'}, label=ngroups]
 #pragma cyclus var {'schematype': 'positiveInteger'}
@@ -572,7 +567,7 @@ in \cycpp.
 In a robust ecosystem of archetypes, it is nearly guaranteed that different archetype
 developers will want to use the same name. No single person or organization can 
 reasonably lay sole claim to generic terms such as \emph{reactor}, \emph{source}, 
-\emph{sink}, and a plethora of other such names. Simultaneously, the archetype developer should not 
+\emph{sink}, etc \sout{and a plethora of other such names}. Simultaneously, the archetype developer should not 
 be concerned with accidental name collision between their archetypes and archetypes
 of other
 past, present, and future developers.  Furthermore, it is often useful in a 
