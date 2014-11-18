@@ -53,40 +53,8 @@ insurmountable in a reasonable time frame. Otherwise, potential new users and de
 walk away in confusion and frustration. For \cyclus, archetype development
 needs to have first-class support.
 
-An informal study 
-by the developers showed that a new developer circa \cyclus v0.1
-took 2+ work weeks to get a working `do-nothing' archetype. This is obviously 
-too long because most researchers do not have two weeks of time `just to try 
-something out.' By \cyclus v0.3 the do-nothing development time had been reduced 
-to approximately one business week. In \cyclus v0.4 this time became about 3 days.
-As of \cyclus v1.0, this finally was reduced down to 1 - 4 hours, which meets
-appropriate expectations for someone attempting \cyclus as a first time archetype 
-developer.
-
-These dramatic development time reductions were caused be two forces:
-clarification of the archetype abstraction and explicit tools to help with 
-archetype creation. While the region-institution-facility hierarchy was established 
-early on, the formulation of this hierarchy in an agent-based paradigm took much 
-longer to firmly establish.  Once this notion had been refined, attention turned to 
-simplifying \Cyclus archetype development.
-For a long time in the history of this simulator and its predecessors, such as 
-\gls{GENIUSv2} \TODO{CITE}, tools to help make archetypes were notable by their 
-absence. 
-The addition of archetype tools by the \cyclus core developers made archetype
-development significantly more efficient.
-
-The archetype development tools provided by \cyclus must overcome a variety of 
-technical hurdles in order to make archetype development accessible.  These 
-include, but are not limited to, the lack of reflection in the C++ programming language, 
-the desire to support multiple database formats, automatic validation of input files,
-special mechanisms for handling resource exchange and inventory persistence, 
-and the somewhat complex interface required to support the snapshotting and 
-restart of simulations. Such concerns are basic to \cyclus operation but 
-ancillary to the physics, chemistry, and economics being modeled by an archetype.
-The minutia should `just work' since it is not a core part of a fuel cycle model.
-\comment{(Perhaps along the lines of Katy's comments, a summary of the above 3 paragraphs could also perhaps go in the intro?)}
-
-This paper discusses how the \cyclus code base has overcome these inherent limitations
+This paper discusses how the \cyclus code base has overcome the inherent limitations
+of its design goals in order 
 to provide a fertile platform on which to model the nuclear fuel cycle.
 Such strategies can apply to any and all agent-based fuel cycle simulators, of which 
 there is currently only \cyclus.

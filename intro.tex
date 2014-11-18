@@ -5,7 +5,8 @@
 New technologies, while exciting, often pose new and unforeseen challenges.
 \Cyclus is no exception to this rule.  This paper answers the questions,
 \emph{``What precisely is an agent in a fuel cycle context?''} and 
-\emph{``What is the best way to program an agent?''}
+\emph{``What features of simulation can be abstracted away to ease the burden 
+on fuel cycle researchers?''}
 
 The genesis of \cyclus lies in the desire to 
 treat mass balances as discrete, model facilities individually rather than as 
@@ -60,7 +61,8 @@ literature \citeme.  Agent creation happens exclusively via
 Archetypes that wish to deploy agents must \emph{schedule} their building
 and decommissioning.
 
-Within the domain of agent specialization, archetype development is certainly the most taxing.
+Within the domain of agent specialization, archetype development is certainly 
+the most taxing.
 Not only must physical models be determined, implemented, and 
 validated, but this is also where agents interface with the 
 \cyclus kernel itself. The dynamism of agent-based simulation 
@@ -76,6 +78,38 @@ take novice developers upwards of two weeks effort.  The complexities
 that lead to such a high bar are emblematic not just of \cyclus,
 but of any agent-based fuel cycle simulator.
 
+Informal polling by the \cyclus team over the years
+showed that a new developer circa \cyclus v0.1
+took 2+ weeks to get a working `do-nothing' archetype. This is obviously 
+too long because most researchers do not have two weeks of time `just to try 
+something out.' By \cyclus v0.3 the do-nothing development time had been reduced 
+to approximately one business week. In \cyclus v0.4, this time became about 3 days.
+As of \cyclus v1.0, this finally was reduced down to 1 - 4 hours, which meets
+appropriate expectations for someone attempting \cyclus as a first time archetype 
+developer.
+
+These dramatic development time reductions were caused by two forces:
+clarification of the archetype abstraction and explicit tools to help with 
+archetype creation. While the region-institution-facility hierarchy was established 
+early on, the formulation of this hierarchy in an agent-based paradigm took much 
+longer to firmly establish.  Once this notion had been refined, attention turned to 
+simplifying \Cyclus archetype development.
+For a long time in the history of this simulator and its predecessors, such as 
+\gls{GENIUSv2} \TODO{CITE}, tools to help make archetypes were notable by their 
+absence. 
+The addition of archetype tools by the \cyclus core developers made archetype
+development significantly more efficient.
+
+The archetype development tools provided by \cyclus must overcome a variety of 
+technical hurdles in order to make archetype development accessible.  These 
+include, but are not limited to, the lack of reflection in the C++ programming language,
+the desire to support multiple database formats, automatic validation of input files,
+special mechanisms for handling resource exchange and inventory persistence, 
+and the somewhat complex interface required to support the snapshotting and 
+restart of simulations. Such concerns are basic to \cyclus operation but 
+ancillary to the physics, chemistry, and economics being modeled by an archetype.
+The minutia should `just work' since it is not a core part of a fuel cycle model.
+
 This paper describes the strategies, efforts, interfaces
 and implementations that considerably reduce the complexity  
 an archetype developer must deal with directly. This has been 
@@ -85,15 +119,16 @@ reductions down to a couple of minutes. This has has been accomplished
 without sacrificing an iota of simulation fidelity. Since such 
 problems proliferate throughout all possible simulators in 
 the \cyclus category, the methods described here apply beyond \cyclus.
-Though such methods sometimes dive into the minutia of 
-computer science and agent-based modeling, they are always implemented
+Though such methods sometimes dive into 
+computer science and agent-based modeling details, they are always implemented
 with the express goal of making fuel cycle simulation 
 simpler, easier, faster, more expressive, and validated.
 
 This paper proceeds by first providing a more detailed motivation 
-in \S \ref{sec-motive}. Then, \S \ref{sec-methods} describes 
+in \S \ref{sec-motive}. Then, \S \ref{sec-methods} describes
 methods and mindsets that are used to ease archetype development.
-Some of these are high-level design strategies, while others are software interfaces that 
+Some of these are high-level design strategies, while others are software 
+interfaces that 
 provide the correct fuel cycle agent abstractions. 
 \S \ref{sec-impl} describes the underlying algorithms and usages
 for those methodologies, which also require concrete implementations.
