@@ -17,17 +17,17 @@ must be handled in a generic and dynamic way as opposed to being hard-coded
 for specific commodities. Simulations must be inherently comparable, which involves 
 storage infrastructure that is designed around this need. Agents must be able 
 to communicate with one another and learn about the environment in which they 
-exist. Agents must be able to be dynamically deployed and the set of 
+exist. Additionally, agents must be able to be dynamically deployed and the set of 
 available agent models may not be collected until run time. Building and using such a
 simulator, while difficult, is not nearly as Sisyphean as it might seem. 
 
 What sets fuel cycle simulation apart from traditional agent-based simulations 
 is the high degree of agent specialization. Standard agent-based simulators
-are characterized as having very few types of agents, often only one and 
+are characterized as having few types of agents, often only one and 
 almost always less than five \citeme. The agent types are then specialized 
 when they are instantiated \emph{in situ}. This model is not appropriate for 
 fuel cycle applications.  For example, it would be unwise to have a single facility model 
-that represented both enrichment and reactors, called \code{EnrichmentOrReactor},
+that represents both enrichment and reactors, called \code{EnrichmentOrReactor},
 that decides via a switch how it behaves when it is deployed. It is much 
 more natural to have two models, \code{Enrichment} and \code{Reactor}, 
 that implement their own physics calculations independently.
@@ -39,11 +39,11 @@ represent geographic and governmental concerns, \emph{institutions}
 that manage other agents, and \emph{facilities} that implement 
 physics calculations and are usually in charge of resource management.
 
-The other axis of agent specialization distinguishes between who 
+The other axis of agent specialization distinguishes among who 
 writes the model, who sets up the model for potential use in a simulation,
 and who actually deploys concrete representations of the model.
 At the highest level are \emph{archetypes}, which are software implementations
-of physical, chemical, economic, and political models and whose behavior
+of physical, chemical, economic, and political models, whose behavior
 is parameterizable. For example, a \code{Reactor} \comment{extraneous arrow after 'reactor'?} archetype may be 
 parameterized by a target burnup. Authors of these highly reusable models 
 are known as \emph{archetype developers}. Archetypes are in turn 
@@ -53,7 +53,7 @@ values. Hence, a \code{Reactor} with a burnup of 42 MWd/kg is a
 prototype. Configuration is often specified by the \cyclus user 
 in the input file. Configuration requires no underlying knowledge of 
 how the archetype is implemented, though that often helps.
-Finally, when prototypes are copied and \emph{deployed} into the simulation 
+Finally, when prototypes are copied and \emph{deployed} in the simulation 
 they become \emph{agents}. This usage of the term `agent' to mean 
 the \emph{in situ} object is consistent with other agent-based
 literature \citeme.  Agent creation happens exclusively via 
@@ -61,12 +61,12 @@ literature \citeme.  Agent creation happens exclusively via
 Archetypes that wish to deploy agents must \emph{schedule} their building
 and decommissioning.
 
-Of the above, archetype development is certainly the most taxing \comment{awk- of the above what?}.
+Within the domain of agent specialization, archetype development is certainly the most taxing.
 Not only must physical models be determined, implemented, and 
 validated, but this is also where agents interface with the 
 \cyclus kernel itself. The dynamism of agent-based simulation 
-coupled with the compulsion to have traditional simulator features 
-such as restart engenders a complex interface with the kernel.
+coupled with the compulsion to have traditional simulator features, 
+such as restart, engenders a complex interface with the kernel.
 Archetype development would be much simplified if saving and 
 loading from disk and communicating with other agents were 
 never a concern, though such a simulator would be of marginal use.
@@ -78,7 +78,7 @@ that lead to such a high bar are emblematic not just of \cyclus,
 but of any agent-based fuel cycle simulator.
 
 This paper describes the strategies, efforts, interfaces
-and implementations which considerably reduce the complexity  
+and implementations that considerably reduce the complexity  
 an archetype developer must deal with directly. This has been 
 found to reduce development effort for simple agents down to a couple 
 of hours for novices. Expert archetype developers realize further 
@@ -97,6 +97,6 @@ methods and mindsets that are used to ease archetype development.
 Some of these are high-level design strategies, while others are software interfaces that 
 provide the correct fuel cycle agent abstractions. 
 \S \ref{sec-impl} describes the underlying algorithms and usages
-for those methodologies which also require concrete implementations.
+for those methodologies, which also require concrete implementations.
 Lastly, \S \ref{sec-conc} provides final remarks and illustrates
 potential future directions for \cyclus archetype development.
