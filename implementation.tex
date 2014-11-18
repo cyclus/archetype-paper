@@ -64,7 +64,6 @@ through the system without being stopped. \sout{This analogy may be seen in Figu
 \ref{filter-analogy}.}
 
 \begin{figure}[htbc]
-\label{filter-analogy}
 \centering
 \includegraphics[width=0.8\textwidth]{filter-analogy.eps}
 \caption{The \code{StateAccumulator} class passes lines of C++ code through 
@@ -74,6 +73,7 @@ This may be thought of analogous to a spheres of various radii traversing
 concentric windows.  The spheres, or lines of code, stop when they cannot pass a  
 window, or filter. This triggers the execution of the transformation function of just 
 that filter \sout{and that filter alone}.}
+\label{filter-analogy}
 \end{figure}
 
 The filters implemented for pass two of \cycpp are described in Table \ref{pass2-filters}, 
@@ -103,7 +103,6 @@ returns the canonical form of any type it knows about at all points during
 pass two of \cycpp.
 
 \begin{table}
-\label{pass2-filters}
 \caption{\cyclus Preprocessor Pass 2 Filters, higher order filters have 
          lower execution precedence.\comment{Previously, listing and table
 captions served primarily as a title (at least all wordsbegin w caps) Starting
@@ -170,6 +169,7 @@ this spelling is used slightly more} them for the
                                       or run time to \cycpp.\\
 \hline
 \end{tabular}
+\label{pass2-filters}
 \end{table}
 
 In \cycpp, the only relevant type information is the name.  The concrete size in bits
@@ -260,7 +260,6 @@ those of the \code{StateAccumulator}. This enables the efficient reuse
 of filters between state machines.
 
 \begin{table}
-\label{pass3-filters}
 \caption{\cyclus Preprocessor Pass 3 Filters, higher order filters have 
          lower execution precedence.}
 \begin{tabular}[htb]{|p{0.05\linewidth}|p{0.33\linewidth}|p{0.6\linewidth}|}
@@ -333,10 +332,10 @@ of filters between state machines.
 13 & \code{NamespaceFilter} & Sets and reverts a new namepsace scope.\\ 
 \hline
 \end{tabular}
+\label{pass3-filters}
 \end{table}
 
 \begin{table}
-\label{pass3-filters-2}
 \caption{\cyclus Preprocessor Pass 3 Filters (part 2).}
 \begin{tabular}[htb]{|p{0.05\linewidth}|p{0.33\linewidth}|p{0.6\linewidth}|}
 \hline
@@ -371,6 +370,7 @@ of filters between state machines.
                                       or run time to \cycpp.\\
 \hline
 \end{tabular}
+\label{pass3-filters-2}
 \end{table}
 
 When all of the pieces of \cycpp are brought together, the benefits scale as the 
@@ -553,7 +553,6 @@ Each backend determines which types it wishes to support, though this must exten
 to a relatively robust subset in order to run even simple simulations.
 
 \begin{table}
-\label{some-types}
 \caption{Sample \cyclus Types}
 \centering
 \begin{tabular}[htb]{|c|l|l|c|}
@@ -595,6 +594,7 @@ to a relatively robust subset in order to run even simple simulations.
  & $\cdots$ & $\cdots$ & \\
 \hline
 \end{tabular}
+\label{some-types}
 \end{table}
 
 A key database-enabling feature of the \cyclus type system is that 
@@ -649,7 +649,6 @@ archetype specification for representing the archetype on disk.  These tables
 are also reserved for the kernel alone. 
 
 \begin{table}
-\label{std-tabs}
 \caption{Standard Tables Reserved by the \Cyclus Kernel, Columns given in order with 
 names and types.}
 \centering
@@ -719,11 +718,11 @@ Each nuclide within a composition has its own row but the same \code{QualId}.}\\
                              \code{Compositions} table.\\
 \hline
 \end{tabular}
+\label{std-tabs}
 \end{table}
 
 
 \begin{table}
-\label{std-tabs-2}
 \caption{Standard Tables Reserved by the \Cyclus Kernel (cont.)\comment{wait
 there is no automatic way to do this for long tables?!}} 
 \centering
@@ -793,11 +792,11 @@ If this table does not exist, then no agents were decommissioned in the simulati
                                       negotiated.\\
 \code{Time} & \code{INT} & The time step at which the resource transfer took place.\\
 \end{tabular}
+\label{std-tabs-2}
 \end{table}
 
 
 \begin{table}
-\label{std-tabs-3}
 \caption{Standard Tables Reserved by the \Cyclus Kernel (cont.)} 
 \centering
 \begin{tabular}[htb]{|llp{0.65\linewidth}|}
@@ -842,11 +841,11 @@ and \Cyclus dependency version information.}\\
 \code{CoinCBCVersion} & \code{VL_STRING} & COIN version information.\\
 \hline
 \end{tabular}
+\label{std-tabs-3}
 \end{table}
 
 
 \begin{table}
-\label{std-tabs-4}
 \caption{Standard Tables Reserved by the \Cyclus Kernel (cont.)} 
 \centering
 \begin{tabular}[htb]{|llp{0.75\linewidth}|}
@@ -902,6 +901,7 @@ simulation restart and branching.}\\
 \code{Time} & \code{INT} & The time step a snapshot was taken for this simulation.\\
 \hline
 \end{tabular}
+\label{std-tabs-4}
 \end{table}
 
 Though the database backend implementation and the associated type system may be 
@@ -913,7 +913,7 @@ allows archetypes to be as expressive as needed to fit the model.
 
 Archetype metadata annotation is an important part of \cyclus because it allows for 
 reflection on the archetype classes. Well-defined metadata entries are 
-described in Tables \ref{sv-anno} \& \ref{ag-anno}\comment{(these are both rendering as the same table number)}. 
+described in Tables \ref{sv-anno} \& \ref{ag-anno}. 
 Additionally, archetype developers may supply 
 any other information and ascribe to it the semantics that they desire.
 This is done simply by adding undefined keys to the \code{#pragma cyclus var} and
