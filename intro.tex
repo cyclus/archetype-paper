@@ -7,9 +7,8 @@ New technologies, while exciting, often pose new and unforeseen challenges.
 \emph{``What precisely is an agent in a fuel cycle context?''} and 
 \emph{``What is the best way to program an agent?''}
 
-A discrete time agent-based simulator is needed to \comment{sate the want (awkward)} for increased 
-fuel cycle modeling fidelity. The genesis of \cyclus lies in the desire to 
-treat mass balances \comment{(but didn't we discuss that cyclus doesn't really do mass balance?)} as discrete, model facilities individually rather than as 
+The genesis of \cyclus lies in the desire to 
+treat mass balances as discrete, model facilities individually rather than as 
 a fleet, and to be able to quantitatively compare the effects of changing the 
 fidelity of the facilities themselves. These goals imply a large degree of 
 sophistication on the part of the simulator infrastructure.  Resource exchange
@@ -44,7 +43,7 @@ writes the model, who sets up the model for potential use in a simulation,
 and who actually deploys concrete representations of the model.
 At the highest level are \emph{archetypes}, which are software implementations
 of physical, chemical, economic, and political models, whose behavior
-is parameterizable. For example, a \code{Reactor} \comment{extraneous arrow after 'reactor'?} archetype may be 
+is parameterizable. For example, a \code{Reactor}  archetype may be 
 parameterized by a target burnup. Authors of these highly reusable models 
 are known as \emph{archetype developers}. Archetypes are in turn 
 \emph{configured} into \emph{prototypes}. A prototype is a copy 
