@@ -6,17 +6,16 @@ require knowledge of physics, economics, and computer science to solve a single 
 problem.  Unlike other spheres of nuclear engineering, decoupling these domains from
 one another is often not possible without significant simplification. \cyclus is 
 no exception to this and is designed to allow for complete fidelity throughout 
-all aspects of the simulation. \comment{The advantage of the \cyclus design is that it enables full modeling fidelity without requiring that archetype developers actively address every class of 
-problem every time they pursue a new archetype.}
+all aspects of the simulation. The advantage of the \cyclus design is that it 
+enables full modeling fidelity without requiring that archetype developers actively 
+address every class of problem every time they pursue a new archetype.
 
 \Cyclus succeeds in simplifying archetype development by identifying a category 
 of computer science and software development problems that are addressed 
 algorithmically. This moves effort away from humans, who are pursing physics and
 economics, and onto computers. This automation happens by default for
 archetype development and reduces manual code writing by approximately
-10 times\sout{, excluding physics and resource exchange
-routines}\comment{don't we not write resource ex routines? or should yoit say
-``custom resource exchange routines''}.
+10 times.
 Additionally, the automation may be partially or fully reduced 
 if desired. The \cyclus system of archetype development nimbly 
 adapts to the needs of the archetype by allowing the developer to select the 
@@ -48,9 +47,7 @@ The preprocessor also generates schema for archetypes. This provides a mechanism
 for automatically validating user input.  Without validation, the archetype 
 developer has no guarantee that the user has entered a meaningful or physically possible 
 value (e.g., negative fluxes). Rather than approaching this problem in an
-\emph{ad hoc} \comment{(I'm not sure, but I think ad hoc was not previously
-italicized. I think it falls under the category of foreign lang that doesn't
-require it because it's been deemed ``common enough'')}
+\emph{ad hoc} 
 manner, the \cyclus interface demands that user input be examined via \acrlong{RNG}.  The overhead 
 of this requirement is mitigated since the archetype developer obtains the schema
 for free. This assures a high level of quality in using archetypes as well as 
@@ -83,7 +80,7 @@ key could specify the acceptable range for a state variable. This could in turn
 provide better validation by adding bounds checks beyond the what is performed
 by \gls{RNG}. A similar strategy could be followed for categorical variables whereby
 set membership would be verified. The code that is generated for future keys 
-depends largely on the meaning ascribed to those keys. \sout{However, } There is no limit 
+depends largely on the meaning ascribed to those keys. There is no limit 
 to the richness of available metadata.
 
 In summary, archetype development is has been made significantly easier. This is due in large
@@ -94,6 +91,5 @@ as a platform for archetype development while simultaneously nimble enough
 to allow for future growth. Independent of \cyclus, the strategies and methods that
 \cyclus implements for archetype developers are translatable to any agent-based 
 fuel cycle simulator.  Some aspects, such as the type system,  may even be exportable 
-to general simulation science. \sout{ though they are needed here due to the complexity of 
-fuel cycle simulation.}
+to general simulation science. 
 

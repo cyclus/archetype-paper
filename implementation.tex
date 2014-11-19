@@ -47,9 +47,7 @@ Thus, state accumulation
 may be thought of as a traditional parser that transforms tokens (lines of the 
 C++ file) into a more meaningful in-memory data structure. As a parser, pass two 
 may be implemented as a \emph{state machine}
-\cite{mertz2003text,wagner2006modeling}.\comment{AO had to look up this
-definition. Not sure if that means it should be defined or not (probably
-depends on the journal choice)}
+\cite{mertz2003text,wagner2006modeling}.
 
 Pass two is represented in \cycpp by the \code{StateAccumulator} class,  a
 state machine that compares the output lines from the C preprocessor against a series of \emph{filters}.  If a line matches the expected structure 
@@ -58,10 +56,10 @@ line and no further filters are executed. If the line does not match any
 filters, then the line is allowed to pass through the \code{StateAccumulator}.  
 The filter-transformation sequence can be thought of in analogy to a sphere of 
 a given radius (a line of code) attempting to pass through concentric windows 
-(the filters) of decreasing aperture, \comment{as illustrated in Figure \ref{filter-analogy}}. This first window where the sphere stops 
+(the filters) of decreasing aperture, as illustrated in Figure \ref{filter-analogy}. 
+This first window where the sphere stops 
 represents the transformation that is executed.  This sphere is allowed to move 
-through the system without being stopped. \sout{This analogy may be seen in Figure 
-\ref{filter-analogy}.}
+through the system without being stopped.
 
 \begin{figure}[htbc]
 \centering
@@ -72,18 +70,18 @@ by previous filters.
 This may be thought of analogous to a spheres of various radii traversing 
 concentric windows.  The spheres, or lines of code, stop when they cannot pass a  
 window, or filter. This triggers the execution of the transformation function of just 
-that filter \sout{and that filter alone}.}
+that filter.}
 \label{filter-analogy}
 \end{figure}
 
 The filters implemented for pass two of \cycpp are described in Table \ref{pass2-filters}, 
 in order of decreasing precedence. The most important of these filters implement 
 the \code{#pragma cyclus} directives that the archetype uses to communicate
-with the preprocessor.  The pragma filters \sout{tend to} \comment{typically}  modify attributes of
+with the preprocessor.  The pragma filters typically modify attributes of
 the \code{StateAccumulator}, such as the \code{context}, the \code{execns} 
 (or \emph{execution namespace}), the \code{aliases} set, and the \code{namespaces}. 
 These represent the classes, types, aliases, and other information that defines
-the scope of the C++ code\sout{ that has been seen thus far}. Such information is necessary 
+the scope of the C++ code. Such information is necessary 
 for accurately representing archetypes and their state variables. 
 
 Most pass two filters that do not implement a preprocessor directive instead
@@ -91,23 +89,22 @@ aggregate information about the available types. The \code{VarDeclarationFilter}
 the important job of determining the C++ type of state variables from the 
 member variable declaration on the archetype class. However, the C++ type system 
 is complex and allows for a number of programmer modifications prior 
-to the type declarations: types may be aliased to any number of alternative 
-names, template types are white-space insensitive, scoping rules apply 
-to new type names, and other issues must be resolved to accurately and uniquely 
-represent a C++ type. \comment{Check style of edit and punctuation... not sure
-if semi-colons go there instead of commas if it's a list after a colon. I
-think it's still commas even if they are complete sentences.} This requires that \cycpp reimplement relevant type handling
-simply to correctly spell \comment{what?}. 
+to the type declarations:
+\begin{itemize}
+    \item types may be aliased to any number of alternative names, 
+    \item template types are white-space insensitive, 
+    \item scoping rules apply to new type names, and 
+    \item other issues must be resolved to accurately and uniquely represent a C++ type. 
+\end{itemize}
+This requires that \cycpp implement relevant type handling
+simply to correctly spell the canonical type name. 
 Thus the \code{StateAccumulator} class acts as its own type system and
 returns the canonical form of any type it knows about at all points during 
 pass two of \cycpp.
 
 \begin{table}
-\caption{\cyclus Preprocessor Pass 2 Filters, higher order filters have 
-         lower execution precedence.\comment{Previously, listing and table
-captions served primarily as a title (at least all wordsbegin w caps) Starting
-here, this convention no longer holds. So, should this be a footnote or in
-parentheses?}}
+\caption{\cyclus Preprocessor Pass 2 Filters (Higher order filters have 
+         lower execution precedence)}
 \begin{tabular}[htb]{|p{0.05\linewidth}|p{0.33\linewidth}|p{0.6\linewidth}|}
 \hline
 \textbf{order} & \textbf{filter} & \textbf{description} \\
@@ -151,8 +148,7 @@ parentheses?}}
 11 & \code{VarDecorationFilter} & Implements the \cycpp \code{#pragma cyclus var <dict>}
                                   directive for state variable annotations
                                   by evaluating the contents of \code{<dict>} in the current 
-                                  context and queuing \comment{google says
-this spelling is used slightly more} them for the 
+                                  context and queuing  them for the 
                                   next state variable declaration.\\ 
 \hline
 12 & \code{VarDeclarationFilter} & State variable declaration. Applies the results 
@@ -221,9 +217,7 @@ form for all \code{float}, \code{myfloat}, and \code{mynumber} would all be
 \code{float}.  This is what \cycpp should record.  Templates must recursively 
 determine the template type name and the types of all template parameters.
 The canonical form of a type must be automatically computed to avoid an
-entire class of typographic errors by the archetype developers.  The investment
-into this mini-type system by the kernel developers has already been repaid several 
-times over.\comment{Not sure if this should be expanded upon or deleted.}
+entire class of typographic errors by the archetype developers.
 
 Aside from the type system semantics, pass two represents a relatively straightforward
 process of building up archetype information for later use. The first instance
@@ -238,8 +232,7 @@ Much like pass two, pass three is also a state machine. The class that implement
 called \code{CodeGenerator} and the filters within this class implement 
 the corresponding code generation routines.  While the \code{CodeGenerator}  does 
 reuse some meta-data accumulation filters, it largely relies on the results of 
-pass two \comment{I'm a fan of using numerals for this instead of writing the
-numbers out but I edited this for consistency} for archetype and state variable information.  The only data that cannot be 
+pass two for archetype and state variable information.  The only data that cannot be 
 reused and is recomputed is that which pertains to the scope of each line of C++ code.
 
 Pass three traverses all lines of the source code for a third time.
@@ -376,7 +369,7 @@ of filters between state machines.
 When all of the pieces of \cycpp are brought together, the benefits scale as the 
 number of state variables times the number of code generated member functions 
 (currently nine). This implies roughly an order of magnitude savings on the number of 
-lines that an archetype developer must write per state variable. \sout{However} \comment{Moreover}, 
+lines that an archetype developer must write per state variable. Moreover, 
 exponential savings come from the fact that the archetype developers do not need
 to understand either the \cyclus interface nor the extra lines that they do not have to write.
 Even for a developer who knows the \cyclus
@@ -526,18 +519,19 @@ serving as the fundamental on-disk representation for all \cyclus input and outp
 \end{itemize}
 Therefore, common databases notions such as the shape of a column, raw arrays, or
 queryability must be optional, omitted, or implemented inside the backend itself.
-\sout{Of these notions, } Queryability is the most important, \comment{and is available in both \gls{HDF5} and \gls{SQLite}}. If a database format or its backend lacks 
+Queryability is the most important, and is available in both \gls{HDF5} and 
+\gls{SQLite}. If a database format or its backend lacks 
 queryability (such as \gls{CSV}), then it is impossible to start or restart a 
 \cyclus simulation from simply this backend (though such a format may be used in 
-conjunction with another queryable format). \sout{Both \gls{HDF5} and \gls{SQLite} are queryable.}
+conjunction with another queryable format). 
 
 The database backends are deeply tied to the \cyclus type system. Types in \cyclus
 are represented by unique integers that map to C++ types by the \code{enum} called \code{DbTypes}.
 Simple types are represented by simple names: \code{float} becomes
 \code{FLOAT}, which is assigned to 2. Container types, such as \code{vector},
 are more complex in that each template specification (\code{vector<int>}) has
-its own type in the \cyclus type system.  Containers are further delineated \sout{by 
-the distinction between} as fixed-length or \gls{VL}. Thus even the 
+its own type in the \cyclus type system.  Containers are further delineated
+as either fixed-length or \gls{VL}. Thus even the 
 relatively simple C++ type \code{std::vector<int>} receives two entries in the 
 \cyclus type system: \code{VECTOR_INT} and \code{VL_VECTOR_INT}, which are given 
 the identifiers 10 and 11 and represent fixed- and variable-length versions, 
@@ -619,8 +613,8 @@ de-duplicate data and store every unique value only once.
 The second purpose for hashing is to allow backends to implement the storage 
 of variable-length types as a \emph{bidirectional hash map} using the 
 \gls{SHA1} as a key.  This data structure is an associative array in which the values are 
-uniquely determined from the keys \emph{and} the keys are unquietly
-\comment{is this a typo?} determined from 
+uniquely determined from the keys \emph{and} the keys are uniquely
+determined from 
 the values. Furthermore, in \cyclus, the keys of this data structure are simply the 
 hashes themselves. This differs from a typical hash map (e.g. Python dictionaries) 
 in that they only require that values may be determined from the keys and only the
@@ -641,10 +635,11 @@ Data that are fully dependent parameters of the archetype are not appropriate
 as state variables and thus should not be stored in this way.  Custom tables 
 have the same restrictions as other parts of the database as well as 
 the additional restriction that they cannot reuse the table names that 
-\cyclus itself uses. Writing to such tables is \sout{considered} reserved for
+\cyclus itself uses. Writing to such tables is reserved for
 the kernel. 
 Table \ref{std-tabs} shows the standard tables generated by \cyclus.
-Distinct from the previously mentioned custom tables, the kernel will also produce tables whose names are based on the 
+Distinct from the previously mentioned custom tables, the kernel will also produce 
+tables whose names are based on the 
 archetype specification for representing the archetype on disk.  These tables
 are also reserved for the kernel alone. 
 
@@ -664,11 +659,10 @@ simulation (split, combined, transmuted, decayed, etc.), a new entry is added
 to this table. If two resources are 
 combined, then the new resource entry will have the identifiers of the 
 other two in its ``Parent1'' and ``Parent2'' columns. 
-\sout{It is interesting to note that the \code{Resources}
+The \code{Resources}
 table does not encode any information about where a resource exists. This information 
-can be inferred by corroborating resource identifiers with the \code{ResCreators} and 
-\code{Transactions} tables.}\comment{This description should probably be
-shortened and I don't think this detail is 100\% necessary}} \\
+can be inferred from the \code{ResCreators} and 
+\code{Transactions} tables.}\\
 & & \\
 \code{SimId} & \code{UUID} & Simulation identifier \\
 \code{ResourceId} & \code{INT} & The unique ID for this resource entry. \\
@@ -723,13 +717,12 @@ Each nuclide within a composition has its own row but the same \code{QualId}.}\\
 
 
 \begin{table}
-\caption{Standard Tables Reserved by the \Cyclus Kernel (cont.)\comment{wait
-there is no automatic way to do this for long tables?!}} 
+\caption{Standard Tables Reserved by the \Cyclus Kernel (cont.)
 \centering
 \begin{tabular}[htb]{|llp{0.75\linewidth}|}
 \hline
-\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{Products Table:} \comment{Stores
-product information regarding quality.}}\\
+\multicolumn{3}{|p{0.95\linewidth}|}{\textbf{Products Table:} Stores
+product information regarding quality.}\\
 & & \\
 \code{SimId} & \code{UUID} & Simulation identifier \\
 \code{QualId} & \code{INT} & Key to associate this quality with one or more entries 
@@ -759,18 +752,12 @@ a row of information for each agent that enters the simulation.}\\
 \code{ParentId} & \code{INT} & The \code{AgentId} of the parent agent that 
                                built or created this agent.\\
 \code{Lifetime} & \code{INT} & Number of time steps an agent is designed to operate 
-                               over. -1 indicates an infinite lifetime.
-\sout{Note that 
-                               depending on how agents use the lifetime parameter, 
-                               this may be entirely unrelated to how long agents 
-                               were actually operating in the simulation.}\\
+                               over. -1 indicates an infinite lifetime.\\
 \code{EnterTime} & \code{INT} & The time step when the agent entered 
                                 the simulation.\\
 \hline
 \multicolumn{3}{|p{0.95\linewidth}|}{\textbf{AgentExit Table:} Stores
 a row of information for agents that leave a simulation. 
-\sout{Due to implementation details in the \Cyclus kernel, this table is 
-separate from the \code{AgentEntry} table.} \comment{no apologies!}
 If this table does not exist, then no agents were decommissioned in the simulation.}\\
 & & \\
 \code{SimId} & \code{UUID} & Simulation identifier. \\
@@ -811,11 +798,7 @@ and \Cyclus dependency version information.}\\
                                    simulations in a database.\\
 \code{InitialYear} & \code{INT} & The year in which time step zero occurs.\\
 \code{InitialMonth} & \code{INT} & The month that time step zero represents.\\
-\code{Duration} & \code{INT} & The length of the simulation in time steps.
-\sout{Note that it 
-                               is possible a simulation to terminate early before 
-                               running its entire duration - see the \code{Finish} 
-                               table section.}\\
+\code{Duration} & \code{INT} & The length of the simulation in time steps.\\
 \code{ParentSimId} & \code{UUID} &  The SimId for this simulation's parent. Zero if 
                                     this simulation has no parent.\\
 \code{ParentType} & \code{VL_STRING} &  One of:
@@ -927,8 +910,7 @@ the metadata is \emph{unstructured} \cite{feldman2007text}. From a C++ implement
 standpoint, this means that there is no class or struct that can be declared whose
 member variables encompass all possible metadata without at least one of those
 members being a pointer or reference. This is because determining the type 
-of a blob of memory at runtime \comment{check consistency of runtime vs run
-time} in C++ must use \code{void*}, \code{char*}, 
+of a blob of memory at runtime in C++ must use \code{void*}, \code{char*}, 
 or other pointer indirection. Representing annotation in memory is 
 more complex than in a single metadata class.
 
@@ -941,16 +923,15 @@ Furthermore, the \gls{JSON} syntax is concise and intuitive. \gls{XML} could hav
 as an alternative format, but a schema and the translation to native data structures 
 would have to be handled manually. \gls{YAML} \cite{ben2009yaml} or Python itself offer 
 more likely  alternatives to \gls{JSON} but require a more sophisticated interpreters 
-corresponding to their more powerful syntax. \sout{\gls{JSON} is enough and
-just enough.}
+corresponding to their more powerful syntax. 
 
-\sout{However,} \gls{JSON} is a metadata representation that resides on disk, 
+\gls{JSON} is a metadata representation that resides on disk, 
 not in memory. Translation from plain text \gls{JSON} to C++ data structures is 
 performed via the JsonCpp software \cite{eltuhamy2014native}. This does the work 
 of parsing \gls{JSON} code, implementing the \gls{JSON} type system, and translating back and
 forth between \gls{JSON} types and C++ types. It provides a fully 
 introspective 
-container for arbitrary metadata called \code{Json::Value}. \sout{Thus,} An instance of this 
+container for arbitrary metadata called \code{Json::Value}. An instance of this 
 class is precisely what the \code{annotations()} archetype member function returns.
 Therefore, the entire metadata workflow is as follows:
 \begin{enumerate}
@@ -958,11 +939,12 @@ Therefore, the entire metadata workflow is as follows:
           Python dictionary with string keys.
     \item \cycpp parses, evaluates, and accumulates the annotations into a single 
           metadata dictionary per archetype during pass two of preprocessing.
-    \item Pass three of \cycpp converts the metadata to a \gls{JSON}-formatted string using 
+    \item Pass three of \cycpp converts the metadata to a \gls{JSON}-formatted 
+          string using 
           \gls{JSON} utilities in the Python standard library. This comprises
           the majority of the 
           code generated for \code{annotations()} member
-          function\comment{check edit!}.
+          function.
     \item When \code{annotation()} is called from C++, the \gls{JSON} string is parsed 
           by JsonCpp and a new instance of \code{Json::Value} is returned that
           corresponds to the metadata.
@@ -972,8 +954,8 @@ archetype developer and user, and between compile time and run time.
 
 \subsection{XML Validation}
 
-A key benefit to the \Cyclus simulation infrastructure is the run-time
-\comment{(runtime/run time/run-time problems!)} guarantee
+A key benefit to the \Cyclus simulation infrastructure is the runtime
+guarantee
 of valid input files provided to both users and archetype developers. Developers
 are guaranteed valid construction of archetypes within a simulation, and users
 are notified immediately if a given input file would have resulted in invalid
@@ -1046,8 +1028,7 @@ archetype discussed in section \S \ref{subsec-ppgc}.
 \end{lstlisting}
 
 After generating master \Cyclus schema, user input is provided to an instance
-of the \code{cyclus::RelaxNGValidator} \comment{this is not wrapping to the
-next line in my pdf} class. This class utilizes the C++ libxml2
+of the \code{cyclus::RelaxNGValidator} class. This class utilizes the C++ libxml2
 library to validate the user input against the generated \gls{RNG} schema. 
 
 If
@@ -1072,7 +1053,7 @@ used for the unspecified parameters.
 </facility>
 \end{lstlisting}
 
-\sout{However,} If the input is determined to be invalid, an error is raised without
+If the input is determined to be invalid, an error is raised without
 beginning the simulation. Listing \ref{invalid-xml} shows an example of input for
 the \code{Reactor} that is invalid because the \code{power} input parameter
 type is not a \code{float}; \Cyclus fails immediately with the error message
