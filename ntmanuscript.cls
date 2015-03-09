@@ -110,7 +110,7 @@
         {.5\baselineskip}%              %afterskip
         {\reset@font\emph}%             %italic
 }
-\renewcommand{\thesubsubsection}{\thesubsection.\@roman\c@subsection}
+\renewcommand{\thesubsubsection}{\thesubsection.\@roman\c@subsubsection}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAPHY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
