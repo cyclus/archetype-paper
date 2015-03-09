@@ -40,8 +40,9 @@ A variety of strategies are used by \cyclus to ease archetype development:
         developers to invent and implement custom persistence solutions.
 
     \item \textbf{Validation:} Archetypes use \gls{XML} schema to validate that 
-        the prototypes that are generated from them are created correctly.
-        This ensures the users of an archetype are using it correctly.
+        their prototypes have been configured correctly.
+        This ensures the users of an archetype are adhering to the contraints
+        imposed by the developer.
 
     \item \textbf{Metadata Annotations:} Archetypes have a standard place to 
         store and retrieve both pre-defined and arbitrary metadata.
@@ -55,7 +56,7 @@ A variety of strategies are used by \cyclus to ease archetype development:
         archetype, but they would exist in different packages and be 
         disambiguated.
 
-    \item \textbf{Removal of Markets:} In an agent-based methodology, 
+    \item \textbf{Markets are not Agents:} In an agent-based methodology, 
         the mechanism for communication between agents is not an agent itself.
         Thus in \cyclus, market resolution was moved to be solely in the purview 
         of kernel. In order to transfer resources, agents communicate 
