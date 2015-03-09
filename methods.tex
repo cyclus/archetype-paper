@@ -136,14 +136,15 @@ order to accurately create the function implementation. Third and finally, it
 is highly desirable to keep archetypes in valid C++, rather that a special 
 code generation language created just for \cyclus.
 Templating languages 
-such as Jinja \TODO{CITE} or any other variety of custom solutions would allow for 
+such as Jinja \cite{ronacher2011jinja2} or any other variety of custom 
+solutions would allow for 
 expressive code generation. However, such template languages would be yet another 
 tool for the archetype developer to learn, running counter to the goal of 
 simplifying development.
 
 The limitations above are all elegantly addressed through the use of a 
 \cyclus-aware preprocessor. The first stage of C/C++ compilation is the 
-C Prepocessor or \code{cpp} \TODO{CITE}. This tool is responsible for expanding 
+C Prepocessor or \code{cpp} \cite{stallman1987c}. This tool is responsible for expanding 
 \code{#include} directives and implementing other \code{#} directives, such as 
 \code{#pragma}. It is executed
 prior to any other stage of compilation (lexing, parsing, tokenizing, \emph{etc.}).
