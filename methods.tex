@@ -83,8 +83,8 @@ Every \cyclus archetype is required to implement the member functions
 seen in Table \ref{req-api} and may optionally implement those seen in 
 Table \ref{opt-api}. Due to object orientation in 
 C++ and how \cyclus stores state, these member functions must be implemented directly
-on the archetype itself. The implementation that archetypes inherit 
-from the \code{Agent} class is not sufficient. 
+on the archetype itself. The implementation of these functions that archetypes 
+inherit from the \code{Agent} class is not and cannot be sufficient.
 
 \begin{table}
 \caption{Required Archetype Interface}
@@ -129,7 +129,7 @@ from the \code{Agent} class is not sufficient.
 Archetypes store state as public or private member variables
 directly on the class.  For example, a \code{Reactor} archetype class
 could have a burnup declared as `\code{double burnup};'. Not every agent has 
-a burnup (e.g., \code{Enrichment}) and so the \code{burnup} member 
+a burnup (e.g., an enrichment facility) and so the \code{burnup} member 
 should not be part of \code{Agent}. Furthermore, archetypes are modularly 
 defined. Because \cyclus cannot know all possible field names 
 for all possible archetypes for all time, it can only react to how 
@@ -151,7 +151,8 @@ could cause large breakages. For example, misspelling \code{burnup} as \code{bun
 could cause the \code{Snapshot()} method to fail silently if it occured in the 
 wrong location.
 
-Since implementing this part of the archetype \gls{API} is both highly error-prone and 
+Since implementing this part of the archetype interface is both highly 
+error-prone and 
 routine, it is ripe for automatic code generation. Code generation replaces the 
 tedious task of writing the required member functions with software that will 
 insert such member functions into an otherwise fully developed archetype. 
@@ -167,7 +168,7 @@ Templating languages
 such as Jinja \cite{ronacher2011jinja2} or any other variety of custom 
 solutions would allow for 
 expressive code generation. However, such template languages would be yet another 
-tool for the archetype developer to learn, running counter to the goal of 
+tool for the archetype developer to learn. This runs counter to the goal of 
 simplifying development.
 
 The limitations above are all elegantly addressed through the use of a 
@@ -175,7 +176,7 @@ The limitations above are all elegantly addressed through the use of a
 C Prepocessor or \code{cpp} \cite{stallman1987c}. This tool is responsible for expanding 
 \code{#include} directives and implementing other \code{#} directives, such as 
 \code{#pragma}. It is executed
-prior to any other stage of compilation (lexing, parsing, tokenizing, \emph{etc.}).
+prior to any other stage of compilation (lexing, parsing, \emph{etc.}).
 Importantly, the \code{#pragma} directive is skipped by \code{cpp} if it is not 
 recognized and the directive is passed though to further preprocessors or a C++ 
 compiler. It is a
@@ -194,14 +195,15 @@ about an archetype, rather than parsing the entire class. For an archetype, the
 member variables that are saved and loaded from its instances are the most important.
 This is because they fully describe the state of an agent 
 at all points in the simulation. These member variables are known as \emph{state variables}. 
-To generate the appropriate I/O routines for an archetype, at a minimum, the names and C++ types 
+To generate the appropriate input and output routines for an archetype, at a minimum, the names and C++ types 
 of all state variables must be known. The gathering of all these state variables is is 
 called \emph{state accumulation}. 
 
 Still, other pragmas denote where to insert automatically generated code into the 
-original file. The tedious 
-part of the \cyclus interface should be created automatically. Specifically, 
-the member functions in Listing \ref{req-api} ought to be inserted for the
+original file. This is the tedious 
+part of achetypes communicating with the \cyclus kernel. Specifically, 
+the member functions in Listing \ref{req-api} ought to be created and inserted 
+for the
 archetype developer, avoiding entirely the need to write them by hand.
 
 The \cyclus preprocessor, called \cycpp, handles all of the cyclus code generation
