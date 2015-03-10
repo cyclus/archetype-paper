@@ -12,8 +12,7 @@ However, methods that are more intuitive for new users to understand are often
 proportionately more difficult to implement. For example, playing or mastering 
 the game \emph{tic-tac-toe} is a vastly different effort than
 designing the game in the first place.  
-A sublime interface belies 
-herculean effort. This section describes the infrastructure of
+This section describes the infrastructure of
 current \cyclus archetype development.  This is relevant to other fuel 
 cycle simulators that wish to adopt the same strategies that \cyclus 
 implements. In particular, the implementation of the \cyclus preprocessor, 
@@ -33,12 +32,12 @@ The preprocessor implements the three passes detailed in \S\ref{subsec-ppgc}:
 normalization via standard \code{cpp}, state variable annotation accumulation, and code 
 generation. The \cycpp tool must be run on all C++ header and source files that
 contain archetype code and the \code{#pragma cyclus} directives. Running \cycpp
-on files without such directives will result in exactly the 
+on files without such directives will result in no changes to the 
 original file. The first \cycpp
-pass, running the C preprocessor over these files, is a trivial subprocess 
-spawn. Importantly, \cycpp was ensured to detect the
-same include, macro definitions, and macro un-definitions that actual compilation 
-of the source code includes.
+pass that runs the C preprocessor is a trivial subprocess 
+spawn. Importantly, this ensures that \cycpp detects the
+same include, macro definitions, and macro un-definitions that actual 
+compiler will see.
 
 The second pass, state accumulation, represents half of the work that \cycpp performs.
 The results from pass one are fed into this pass and scoured for 
@@ -168,12 +167,11 @@ pass two of \cycpp.
 \label{pass2-filters}
 \end{table}
 
-In \cycpp, the only relevant type information is the name.  The concrete size in bits
+In \cycpp, the only relevant type information is the name of the type. 
+The concrete size in bits
 of a type and the operations that are available for that type are not directly 
 relevant. This is because the primary purpose of the type of a state variable is
-to be able to fill in the relevant value in the third pass of code generation. Further 
-reflection is not used by \cycpp itself, so the canonical spelling of the type 
-name is the only information used.  
+to be able to fill in the appropriate values in the third pass. 
 
 The canonical form of a type has the following spelling rules:
 \begin{itemize}
@@ -187,7 +185,7 @@ The canonical form of a type has the following spelling rules:
           the list represent the template parameter types, in order, and may 
           be either strings or lists.  For example, the type 
           \code{std::map<int, std::vector<double>>} would have the canonical form 
-          of \code{['std::map', 'int' ['vector', 'double']]}.
+          of \code{['std::map', 'int', ['vector', 'double']]}.
     \item All namespaces must be included in the type name.
     \item Pointer and reference types are not allowed because these may not be 
           represented in the database.
@@ -200,7 +198,8 @@ combinations:
     \item \textbf{Primitives:} \code{bool}, \code{int}, \code{float}, \code{double}, 
                                \code{std::string}
     \item \textbf{Known Classes:} \code{cyclus::Blob}, \code{boost::uuids::uuid}, 
-                                  \code{cyclus::toolkit::ResourceBuff}
+                                  \code{cyclus::toolkit::ResBuff}, 
+                                  \code{cyclus::toolkit::ResMap} 
     \item \textbf{Templates:} \code{std::vector}, \code{std::set}, \code{std::list}, 
                               \code{std::pair}, \code{std::map}
 \end{itemize}
@@ -220,9 +219,8 @@ The canonical form of a type must be automatically computed to avoid an
 entire class of typographic errors by the archetype developers.
 
 Aside from the type system semantics, pass two represents a relatively straightforward
-process of building up archetype information for later use. The first instance
-of later use occurs during pass three of \cycpp,
-code generation.  Conceptually, 
+process of building up archetype information for later use. This
+later use occurs during code generation in pass three of \cycpp. Conceptually, 
 pass three is a more complex process than pass two because it must implement 
 all of the member functions in Listing \ref{req-api}. In practice however, the body 
 of each of these member functions follows its own pattern with respect to the 
