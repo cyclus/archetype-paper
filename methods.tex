@@ -28,15 +28,19 @@ ease the implementation of the physics and desired behavior.
 A variety of strategies are used by \cyclus to ease archetype development: 
 
 \begin{itemize}
-    \item \textbf{Preprocessing \& Code Generation:}  By automatically 
+    \item \textbf{Automatic Model Templating:}  By automatically 
         inspecting and creating portions of archetypes, the overhead
-        of adhering to the \cyclus \gls{API} is removed. This also 
-        adds limited reflection to C++ as needed, which is important 
+        of adhering to the \cyclus \gls{API} is removed. This is performed 
+        via preprocessing archetypes and then applying limited code generation
+        to the original model. Such activities also 
+        add limited reflection to the C++ models as needed, which is important 
         for archetypes that wish to know about themselves.
 
-    \item \textbf{Type System Abstraction:} The \Cyclus type system 
+    \item \textbf{Data Communication Protocol:} \Cyclus 
         provides a common basis for archetypes to store and retrieve 
-        complex types in the database. This alleviates the need for archetype
+        complex data in the database. This is achevied through the 
+        implementation of \Cyclus-specific type system.
+        This alleviates the need for archetype
         developers to invent and implement custom persistence solutions.
 
     \item \textbf{Validation:} Archetypes use \gls{XML} schema to validate that 
@@ -49,8 +53,10 @@ A variety of strategies are used by \cyclus to ease archetype development:
         This allows for archetype developers to communicate relevant information
         to tools outside of \cyclus (such as a visualization tool).
 
-    \item \textbf{Package System:} \Cyclus has a packaging system for archetypes and 
-        libraries of archetypes. This means that all archetype developers can 
+    \item \textbf{Model Location:} \Cyclus has a packaging system for archetypes and 
+        libraries of archetypes. This provides a standard mechanism for 
+        searching for and locating models. 
+        Furthermore, all archetype developers can 
         uniquely specify their own archetypes without the fear of overlapping 
         names.  For example, two developers could each have a \texttt{Reactor}
         archetype, but they would exist in different packages and be 
@@ -70,7 +76,7 @@ transferable to any agent-based modeling framework that requires modular agent
 archetypes. The following subsections present greater detail regarding these 
 strategies.
 
-\subsection{Preprocessing \& Code Generation}
+\subsection{Automatic Model Templating}
 \label{subsec-ppgc}
 
 Every \cyclus archetype is required to implement the member functions 
@@ -267,7 +273,7 @@ class Reactor : public cyclus::Facility {
 };
 \end{lstlisting}
 
-\subsection{Type System Abstraction}
+\subsection{Data Communication Protocol}
 
 Related to the issue of how to snapshot and restart simulations is the issue of 
 what fundamental data types are allowed to be saved and loaded natively by the 
@@ -578,7 +584,7 @@ hand-writing the \code{schema()} member function is performed
 by advanced developers and only when absolutely necessary due to insufficiencies 
 in \cycpp.
 
-\subsection{Package System}
+\subsection{Model Location}
 
 In a robust ecosystem of archetypes, it is nearly guaranteed that different archetype
 developers will want to use the same name. No single person or organization can 
@@ -639,7 +645,7 @@ sub-directories and the path is used to establish uniqueness.
 This strategy for specifying archetypes ultimately removes confusion and error from 
 both archetype developers and users alike.
 
-\subsection{Stock Resource Exchange Algorithms}
+\subsection{Markets are not Agents}
 
 In early versions of \cyclus, the dynamic resource exchange algorithm that the 
 kernel used was itself dynamically loadable. Such an algorithm was called a
