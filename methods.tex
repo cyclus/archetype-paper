@@ -80,30 +80,51 @@ strategies.
 \label{subsec-ppgc}
 
 Every \cyclus archetype is required to implement the member functions 
-seen in Listing \ref{req-api} and may optionally implement those seen in 
-Listing \ref{opt-api}. Due to object orientation in 
+seen in Table \ref{req-api} and may optionally implement those seen in 
+Table \ref{opt-api}. Due to object orientation in 
 C++ and how \cyclus stores state, these member functions must be implemented directly
 on the archetype itself. The implementation that archetypes inherit 
 from the \code{Agent} class is not sufficient. 
 
-\begin{lstlisting}[caption={Required Archetype API}, label=req-api]
-void InfileToDb(InfileTree* tree, DbInit di);
-void InitFrom(cyclus::QueryableBackend*);
-void InitInv(cyclus::Inventories& invs);
-cyclus::Inventories SnapshotInv();
-void Snapshot(cyclus::Agent*);
-std::string schema();
-Json::Value annotations();
-cyclus::Agent* Clone();
-void InitFrom(cyclus::Agent*);
-\end{lstlisting}
+\begin{table}
+\caption{Required Archetype Interface}
+\label{req-api}
+\begin{tabular}[p]{|lp{5.25in}|}
+\hline
+\textbf{Function} & \textbf{Description} \\
+\hline
+\code{InfileToDb()} & Reads the prototype in the input file (XML format) 
+                      and adds them to the initial startup database.\\
+\code{InitFrom(Db)} & Initializes a new agent or prototype from the database.\\
+\code{InitFrom(Agent)} & Iniializes a new agent or prototype from another agent or
+                         prototype.\\
+\code{InitInv()} & Initializes any starting inventory buffers.\\
+\code{Clone()} & Copies the current agent.\\
+\code{Snapshot()} & Stores the current state of the agent in the database.\\
+\code{SnapshotInv()} & Stores the current inventory buffers in the database.\\
+\code{schema()} & Returns the schema that user input must validate against.\\
+\code{annotations()} & Returns all metadata that is automatically gathered
+                       and supplied by the archetype developer.\\
+\hline
+\end{tabular}
+\end{table}
 
-\begin{lstlisting}[caption={Optional Archetype API}, label=opt-api]
-void Build(cyclus::Agent* parent);
-void EnterNotify();
-void BuildNotify(cyclus::Agent* child);
-void Decommission(cyclus::Agent* child);
-\end{lstlisting}
+\begin{table}
+\caption{Optional Archetype Interface}
+\label{opt-api}
+\begin{tabular}[p]{|lp{5.25in}|}
+\hline
+\textbf{Function} & \textbf{Description} \\
+\hline
+\code{Build()} & Called when the agent has been built.\\
+\code{EnterNotify()} & Allows for the agent to register for services.\\
+\code{BuildNotify()} & Informs when children of this agent have been built.\\
+\code{DecomNotify()} & Informs when children of this agent are about to be 
+                       decommissioned.\\
+\code{Decommission()} & Removes the agent from the simulatuon.\\
+\hline
+\end{tabular}
+\end{table}
 
 Archetypes store state as public or private member variables
 directly on the class.  For example, a \code{Reactor} archetype class
