@@ -1,26 +1,10 @@
-\documentclass{ntmanuscript}
+\documentclass[review]{elsarticle}
 \usepackage[acronym,toc]{glossaries}
 \include{acros}
 \makeglossaries
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{Cyclus Archetypes}
-
-% Authors. Separated by commas
-\input{authors}
-
-% Institutes of the authors
-\input{institutions}
-
-% Information concerning the person submitting the manuscript
-\submitter{Anthony Scopatz}
-\submitteraddress{1500 Engineering Drive, Madison, WI, USA}
-\submitteremail{scopatz@gmail.com}
-
-
-% No more than three keywords, though each can be a phrase
-\keywords{fuel cycle, simulation, software}
-
 \usepackage{color}
+\usepackage{xcolor}
 \usepackage{graphicx}
 \usepackage{booktabs} % nice rules for tables
 \usepackage{microtype} % if using PDF
@@ -55,7 +39,8 @@
     identifierstyle=\color{black},
     captionpos=t,
 }
-
+\colorlet{BLACK}{black}
+\colorlet{GREEN}{green}
 \newcommand{\code}[1]{\lstinline[basicstyle=\ttfamily\color{green!40!black}]|#1|}
 \newcommand{\units}[1] {\:\text{#1}}%
 \newcommand{\SN}{S$_N$}
@@ -72,8 +57,22 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-\begin{abstract}
+\begin{frontmatter}
+\title{Cyclus Archetypes}
 
+% Authors. Separated by commas
+\input{authors}
+
+% Institutes of the authors
+\input{institutions}
+
+% Information concerning the person submitting the manuscript
+%\submitter{Anthony Scopatz}
+%\submitteraddress{541 Main Street \#431, Columbia, SC 29201}
+%\submitteremail{scopatz@cec.sc.edu}
+
+
+\begin{abstract}
 The current state of nuclear fuel cycle simulation exists in highly 
 customized form. Satisfying a wide range of users requires model modularity 
 within such a tool. \Cyclus is a fuel cycle simulator specifically designed to 
@@ -98,6 +97,15 @@ does this reduce the amount of code a developer must write by approximately
 an order of magnitude, but the archetypes are automatically validated.
 \end{abstract}
 
+% No more than three keywords, though each can be a phrase
+\begin{keyword}
+fuel cycle \sep simulation \sep software
+\end{keyword}
+
+\end{frontmatter}
+
+
+
 \input{intro}
 \input{motivation}
 \input{methods}
@@ -105,6 +113,6 @@ an order of magnitude, but the archetypes are automatically validated.
 \input{conclusion}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\bibliographystyle{ans}
+\bibliographystyle{elsarticle-num}
 \bibliography{refs}
 \end{document}
