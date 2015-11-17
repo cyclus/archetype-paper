@@ -7,6 +7,7 @@
 *.ist
 *.log
 *.pdf
+paper.spl
 paper.4ct
 paper.4tc
 paper.css
