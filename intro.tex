@@ -2,17 +2,17 @@
 \label{sec-intro}
 
 \Cyclus \cite{cyclus_v1_0,cyclus_v1_2,huff_fundamental_2016} is the first truly agent-based 
-\cite{jennings2000agent} fuel cycle simulator. 
+\cite{jennings2000agent} nuclear fuel cycle simulator. 
 New technologies, while exciting, often pose unforeseen challenges.
 \Cyclus is no exception to this rule.  This paper answers the questions,
-\emph{``What precisely is an agent in a fuel cycle context?''} and 
+\emph{``What precisely is an agent in a nuclear fuel cycle context?''} and 
 \emph{``What features of simulation can be abstracted away to ease the burden 
-on fuel cycle researchers?''}
+on nuclear fuel cycle researchers?''}
 
 The genesis of \cyclus lies in the desire to 
 treat mass balances as discrete, model facilities individually rather than as 
 a fleet, and to be able to quantitatively compare the effects of changing the 
-fidelity of the facilities themselves. These goals imply a large degree of 
+fidelity of the facilities themselves. These goals necessitate a large degree of 
 sophistication on the part of the simulator infrastructure.  Resource exchange
 must be handled in a generic and dynamic way as opposed to being hard-coded 
 for specific commodities. Simulations must be inherently comparable, which involves 
@@ -21,13 +21,13 @@ to communicate with one another and learn about the environment in which they
 exist. Additionally, agents must be able to be dynamically deployed and the set of 
 available agent models may not be collected until run time. 
 
-What sets fuel cycle simulation apart from traditional agent-based simulations 
+What sets nuclear fuel cycle simulation apart from traditional agent-based simulations 
 is the high degree of agent specialization. Standard agent-based simulators
 are characterized as having a few types of agents, often only one and 
 almost always less than five \cite{taylor2014agent}. The agent types are then 
 specialized 
-when they are instantiated \emph{in situ}. This model is not appropriate for 
-fuel cycle applications.  For example, it would be unwise to have a single facility model 
+when they are instantiated \emph{in situ}. This model is insufficient for 
+nuclear fuel cycle applications.  For example, it would be unwise to have a single facility model 
 that represents both enrichment and reactors, called \code{EnrichmentOrReactor},
 that decides via a switch how it behaves when it is deployed. It is much 
 more natural to have two models, \code{Enrichment} and \code{Reactor}, 
@@ -35,7 +35,7 @@ that implement their own physics calculations independently.
 
 \Cyclus enables agent specialization along two separate axes. The first defines 
 an agent as an \emph{entity} that determines its role in the 
-fuel cycle. There are three kinds of entities: \emph{regions} that 
+nuclear fuel cycle. There are three kinds of entities: \emph{regions} that 
 represent geographic and governmental concerns, \emph{institutions} 
 that manage other agents, and \emph{facilities} that implement 
 physics calculations and are usually in charge of resource management.
@@ -77,7 +77,7 @@ has historically been difficult. Obtaining a working archetype
 that performed no physics calculations from scratch would 
 take novice developers upwards of two weeks effort.  The complexities
 that lead to such a high bar are emblematic not just of \cyclus,
-but of any agent-based fuel cycle simulator.
+but of any agent-based nuclear fuel cycle simulator.
 
 Informal polling by the \cyclus team over the years
 showed that a new developer circa \cyclus v0.1
