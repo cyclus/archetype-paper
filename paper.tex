@@ -79,18 +79,17 @@ within such a tool. \Cyclus is a fuel cycle simulator specifically designed to
 combat the lack of adaptability of previous generations of simulators. This is
 accomplished through an agent-based infrastructure and treating time 
 discretely. The \Cyclus kernel was developed to allow for models, called 
-archetypes, of differing fidelity and function depending on need of the users. 
+archetypes, which differ in fidelity and function depending on the needs of the users. 
 To take advantage of this flexibility, a user must write an archetype for 
 their desired simulation if it does not yet exist within the \Cyclus ecosystem.
 At this stage, a user graduates to the title of archetype developer.
 
-
-Without automation, archetype development is difficult for the uninitiated. 
+Archetype development has historically been difficult for new developers.
 This paper presents the framework developed for simplifying the writing of 
 archetypes: the \Cyclus preprocessor, or \cycpp. \cycpp addresses the computer 
 science and software development aspects of archetype development
 that can be addressed algorithmically, allowing the developer to focus on 
-modeling the physics, social policies, and economics. \cycpp passes through 
+modeling the physics, social policies, and economics they want to simulate. \cycpp passes through 
 the code three times to perform the following tasks: normalizing the code via 
 the C preprocessor, accumulation of notations, and code generation. Not only
 does this reduce the amount of code a developer must write by approximately 

@@ -2,7 +2,7 @@
 \label{sec-methods}
 
 Archetype development can be a daunting task on its own. For this reason, 
-many fuel cycle simulators choose to supply only a limited corral of 
+many fuel cycle simulators choose to supply only a limited set of 
 pre-built archetypes. This places the responsibility of creating an maintaining 
 the archetypes with the authors of the simulator.  When only pre-built archetypes are available, then this suite defines the scope 
 of all possible fuel cycles that a user can model. If the scope is not broad 
@@ -16,7 +16,7 @@ kernel. However, this modularity comes with its own costs. Being able to
 plug in user-created archetypes implies an \gls{API} to which 
 the archetype conforms. This is an 
 additional burden to both nascent and experienced archetype developers that 
-does not effect the underlying behavior or physics. Rather, a large percentage of the
+does not affect the underlying behavior or physics. Rather, a large percentage of the
 code for an archetype exists soley to satisfy the \cyclus \gls{API} and does not
 impact the physics, economics, or other domain concerns being modeled.
 
@@ -162,7 +162,7 @@ First, it must be
 performed to prior to compilation. Second, the
 code generator must be provided with enough information about the archetype in 
 order to accurately create the function implementation. Third and finally, it 
-is highly desirable to keep archetypes in valid C++, rather that a special 
+is desirable to keep archetypes in valid C++, rather than a special 
 code generation language created just for \cyclus.
 Templating languages 
 such as Jinja \cite{ronacher2011jinja2} or any other variety of custom 
@@ -171,7 +171,7 @@ expressive code generation. However, such template languages would be yet anothe
 tool for the archetype developer to learn. This runs counter to the goal of 
 simplifying development.
 
-The limitations above are all elegantly addressed through the use of a 
+The limitations above are all addressed through the use of a 
 \cyclus-aware preprocessor. The first stage of C/C++ compilation is the 
 C Prepocessor or \code{cpp} \cite{stallman1987c}. This tool is responsible for expanding 
 \code{#include} directives and implementing other \code{#} directives, such as 
