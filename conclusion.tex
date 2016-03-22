@@ -19,6 +19,33 @@ archetype development and reduces manual code writing by approximately
 Additionally, the automation may be partially or fully reduced 
 if the default generated code is not desired. 
 
+A Table of the lines of code reduced by using the preprocessor is shown in Table
+\ref{lines}
+
+\begin{tabular}{lrrr}
+\toprule
+file &  after &  before &  \% difference \\
+\midrule
+batch\_reactor.cc       &   1039 &    1039 &      0.000000 \\
+batch\_reactor.h        &    427 &     439 &      0.027335 \\
+deploy\_inst.cc         &     99 &      96 &      0.031250 \\
+deploy\_inst.h          &     47 &      46 &      0.021739 \\
+enrichment\_facility.cc &    473 &     344 &      0.375000 \\
+enrichment\_facility.h  &    298 &     314 &      0.050955 \\
+growth\_region.cc       &    156 &     156 &      0.000000 \\
+growth\_region.h        &    225 &     109 &      1.064220 \\
+manager\_inst.cc        &     94 &      96 &      0.020833 \\
+manager\_inst.h         &    122 &      51 &      1.392157 \\
+sink.cc                &    275 &     180 &      0.527778 \\
+sink.h                 &    200 &     218 &      0.082569 \\
+source.cc              &    234 &     166 &      0.409639 \\
+source.h               &    202 &     220 &      0.081818 \\
+\bottomrule
+\label{lines}
+\title{Number of Lines Saved from Archetypes in Cyclus v1.0.0}
+\end{tabular}
+
+
 The \cyclus system enables better fuel cycle simulations by creating better 
 archetypes.  Improved archetypes are a direct consequence of two features of the preprocessor. First, 
 \cyclus encourages developers to write the archetype
