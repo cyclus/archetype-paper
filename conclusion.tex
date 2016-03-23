@@ -19,32 +19,34 @@ archetype development and reduces manual code writing by approximately
 Additionally, the automation may be partially or fully reduced 
 if the default generated code is not desired. 
 
-A Table of the lines of code reduced by using the preprocessor is shown in Table
-\ref{lines}
+The number of lines of code saved by using the preprocessor is shown in Table
+\ref{lines}.
 
-\begin{tabular}{lrrr}
+\begin{tabular}{lrrl}
 \toprule
-file &  after &  before &  \% difference \\
-\midrule
-batch\_reactor.cc       &   1039 &    1039 &      0.000000 \\
-batch\_reactor.h        &    427 &     439 &      0.027335 \\
-deploy\_inst.cc         &     99 &      96 &      0.031250 \\
-deploy\_inst.h          &     47 &      46 &      0.021739 \\
-enrichment\_facility.cc &    473 &     344 &      0.375000 \\
-enrichment\_facility.h  &    298 &     314 &      0.050955 \\
-growth\_region.cc       &    156 &     156 &      0.000000 \\
-growth\_region.h        &    225 &     109 &      1.064220 \\
-manager\_inst.cc        &     94 &      96 &      0.020833 \\
-manager\_inst.h         &    122 &      51 &      1.392157 \\
-sink.cc                &    275 &     180 &      0.527778 \\
-sink.h                 &    200 &     218 &      0.082569 \\
-source.cc              &    234 &     166 &      0.409639 \\
-source.h               &    202 &     220 &      0.081818 \\
+file &  before &  after & \% difference \\
+deploy\_inst.cc   &      70 &     70 &         0.00 \\
+deploy\_inst.h    &      85 &    268 &       215.29 \\
+enrichment.cc    &     465 &    465 &         0.00 \\
+enrichment.h     &     371 &    608 &        63.88 \\
+fuel\_fab.cc      &     715 &    715 &         0.00 \\
+fuel\_fab.h       &     256 &    647 &       152.73 \\
+growth\_region.cc &     160 &    160 &         0.00 \\
+growth\_region.h  &     128 &    283 &       121.09 \\
+manager\_inst.cc  &      94 &     94 &         0.00 \\
+manager\_inst.h   &      63 &    155 &       146.03 \\
+reactor.cc       &     502 &   1392 &       177.29 \\
+reactor.h        &     387 &    255 &        34.11 \\
+separations.cc   &     288 &    289 &         0.35 \\
+separations.h    &     199 &    491 &       146.73 \\
+sink.cc          &     182 &    347 &        90.66 \\
+sink.h           &     136 &    137 &         0.74 \\
+source.cc        &     117 &    127 &         8.55 \\
+source.h         &     115 &    223 &        93.91 \\
 \bottomrule
 \label{lines}
-\title{Number of Lines Saved from Archetypes in Cyclus v1.0.0}
+\title{Number of Lines Saved from Archetypes in Cyclus v1.3.1}
 \end{tabular}
-
 
 The \cyclus system enables better fuel cycle simulations by creating better 
 archetypes.  Improved archetypes are a direct consequence of two features of the preprocessor. First, 
