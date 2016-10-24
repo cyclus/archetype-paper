@@ -22,9 +22,9 @@ exist. Additionally, agents must be able to be dynamically deployed and the set 
 available agent models may not be collected until run time. 
 
 What sets nuclear fuel cycle simulation apart from traditional agent-based simulations 
-is the high degree of agent specialization. Standard agent-based simulators
+is the high degree of agent specialization? Standard agent-based simulators
 are characterized as having a few types of agents, often only one and 
-almost always less than five \cite{taylor2014agent}. The agent types are then 
+almost always(<5) less than five \cite{taylor2014agent}. The agent types are then 
 specialized 
 when they are instantiated \emph{in situ}. This model is insufficient for 
 nuclear fuel cycle applications.  For example, it would be unwise to have a single facility model 
@@ -35,9 +35,9 @@ that implement their own physics calculations independently.
 
 \Cyclus enables agent specialization along two separate axes. The first defines 
 an agent as an \emph{entity} that determines its role in the 
-nuclear fuel cycle. There are three kinds of entities: \emph{regions} that 
-represent geographic and governmental concerns, \emph{institutions} 
-that manage other agents, and \emph{facilities} that implement 
+nuclear fuel cycle. There are three kinds of entities:I.)\emph{regions} that 
+represent geographic and governmental concerns,II.)\emph{institutions} 
+that manage other agents, and III.)\emph{facilities} that implement 
 physics calculations and are usually in charge of resource management.
 
 The other axis of agent specialization distinguishes among who 
@@ -89,7 +89,21 @@ As of \cyclus v1.0, this finally was reduced down to 1 - 4 hours, which meets
 appropriate expectations for someone attempting \cyclus as a first time archetype 
 developer.
 
-These dramatic development time reductions were caused by two forces:
+\begin{tabular} {|r|r|}
+\hline
+Version & Time to run \\ 
+\hline
+\cyclus_v0.1 & 2+week \\ 
+\hline
+\cyclus_v0.3 & 5 days \\ 
+\hline
+\cyclus_v0.4 & 3 days \\ 
+\hline
+\cyclys_v1.0 & 1-4 hours \\ 
+\hline
+\end{tabular}
+
+Two forces caused these dramatic development time reductions:
 clarification of the archetype abstraction and explicit tools to help with 
 archetype creation. While the region-institution-facility hierarchy was established 
 early on, the formulation of this hierarchy in an agent-based paradigm took much 

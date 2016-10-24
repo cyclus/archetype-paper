@@ -91,18 +91,25 @@ inherit from the \code{Agent} class is not and cannot be sufficient.
 \label{req-api}
 \begin{tabular}[p]{|lp{5.25in}|}
 \hline
-\textbf{Function} & \textbf{Description} \\
+\textbf{Function|} & \textbf{Description} \\
 \hline
 \code{InfileToDb()} & Reads the prototype in the input file (XML format) 
                       and adds them to the initial startup database.\\
+\hline
 \code{InitFrom(Db)} & Initializes a new agent or prototype from the database.\\
 \code{InitFrom(Agent)} & Iniializes a new agent or prototype from another agent or
                          prototype.\\
+\hline
 \code{InitInv()} & Initializes any starting inventory buffers.\\
+\hline
 \code{Clone()} & Copies the current agent.\\
+\hline
 \code{Snapshot()} & Stores the current state of the agent in the database.\\
+\hline
 \code{SnapshotInv()} & Stores the current inventory buffers in the database.\\
+\hline
 \code{schema()} & Returns the schema that user input must validate against.\\
+\hline
 \code{annotations()} & Returns all metadata that is automatically gathered
                        and supplied by the archetype developer.\\
 \hline
@@ -114,11 +121,14 @@ inherit from the \code{Agent} class is not and cannot be sufficient.
 \label{opt-api}
 \begin{tabular}[p]{|lp{5.25in}|}
 \hline
-\textbf{Function} & \textbf{Description} \\
+\textbf{Function|} & \textbf{Description} \\
 \hline
 \code{Build()} & Called when the agent has been built.\\
+\hline
 \code{EnterNotify()} & Allows for the agent to register for services.\\
+\hline
 \code{BuildNotify()} & Informs when children of this agent have been built.\\
+\hline
 \code{DecomNotify()} & Informs when children of this agent are about to be 
                        decommissioned.\\
 \code{Decommission()} & Removes the agent from the simulatuon.\\
@@ -308,7 +318,7 @@ that most simulators can handle them in an ad hoc manner. Furthermore, these typ
 often align with the structure of most databases, allowing for easy translation
 between disk and memory.
 
-Agent-based fuel cycle modeling, however, subsumes physical modeling frameworks.
+Agent-based fuel cycle modeling, however, subsumes physical modeling frame-works.
 The types of data that are needed to naturally express many fuel cycle concepts 
 do not fit into the standard `arrays of floats' mindset.  More sophisticated types are needed,
 such as maps and sets of primitive types. For example, 
