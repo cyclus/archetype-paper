@@ -83,6 +83,72 @@ These represent the classes, types, aliases, and other information that defines
 the scope of the C++ code. Such information is necessary 
 for accurately representing archetypes and their state variables. 
 
+\begin{table}
+\caption{\cyclus Preprocessor Pass 2 Filters (Higher order filters have
+         lower execution precedence)}
+\begin{tabular}[htb]{|p{0.05\linewidth}|p{0.33\linewidth}|p{0.6\linewidth}|}
+\hline
+\textbf{order} & \textbf{filter} & \textbf{description} \\
+\hline
+1  & \code{ClassAndSuperclassFilter} & Accumulates the class name from a class
+                                       declaration. Also stores the names of the
+                                       superclasses from the declaration.\\
+\hline
+2  & \code{AccessFilter} & Sets the current access control level:
+                           \code{public}, \code{private}, or \code{protected}.\\
+\hline
+3  & \code{ExecFilter} & Implements the \code{#pragma cyclus exec <code>} directive
+                         that allows for the execution of arbitrary Python code.
+                         The results of this code are added to the context that
+                         evaluates other \cycpp directives.\\
+\hline
+4  & \code{UsingNamespaceFilter} & Adds and removes a namespace from the
+                                   current scope via the C++ \code{using namespace}
+                                   statement.\\
+\hline
+5  & \code{NamespaceAliasFilter} & Implements namespace aliasing in the current
+                                   scope.\\
+\hline
+6  & \code{NamespaceFilter} & Sets and reverts a new namespace scope.\\
+\hline
+7  & \code{TypedefFilter} & Adds a type alias to the current scope via the
+                            C++ \code{typedef} statement.\\
+\hline
+8  & \code{UsingFilter} & Removes scope from a type by adding an alias in the
+                          current scope via the C++ \code{using} statement.\\
+\hline
+9  & \code{LinemarkerFilter} & Interprets \code{cpp} linemarker directives in order
+                               to produce more useful debugging information in
+                               \cycpp.\\
+\hline
+10 & \code{NoteDecorationFilter} & Implements the \cycpp \code{#pragma cyclus note <dict>}
+                                   directive by evaluating the contents of
+                                   \code{<dict>} and adding them to the archetype
+                                   annotations.\\
+\hline
+11 & \code{VarDecorationFilter} & Implements the \cycpp \code{#pragma cyclus var <dict>}
+                                  directive for state variable annotations
+                                  by evaluating the contents of \code{<dict>} in the current
+                                  context and queuing  them for the
+                                  next state variable declaration.\\
+\hline
+12 & \code{VarDeclarationFilter} & State variable declaration. Applies the results
+                                   of the immediately prior \code{VarDecorationFilter}
+                                   as the state variable annotations. Furthermore,
+                                   this filter parses out the name of the
+                                   state variable, its index with respect to other
+                                   state variables on this class, and resolves its
+                                   C++ type into an unambiguous form.\\
+\hline
+13 & \code{PragmaCyclusErrorFilter} & Throws errors if \code{#pragma cyclus}
+                                      directive is incorrectly implemented.
+                                      This moves errors from happening at compile
+                                      or run time to \cycpp.\\
+\hline
+\end{tabular}
+\label{pass2-filters}
+\end{table}
+
 Most pass two filters that do not implement a preprocessor directive instead
 aggregate information about the available types. The \code{VarDeclarationFilter} has
 the important job of determining the C++ type of state variables from the 
@@ -100,72 +166,6 @@ simply to correctly spell the canonical type name.
 Thus the \code{StateAccumulator} class acts as its own type system and
 returns the canonical form of any type it knows about at all points during 
 pass two of \cycpp.
-
-\begin{table}
-\caption{\cyclus Preprocessor Pass 2 Filters (Higher order filters have 
-         lower execution precedence)}
-\begin{tabular}[htb]{|p{0.05\linewidth}|p{0.33\linewidth}|p{0.6\linewidth}|}
-\hline
-\textbf{order} & \textbf{filter} & \textbf{description} \\
-\hline
-1  & \code{ClassAndSuperclassFilter} & Accumulates the class name from a class 
-                                       declaration. Also stores the names of the 
-                                       superclasses from the declaration.\\ 
-\hline
-2  & \code{AccessFilter} & Sets the current access control level:
-                           \code{public}, \code{private}, or \code{protected}.\\
-\hline
-3  & \code{ExecFilter} & Implements the \code{#pragma cyclus exec <code>} directive
-                         that allows for the execution of arbitrary Python code.
-                         The results of this code are added to the context that 
-                         evaluates other \cycpp directives.\\ 
-\hline
-4  & \code{UsingNamespaceFilter} & Adds and removes a namespace from the 
-                                   current scope via the C++ \code{using namespace}
-                                   statement.\\ 
-\hline
-5  & \code{NamespaceAliasFilter} & Implements namespace aliasing in the current 
-                                   scope.\\ 
-\hline
-6  & \code{NamespaceFilter} & Sets and reverts a new namespace scope.\\ 
-\hline
-7  & \code{TypedefFilter} & Adds a type alias to the current scope via the 
-                            C++ \code{typedef} statement.\\ 
-\hline
-8  & \code{UsingFilter} & Removes scope from a type by adding an alias in the 
-                          current scope via the C++ \code{using} statement.\\ 
-\hline
-9  & \code{LinemarkerFilter} & Interprets \code{cpp} linemarker directives in order
-                               to produce more useful debugging information in 
-                               \cycpp.\\ 
-\hline
-10 & \code{NoteDecorationFilter} & Implements the \cycpp \code{#pragma cyclus note <dict>}
-                                   directive by evaluating the contents of 
-                                   \code{<dict>} and adding them to the archetype 
-                                   annotations.\\ 
-\hline
-11 & \code{VarDecorationFilter} & Implements the \cycpp \code{#pragma cyclus var <dict>}
-                                  directive for state variable annotations
-                                  by evaluating the contents of \code{<dict>} in the current 
-                                  context and queuing  them for the 
-                                  next state variable declaration.\\ 
-\hline
-12 & \code{VarDeclarationFilter} & State variable declaration. Applies the results 
-                                   of the immediately prior \code{VarDecorationFilter}
-                                   as the state variable annotations. Furthermore, 
-                                   this filter parses out the name of the 
-                                   state variable, its index with respect to other 
-                                   state variables on this class, and resolves its
-                                   C++ type into an unambiguous form.\\ 
-\hline
-13 & \code{PragmaCyclusErrorFilter} & Throws errors if \code{#pragma cyclus} 
-                                      directive is incorrectly implemented.
-                                      This moves errors from happening at compile 
-                                      or run time to \cycpp.\\
-\hline
-\end{tabular}
-\label{pass2-filters}
-\end{table}
 
 In \cycpp, the only relevant type information is the name of the type. 
 The concrete size in bits
@@ -190,6 +190,7 @@ The canonical form of a type has the following spelling rules:
     \item Pointer and reference types are not allowed because these may not be 
           represented in the database.
 \end{itemize}
+
 The above rules create an accurate and language-independent
 mechanism for spelling C++ types, including templates. The preprocessor is aware
 of the following types that may be present in a \cyclus database in various 
@@ -553,36 +554,62 @@ to a relatively robust subset in order to run even simple simulations.
 \textbf{id} & \textbf{name} & \textbf{C++ type} & \textbf{rank} \\
 \hline
 0 & \code{BOOL} & \code{bool} & 0 \\
+\hline
 1 & \code{INT} & \code{int} & 0 \\
+\hline
 2 & \code{FLOAT} & \code{float} & 0 \\
+\hline
 3 & \code{DOUBLE} & \code{double} & 0 \\
+\hline
 4 & \code{STRING} & \code{std::string} & 1 \\
+\hline
 5 & \code{VL_STRING} & \code{std::string} & 1 \\
+\hline
 6 & \code{BLOB} & \code{cyclus::Blob} & 0 \\
+\hline
 7 & \code{UUID} & \code{boost::uuids::uuid} & 0 \\
+\hline
 8 & \code{VECTOR_BOOL} & \code{std::vector<bool>} & 1 \\
+\hline
 9 & \code{VL_VECTOR_BOOL} & \code{std::vector<bool>} & 1 \\
+\hline
 10 & \code{VECTOR_INT} & \code{std::vector<int>} & 1 \\
+\hline
 11 & \code{VL_VECTOR_INT} & \code{std::vector<int>} & 1 \\
  & $\cdots$ & $\cdots$ & \\
+\hline
 32 & \code{SET_STRING} & \code{std::set<std::string>} & 2 \\
+\hline
 33 & \code{VL_SET_STRING} & \code{std::set<std::string>} & 2 \\
+\hline
 34 & \code{SET_VL_STRING} & \code{std::set<std::string>} & 2 \\
+\hline
 35 & \code{VL_SET_VL_STRING} & \code{std::set<std::string>} & 2 \\
  & $\cdots$ & $\cdots$ & \\
+\hline
 42 & \code{LIST_INT} & \code{std::list<int>} & 1 \\
+\hline
 43 & \code{VL_LIST_INT} & \code{std::list<int>} & 1 \\
  & $\cdots$ & $\cdots$ & \\
+\hline
 57 & \code{PAIR_INT_INT} & \code{std::pair<int, int>} & 0 \\
  & $\cdots$ & $\cdots$ & \\
+\hline
 104 & \code{MAP_STRING_STRING} & \code{std::map<std::string, std::string>} & 3 \\
+\hline
 105 & \code{VL_MAP_STRING_STRING} & \code{std::map<std::string, std::string>} & 3 \\
+\hline
 106 & \code{MAP_STRING_VL_STRING} & \code{std::map<std::string, std::string>} & 3 \\
+\hline
 107 & \code{VL_MAP_STRING_VL_STRING} & \code{std::map<std::string, std::string>} & 3 \\
  & $\cdots$ & $\cdots$ & \\
+\hline
 120 & \code{MAP_VL_STRING_STRING} & \code{std::map<std::string, std::string>} & 3 \\
+\hline
 121 & \code{VL_MAP_VL_STRING_STRING} & \code{std::map<std::string, std::string>} & 3 \\
+\hline
 122 & \code{MAP_VL_STRING_VL_STRING} & \code{std::map<std::string, std::string>} & 3 \\
+\hline
 123 & \code{VL_MAP_VL_STRING_VL_STRING} & \code{std::map<std::string, std::string>} & 3 \\
  & $\cdots$ & $\cdots$ & \\
 \hline
@@ -1081,3 +1108,4 @@ Entity: line 23: element capacity: Relax-NG validity error : Error validating da
 Entity: line 23: element capacity: Relax-NG validity error : Element power failed to validate content
  ERROR(core  ):Document failed schema validation
 \end{lstlisting}
+
