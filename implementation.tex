@@ -225,7 +225,7 @@ later use occurs during code generation in pass three of \cycpp. Conceptually,
 pass three is a more complex process than pass two because it must implement 
 all of the member functions in Listing \ref{req-api}. In practice however, the body 
 of each of these member functions follows its own pattern with respect to the 
-state variables. Therefore, implementing pass three is significantly easier.
+state variables. Therefore, implementing pass three is significantly easier and quicker. 
 
 Much like pass two, pass three is also a state machine. The class that implements it is 
 called \code{CodeGenerator} and the filters within this class implement 
