@@ -17,36 +17,61 @@ economics, and onto computers. This automation happens by default for
 archetype development and reduces manual code writing by approximately
 10 times.
 Additionally, the automation may be partially or fully reduced 
-if the default generated code is not desired. 
+if the default generated code is not desired.
 
+Formula
+ 
+\% difference =((After - Before)/Before) *100
+ 
 The number of lines of code saved by using the preprocessor is shown in Table
 \ref{lines}.
 
-\begin{tabular}{lrrl}
+\begin{table}
+\caption{ Number of lines saved from Archetypes in Cyclus v1.3.1}
+\label{lines}
+\begin{tabular}{|lrrl|}
 \toprule
 file &  before &  after & \% difference \\
+\hline
 deploy\_inst.cc   &      70 &     70 &         0.00 \\
+\hline
 deploy\_inst.h    &      85 &    268 &       215.29 \\
+\hline
 enrichment.cc    &     465 &    465 &         0.00 \\
+\hline
 enrichment.h     &     371 &    608 &        63.88 \\
+\hline
 fuel\_fab.cc      &     715 &    715 &         0.00 \\
+\hline
 fuel\_fab.h       &     256 &    647 &       152.73 \\
+\hline
 growth\_region.cc &     160 &    160 &         0.00 \\
+\hline
 growth\_region.h  &     128 &    283 &       121.09 \\
+\hline
 manager\_inst.cc  &      94 &     94 &         0.00 \\
+\hline
 manager\_inst.h   &      63 &    155 &       146.03 \\
+\hline
 reactor.cc       &     502 &   1392 &       177.29 \\
+\hline
 reactor.h        &     387 &    255 &        34.11 \\
+\hline
 separations.cc   &     288 &    289 &         0.35 \\
+\hline
 separations.h    &     199 &    491 &       146.73 \\
+\hline
 sink.cc          &     182 &    347 &        90.66 \\
+\hline
 sink.h           &     136 &    137 &         0.74 \\
+\hline
 source.cc        &     117 &    127 &         8.55 \\
+\hline
 source.h         &     115 &    223 &        93.91 \\
 \bottomrule
-\label{lines}
-\title{Number of Lines Saved from Archetypes in Cyclus v1.3.1}
 \end{tabular}
+\end{table}
+
 
 The \cyclus system enables better fuel cycle simulations by creating better 
 archetypes.  Improved archetypes are a direct consequence of two features of the preprocessor. First, 
@@ -98,7 +123,8 @@ which would likely take the form of new filters in pass three.
 Furthermore, the fundamentals of the \cyclus type system will be used in 
 perpetuity, as enabled by the extensibility of the type system.  More types
 will be added as needed by the archetype developers.  It is also possible to 
-make the type system dynamic, allowing for custom types to be implemented at run time.
+make the type system dynamic, allowing for custom types to be implemented at run time,
+which will reduce the run time as well.
 This could be a boon to archetype developers seeking to create a wide variety of custom
 tables.
 
