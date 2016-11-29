@@ -1,34 +1,34 @@
 \section{Conclusions}
 \label{sec-conc}
 
-Writing archetypes can be a daunting task because reasonably accurate models 
-require knowledge of physics, economics, and computer science to solve a single nuclear engineering 
+Writing archetypes can be a daunting task because reasonably accurate models
+require knowledge of physics, economics, and computer science to solve a single nuclear engineering
 problem.  Unlike other spheres of nuclear engineering, decoupling these domains from
-one another is often not possible without significant simplification. \cyclus is 
-no exception to this and is designed to allow for complete fidelity throughout 
-all aspects of the simulation. The advantage of the \cyclus design is that it 
-enables full modeling fidelity without requiring that archetype developers actively 
+one another is often not possible without significant simplification. \cyclus is
+no exception to this and is designed to allow for complete fidelity throughout
+all aspects of the simulation. The advantage of the \cyclus design is that it
+enables full modeling fidelity without requiring that archetype developers actively
 address every class of problem every time they pursue a new archetype.
 
-\Cyclus succeeds in simplifying archetype development by identifying a category 
-of computer science and software development problems that are addressed 
+\Cyclus succeeds in simplifying archetype development by identifying a category
+of computer science and software development problems that are addressed
 algorithmically. This moves effort away from humans, who are pursing physics and
 economics, and onto computers. This automation happens by default for
 archetype development and reduces manual code writing by approximately
 10 times.
-Additionally, the automation may be partially or fully reduced 
+Additionally, the automation may be partially or fully reduced
 if the default generated code is not desired.
-
-Formula
- 
-\% difference =((After - Before)/Before) *100
- 
 The number of lines of code saved by using the preprocessor is shown in Table
-\ref{lines}.
+\ref{lines} where the percent difference is computed via Equation \ref{pdiffeq}.
+\begin{equation}
+\label{pdiffeq}
+\mathrm{\% difference} = \frac{\mathrm{After} - \mathrm{Before}}{\mathrm{Before}}\cdot 100
+\end{equation}
 
 \begin{table}
 \caption{ Number of lines saved from Archetypes in Cyclus v1.3.1}
 \label{lines}
+\centering
 \begin{tabular}{|lrrl|}
 \toprule
 file &  before &  after & \% difference \\
@@ -73,56 +73,56 @@ source.h         &     115 &    223 &        93.91 \\
 \end{table}
 
 
-The \cyclus system enables better fuel cycle simulations by creating better 
-archetypes.  Improved archetypes are a direct consequence of two features of the preprocessor. First, 
+The \cyclus system enables better fuel cycle simulations by creating better
+archetypes.  Improved archetypes are a direct consequence of two features of the preprocessor. First,
 \cyclus encourages developers to write the archetype
 that they intended to implement. Secondly, the archetypes are automatically
 validated.
 
 State variables are easy to create. When a software feature has a high cost to use,
-developers will minimize the number of times that they invoke it. This can 
+developers will minimize the number of times that they invoke it. This can
 sometimes lead to sacrificing model fidelity in an effort to author more concise
 code. However, the long-term completeness of an archetype
 with respect to its physics calculations should not be based, even in part, on the
-short-term impetus to have a minimum-viable product. By dramatically reducing the 
+short-term impetus to have a minimum-viable product. By dramatically reducing the
 length of time it takes to implement a state variable, archetype developers implement
 more state variables and thus more precise and tunable models.
 
-Furthermore, automatically generating archetype code removes typographic errors and 
-\cyclus interface misuse. This avoids potential and frustrating problems in 
-archetype development. The 
-generated code derives its validity from \cycpp, which itself is extensively 
-tested. Any errors accidentally introduced by \cycpp would be endemic to all archetypes, 
-but a fix to \cycpp would be the corresponding solution. Archetypes are thus 
+Furthermore, automatically generating archetype code removes typographic errors and
+\cyclus interface misuse. This avoids potential and frustrating problems in
+archetype development. The
+generated code derives its validity from \cycpp, which itself is extensively
+tested. Any errors accidentally introduced by \cycpp would be endemic to all archetypes,
+but a fix to \cycpp would be the corresponding solution. Archetypes are thus
 partially vetted due to \cycpp.
 
-The preprocessor also generates schema for archetypes. This provides a mechanism 
-for automatically validating user input.  Without validation, the archetype 
-developer has no guarantee that the user has entered a meaningful or physically possible 
+The preprocessor also generates schema for archetypes. This provides a mechanism
+for automatically validating user input.  Without validation, the archetype
+developer has no guarantee that the user has entered a meaningful or physically possible
 value (e.g., negative fluxes). Rather than approaching this problem in an
-\emph{ad hoc} 
-manner, the \cyclus interface demands that user input be examined via \gls{RNG}.  The overhead 
+\emph{ad hoc}
+manner, the \cyclus interface demands that user input be examined via \gls{RNG}.  The overhead
 of this requirement is mitigated since the archetype developer obtains the schema
-for free. This assures a high level of quality in using archetypes as well as 
+for free. This assures a high level of quality in using archetypes as well as
 developing them.
 
 The strategies detailed and implemented in this paper radically
 reduce the overhead of writing archetypes. By enabling more expressibility and greater
-modifiability, developers and simulators are able to more easily experiment.  
+modifiability, developers and simulators are able to more easily experiment.
 Alternative fuel cycle representations may be explored quantitatively at an
 unparalleled rate.
 
-However, archetype development tools and approaches are not without further 
-potential refinements. \cycpp will undergo continued improvement 
-as more archetypes are developed and common usage patterns emerge. Codifying and 
-auto-generating these patterns is a rich area of exploration. The authors anticipate 
+However, archetype development tools and approaches are not without further
+potential refinements. \cycpp will undergo continued improvement
+as more archetypes are developed and common usage patterns emerge. Codifying and
+auto-generating these patterns is a rich area of exploration. The authors anticipate
 that inventory and resource exchange patterns will be among the first
-targeted, 
+targeted,
 which would likely take the form of new filters in pass three.
 
-Furthermore, the fundamentals of the \cyclus type system will be used in 
+Furthermore, the fundamentals of the \cyclus type system will be used in
 perpetuity, as enabled by the extensibility of the type system.  More types
-will be added as needed by the archetype developers.  It is also possible to 
+will be added as needed by the archetype developers.  It is also possible to
 make the type system dynamic, allowing for custom types to be implemented at run time,
 which will reduce the run time as well.
 This could be a boon to archetype developers seeking to create a wide variety of custom
@@ -130,20 +130,20 @@ tables.
 
 The preprocessor could also improve the generated code. \Cyclus reserves the right
 to add additional metadata keys and associated meanings.  For example, a \code{'range'}
-key could specify the acceptable range for a state variable. This could in turn 
+key could specify the acceptable range for a state variable. This could in turn
 provide better validation by adding bounds checks beyond the what is performed
 by \gls{RNG}. A similar strategy could be followed for categorical variables whereby
-set membership would be verified. The code that is generated for future keys 
-depends largely on the meaning ascribed to those keys. There is no limit 
+set membership would be verified. The code that is generated for future keys
+depends largely on the meaning ascribed to those keys. There is no limit
 to the richness of available metadata.
 
 In summary, archetype development is has been made significantly easier. This is due in large
 part to the advent of the \cyclus preprocessor. While \cycpp itself is the fruit of
-a large computer science and software development effort, it is used here 
-primarily to improve fuel cycle simulations. \cyclus provides a solid ground 
+a large computer science and software development effort, it is used here
+primarily to improve fuel cycle simulations. \cyclus provides a solid ground
 as a platform for archetype development while simultaneously nimble enough
 to allow for future growth. Independent of \cyclus, the strategies and methods that
-\cyclus implements for archetype developers are translatable to any agent-based 
-fuel cycle simulator.  Some aspects, such as the type system,  may even be exportable 
-to general simulation science. 
+\cyclus implements for archetype developers are translatable to any agent-based
+fuel cycle simulator.  Some aspects, such as the type system,  may even be exportable
+to general simulation science.
 
